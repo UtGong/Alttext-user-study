@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BLV User Study Interface
 
 This is a Next.js + TypeScript prototype for a blind and low vision user study comparing three image-description ordering conditions:
@@ -145,3 +146,6 @@ Before running a real study, manually verify:
 4. The text-to-speech voice is acceptable, or replace TTS with recorded audio files.
 5. Exported JSON/CSV contains the fields needed for analysis.
 6. The interface has been tested with keyboard only and at least one screen reader.
+=======
+# Alttext-user-study
+>>>>>>> c0605d9c5d6cc5e45144903971e85851d38483a9
