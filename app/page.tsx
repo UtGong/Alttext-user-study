@@ -6,9 +6,8 @@ import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { LikertScale } from "@/components/LikertScale";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { RadioGroup } from "@/components/RadioGroup";
-import { getAvailableVoices, SpeechVoiceOption } from "@/lib/audio";
 import { AUDIO_SPEED_OPTIONS, STORAGE_KEY } from "@/lib/config";
-import { saveResultToRepo } from "@/lib/saveResult";
+import { saveResultToFirebase } from "@/lib/saveResult";
 import {
   comprehensionStimuli,
   getConditionForStimulus,
@@ -18,6 +17,7 @@ import {
 import {
   Condition,
   ParticipantProfile,
+  PreferenceRanking,
   PreferenceResponse,
   Ratings,
   SequenceGroup,
@@ -45,7 +45,6 @@ const defaultState: StudyState = {
   comprehensionResponses: [],
   workloadResponse: null,
   preferenceResponses: [],
-  interviewNotes: "",
   startedAt: new Date().toISOString()
 };
 
@@ -61,11 +60,19 @@ function loadInitialState(): StudyState {
   if (!saved) return defaultState;
 
   try {
-    const parsed = JSON.parse(saved) as StudyState;
+    const parsed = JSON.parse(saved) as Partial<StudyState>;
+
     return {
       ...defaultState,
       ...parsed,
-      selectedVoiceURI: parsed.selectedVoiceURI ?? ""
+      participant: {
+        ...defaultParticipant,
+        ...(parsed.participant ?? {})
+      },
+      selectedVoiceURI: parsed.selectedVoiceURI ?? "",
+      workloadResponse: parsed.workloadResponse ?? null,
+      comprehensionResponses: parsed.comprehensionResponses ?? [],
+      preferenceResponses: parsed.preferenceResponses ?? []
     };
   } catch {
     return defaultState;
@@ -86,6 +93,7 @@ function randomizePreferenceOrder(stimulusIndex: number) {
 export default function HomePage() {
   const [state, setState] = useState<StudyState>(defaultState);
   const [liveMessage, setLiveMessage] = useState("Ready.");
+  const pageHeadingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     setState(loadInitialState());
@@ -96,6 +104,15 @@ export default function HomePage() {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
   }, [state]);
+
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      pageHeadingRef.current?.focus();
+    });
+  }, [state.phase, state.comprehensionIndex, state.preferenceIndex]);
 
   function updateState(patch: Partial<StudyState>) {
     setState((current) => ({ ...current, ...patch }));
@@ -117,7 +134,9 @@ export default function HomePage() {
 
       <header className="site-header">
         <p className="eyebrow">BLV Image Description Study</p>
-        <h1>Accessible User Study Interface</h1>
+        <h1 ref={pageHeadingRef} tabIndex={-1}>
+          Accessible User Study Interface
+        </h1>
       </header>
 
       {phase === "welcome" && (
@@ -140,7 +159,7 @@ export default function HomePage() {
                 variant="secondary"
                 onClick={() => updateState({ phase: "complete" })}
               >
-                Go to export page
+                Go to save page
               </AccessibleButton>
             )}
           </div>
@@ -183,9 +202,7 @@ export default function HomePage() {
         />
       )}
 
-      {phase === "interview" && (
-        <InterviewPage state={state} updateState={updateState} />
-      )}
+      {phase === "interview" && <InterviewPage updateState={updateState} />}
 
       {phase === "complete" && (
         <CompletePage state={state} resetStudy={resetStudy} />
@@ -308,9 +325,7 @@ function SetupPage({
       />
 
       <div className="button-row">
-        <AccessibleButton type="submit">
-          Continue to audio setup
-        </AccessibleButton>
+        <AccessibleButton type="submit">Continue to audio setup</AccessibleButton>
       </div>
     </form>
   );
@@ -325,72 +340,30 @@ function AudioSettingsPage({
   updateState: (patch: Partial<StudyState>) => void;
   setLiveMessage: (message: string) => void;
 }) {
-  const [voices, setVoices] = useState<SpeechVoiceOption[]>([]);
-
   useEffect(() => {
-    function loadVoices() {
-      const available = getAvailableVoices();
-      setVoices(available);
-
-      if (!state.selectedVoiceURI && available.length > 0) {
-        const preferred =
-          available.find(
-            (voice) =>
-              voice.lang.startsWith("en") &&
-              voice.name.toLowerCase().includes("natural")
-          ) ||
-          available.find(
-            (voice) =>
-              voice.lang.startsWith("en") &&
-              voice.name.toLowerCase().includes("google")
-          ) ||
-          available.find(
-            (voice) =>
-              voice.lang.startsWith("en") &&
-              voice.name.toLowerCase().includes("microsoft")
-          ) ||
-          available.find((voice) => voice.lang.startsWith("en")) ||
-          available[0];
-
-        updateState({ selectedVoiceURI: preferred.voiceURI });
-      }
+    // Use system default voice for stability.
+    // Some browser-listed voices, especially Google natural voices, may appear in the list but fail to play.
+    if (state.selectedVoiceURI !== "") {
+      updateState({ selectedVoiceURI: "" });
     }
-
-    loadVoices();
-
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-    }
-
-    return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.onvoiceschanged = null;
-      }
-    };
   }, [state.selectedVoiceURI, updateState]);
 
   return (
     <section className="panel" aria-labelledby="audio-heading">
       <h2 id="audio-heading">Audio Setup</h2>
       <p>
-        Choose the voice and speed you prefer. These settings will be fixed during the real
-        study trials.
+        First, play the sample description. Then choose the speed that feels most comfortable.
+        The system default voice and selected speed will be fixed during the real study trials.
       </p>
 
-      <label className="field-label">
-        Preferred voice
-        <select
-          value={state.selectedVoiceURI}
-          onChange={(event) => updateState({ selectedVoiceURI: event.target.value })}
-        >
-          {voices.length === 0 && <option value="">Default browser voice</option>}
-          {voices.map((voice) => (
-            <option key={voice.voiceURI} value={voice.voiceURI}>
-              {voice.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <AudioDescriptionPlayer
+        description={sampleDescription}
+        speed={state.selectedAudioSpeed}
+        voiceURI=""
+        mode="sample"
+        label="sample description"
+        onEnded={() => setLiveMessage("Sample audio ended.")}
+      />
 
       <RadioGroup
         legend="Preferred audio speed"
@@ -403,18 +376,9 @@ function AudioSettingsPage({
         }))}
       />
 
-      <AudioDescriptionPlayer
-        description={sampleDescription}
-        speed={state.selectedAudioSpeed}
-        voiceURI={state.selectedVoiceURI}
-        mode="sample"
-        label="sample description"
-        onEnded={() => setLiveMessage("Sample audio ended.")}
-      />
-
       <div className="button-row">
         <AccessibleButton onClick={() => updateState({ phase: "practice" })}>
-          Confirm voice and speed, then continue to practice
+          Confirm speed, then continue to practice
         </AccessibleButton>
       </div>
     </section>
@@ -505,11 +469,10 @@ function ComprehensionPage({
   const headingRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     headingRef.current?.focus();
-    window.scrollTo({ top: 0, behavior: "smooth" });
     setLiveMessage(
-      `Moved to comprehension trial ${state.comprehensionIndex + 1} of ${
-        comprehensionStimuli.length
+      `Moved to comprehension trial ${state.comprehensionIndex + 1} of ${comprehensionStimuli.length
       }.`
     );
   }, [state.comprehensionIndex, setLiveMessage]);
@@ -578,15 +541,8 @@ function ComprehensionPage({
           {comprehensionStimuli.length}
         </h2>
 
-        <p>
-          Complexity level: <strong>{stimulus.complexityLevel}</strong>. Please listen to
-          the description, then answer the questions below.
-        </p>
+        <p>Please listen to the description, then answer the questions below.</p>
       </div>
-
-      <p className="help-text">
-        The condition name is hidden from participants. Researcher note: {condition}.
-      </p>
 
       <AudioDescriptionPlayer
         description={descriptionText}
@@ -623,7 +579,7 @@ function ComprehensionPage({
           {stimulus.spatialQuestions.map((question, index) => (
             <RadioGroup
               key={question.id}
-              legend={`Spatial question ${index + 1}. ${question.question} Frame of reference: ${question.frameOfReference}.`}
+              legend={`Spatial question ${index + 1}. ${question.question}`}
               name={question.id}
               value={spatialAnswers[question.id] ?? ""}
               onChange={(value) =>
@@ -745,7 +701,8 @@ function WorkloadPage({
 
   return (
     <form className="panel" onSubmit={submit} aria-labelledby="workload-heading">
-      <h2 id="workload-heading">Workload Questions</h2>
+      <h2 id="workload-heading">Overall Workload Questions</h2>
+      <p>Please answer these questions based on the listening task you just completed.</p>
 
       <LikertScale
         legend="How mentally demanding was this task?"
@@ -801,33 +758,42 @@ function PreferencePage({
     B: 0,
     C: 0
   });
+
   const [bestChoice, setBestChoice] = useState<"A" | "B" | "C" | "">("");
-  const [ranking, setRanking] = useState<{
-    first: "A" | "B" | "C" | "";
-    second: "A" | "B" | "C" | "";
-    third: "A" | "B" | "C" | "";
-  }>({
+
+  const [ranking, setRanking] = useState<PreferenceRanking>({
     first: "",
     second: "",
     third: ""
   });
 
-  const rankingHasDuplicate =
-    [ranking.first, ranking.second, ranking.third].filter(Boolean).length !==
-    new Set([ranking.first, ranking.second, ranking.third].filter(Boolean)).size;
-
-  const rankingComplete = Boolean(ranking.first && ranking.second && ranking.third);
   const [explanation, setExplanation] = useState("");
-
   const headingRef = useRef<HTMLHeadingElement | null>(null);
 
+  const rankingValues = [ranking.first, ranking.second, ranking.third].filter(Boolean);
+  const rankingHasDuplicate = rankingValues.length !== new Set(rankingValues).size;
+  const rankingComplete = Boolean(ranking.first && ranking.second && ranking.third);
+
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     headingRef.current?.focus();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
     setLiveMessage(
       `Moved to preference trial ${state.preferenceIndex + 1} of ${preferenceStimuli.length}.`
     );
   }, [state.preferenceIndex, setLiveMessage]);
+
+  function updateRanking(
+    position: "first" | "second" | "third",
+    value: "A" | "B" | "C" | ""
+  ) {
+    setRanking((current) => ({
+      ...current,
+      [position]: value
+    }));
+  }
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -864,15 +830,6 @@ function PreferencePage({
 
     setLiveMessage("Preference response saved.");
   }
-  function updateRanking(
-    position: "first" | "second" | "third",
-    value: "A" | "B" | "C" | ""
-  ) {
-    setRanking((current) => ({
-      ...current,
-      [position]: value
-    }));
-  }
 
   return (
     <form className="panel" onSubmit={submit} aria-labelledby="preference-heading">
@@ -888,30 +845,45 @@ function PreferencePage({
         </h2>
 
         <p>
-          Listen to all three descriptions of the same image. The condition names are hidden
-          from participants.
+          Listen to all three descriptions of the same image. You can also read the text of
+          each description below.
         </p>
       </div>
 
       {randomizedOrder.map((item) => (
-        <AudioDescriptionPlayer
+        <section
           key={item.label}
-          description={item.descriptionText}
-          speed={state.selectedAudioSpeed}
-          voiceURI={state.selectedVoiceURI}
-          mode="preference"
-          label={`Description ${item.label}`}
-          onReplay={() =>
-            setReplayCounts((current) => ({
-              ...current,
-              [item.label]: current[item.label] + 1
-            }))
-          }
-        />
+          className="question-card preference-description-card"
+          aria-labelledby={`preference-description-${item.label}`}
+        >
+          <h3 id={`preference-description-${item.label}`}>
+            Description {item.label}
+          </h3>
+
+          <AudioDescriptionPlayer
+            description={item.descriptionText}
+            speed={state.selectedAudioSpeed}
+            voiceURI={state.selectedVoiceURI}
+            mode="preference"
+            label={`Description ${item.label}`}
+            onReplay={() =>
+              setReplayCounts((current) => ({
+                ...current,
+                [item.label]: current[item.label] + 1
+              }))
+            }
+          />
+
+          <div className="description-text-block">
+            <h4>Text of Description {item.label}</h4>
+            <p>{item.descriptionText}</p>
+          </div>
+        </section>
       ))}
 
       <section className="question-card" aria-labelledby="preference-best-heading">
         <h3 id="preference-best-heading">Question 1: Best description</h3>
+
         <RadioGroup
           legend="Which description helped you understand the image best?"
           name="bestChoice"
@@ -986,6 +958,7 @@ function PreferencePage({
 
       <section className="question-card" aria-labelledby="preference-explanation-heading">
         <h3 id="preference-explanation-heading">Question 3: Explanation</h3>
+
         <label className="field-label">
           Why did you choose this ranking?
           <textarea
@@ -1008,15 +981,17 @@ function PreferencePage({
 }
 
 function InterviewPage({
-  state,
   updateState
 }: {
-  state: StudyState;
   updateState: (patch: Partial<StudyState>) => void;
 }) {
   return (
     <section className="panel" aria-labelledby="interview-heading">
-      <h2 id="interview-heading">Final Interview Guide</h2>
+      <h2 id="interview-heading">Final Interview Questions</h2>
+      <p>
+        The researcher will ask the following questions. You do not need to type answers on this
+        page.
+      </p>
 
       <ol className="question-list">
         <li>Which descriptions helped you understand the image best?</li>
@@ -1028,17 +1003,8 @@ function InterviewPage({
         <li>In real use, what kind of image description would you prefer?</li>
       </ol>
 
-      <label className="field-label">
-        Researcher notes
-        <textarea
-          rows={8}
-          value={state.interviewNotes}
-          onChange={(event) => updateState({ interviewNotes: event.target.value })}
-        />
-      </label>
-
       <AccessibleButton onClick={() => updateState({ phase: "complete" })}>
-        Finish study
+        Continue to save page
       </AccessibleButton>
     </section>
   );
@@ -1054,22 +1020,22 @@ function CompletePage({
   const [saveStatus, setSaveStatus] = useState<
     "idle" | "saving" | "saved" | "error"
   >("idle");
-  const [savedPath, setSavedPath] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
 
   async function handleSaveResult() {
     setSaveStatus("saving");
-    setSavedPath("");
-    setErrorMessage("");
+    setSaveMessage("");
 
     try {
-      const result = await saveResultToRepo(state);
+      const result = await saveResultToFirebase(state);
       setSaveStatus("saved");
-      setSavedPath(result.savedPath ?? "");
+      setSaveMessage(
+        `Saved to Firebase collection "${result.collection}" with document ID "${result.documentId}".`
+      );
     } catch (error) {
       setSaveStatus("error");
-      setErrorMessage(
-        error instanceof Error ? error.message : "Failed to save result."
+      setSaveMessage(
+        error instanceof Error ? error.message : "Failed to save result to Firebase."
       );
     }
   }
@@ -1086,14 +1052,11 @@ function CompletePage({
         <dt>Selected audio speed</dt>
         <dd>{state.selectedAudioSpeed}x</dd>
 
-        <dt>Selected voice</dt>
-        <dd>{state.selectedVoiceURI || "Default browser voice"}</dd>
-
         <dt>Comprehension responses</dt>
         <dd>{state.comprehensionResponses.length}</dd>
 
         <dt>Workload response</dt>
-        <dd>{state.workloadResponse ? "Saved in session" : "Missing"}</dd>
+        <dd>{state.workloadResponse ? "Completed" : "Missing"}</dd>
 
         <dt>Preference responses</dt>
         <dd>{state.preferenceResponses.length}</dd>
@@ -1104,7 +1067,7 @@ function CompletePage({
           onClick={handleSaveResult}
           disabled={saveStatus === "saving"}
         >
-          {saveStatus === "saving" ? "Saving result..." : "Save result to repo"}
+          {saveStatus === "saving" ? "Saving result..." : "Save result"}
         </AccessibleButton>
 
         <AccessibleButton variant="danger" onClick={resetStudy}>
@@ -1114,13 +1077,13 @@ function CompletePage({
 
       {saveStatus === "saved" && (
         <p className="success" role="status">
-          Result saved successfully: <code>{savedPath}</code>
+          {saveMessage}
         </p>
       )}
 
       {saveStatus === "error" && (
         <p className="warning" role="alert">
-          {errorMessage}
+          {saveMessage}
         </p>
       )}
     </section>

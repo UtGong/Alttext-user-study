@@ -1,16 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { FieldValue, getFirestore, initializeFirestore } from "firebase-admin/firestore";
 
-function sanitizeFilename(value: string) {
+export const runtime = "nodejs";
+
+function sanitizeId(value: string) {
   return value
     .trim()
     .replace(/[^a-zA-Z0-9_-]/g, "_")
     .slice(0, 80);
 }
 
-function timestampForFilename() {
-  return new Date().toISOString().replace(/[:.]/g, "-");
+function getFirebasePrivateKey() {
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+  if (!privateKey) {
+    throw new Error("Missing FIREBASE_PRIVATE_KEY.");
+  }
+
+  return privateKey.replace(/\\n/g, "\n");
+}
+
+function getFirebaseApp() {
+  if (getApps().length > 0) {
+    return getApps()[0];
+  }
+
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+
+  if (!projectId) {
+    throw new Error("Missing FIREBASE_PROJECT_ID.");
+  }
+
+  if (!clientEmail) {
+    throw new Error("Missing FIREBASE_CLIENT_EMAIL.");
+  }
+
+  const app = initializeApp({
+    credential: cert({
+      projectId,
+      clientEmail,
+      privateKey: getFirebasePrivateKey()
+    })
+  });
+
+  // Important: prefer REST transport instead of gRPC.
+  // This avoids DEADLINE_EXCEEDED / Waiting for LB pick issues on some local and Vercel environments.
+  initializeFirestore(app, {
+    preferRest: true
+  });
+
+  return app;
 }
 
 export async function POST(request: NextRequest) {
@@ -21,29 +62,43 @@ export async function POST(request: NextRequest) {
 
     const participantId =
       typeof rawParticipantId === "string" && rawParticipantId.trim().length > 0
-        ? sanitizeFilename(rawParticipantId)
+        ? sanitizeId(rawParticipantId)
         : "unknown_participant";
 
-    const resultsDir = path.join(process.cwd(), "study-results", participantId);
-    await mkdir(resultsDir, { recursive: true });
+    const app = getFirebaseApp();
+    const db = getFirestore(app);
 
-    const timestamp = timestampForFilename();
-    const jsonPath = path.join(resultsDir, `result-${timestamp}.json`);
+    const collectionName = process.env.FIRESTORE_COLLECTION || "studyResults";
+    const submittedAt = new Date().toISOString();
+    const documentId = `${participantId}_${submittedAt.replace(/[:.]/g, "-")}`;
 
-    await writeFile(jsonPath, JSON.stringify(body, null, 2), "utf8");
+    const resultToSave = {
+      ...body,
+      participantId,
+      serverSubmittedAt: submittedAt,
+      createdAt: FieldValue.serverTimestamp(),
+      appVersion: "blv-user-study-nextjs-v1"
+    };
+
+    await db.collection(collectionName).doc(documentId).set(resultToSave);
 
     return NextResponse.json({
       ok: true,
       participantId,
-      savedPath: `study-results/${participantId}/result-${timestamp}.json`
+      documentId,
+      collection: collectionName,
+      savedAt: submittedAt
     });
   } catch (error) {
-    console.error("Failed to save result:", error);
+    console.error("Failed to save result to Firebase:", error);
 
     return NextResponse.json(
       {
         ok: false,
-        error: "Failed to save result."
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to save result to Firebase."
       },
       { status: 500 }
     );

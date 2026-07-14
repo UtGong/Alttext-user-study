@@ -1,7 +1,3 @@
-export type Condition = "baseline" | "spatial" | "semantic";
-export type ComplexityLevel = "low" | "medium" | "high";
-export type ImageSet = "set1" | "set2" | "set3";
-export type SequenceGroup = "A" | "B" | "C";
 export type StudyPhase =
   | "welcome"
   | "setup"
@@ -13,32 +9,13 @@ export type StudyPhase =
   | "interview"
   | "complete";
 
-export type SpatialQuestion = {
-  id: string;
-  frameOfReference: "relative" | "absolute" | "viewer-centered";
-  question: string;
-  options: string[];
-  correctAnswer: string;
-};
+export type SequenceGroup = "A" | "B" | "C";
 
-export type Stimulus = {
-  rowIndex: number;
-  uuid: string;
-  imageFilename: string;
-  complexityLevel: ComplexityLevel;
-  complexityScore?: number;
-  role: "comprehension" | "preference" | "reserve" | string;
-  imageSet: ImageSet;
-  descriptions: Record<Condition, string>;
-  audio?: Partial<Record<Condition, string>>;
-  targetElements: string[];
-  spatialQuestions: SpatialQuestion[];
-  gistQuestion?: {
-    question: string;
-    expectedAnswer?: string;
-    options?: string[];
-  };
-};
+export type Condition = "baseline" | "spatial" | "semantic";
+
+export type ComplexityLevel = "low" | "medium" | "high";
+
+export type ImageSet = "set1" | "set2" | "set3";
 
 export type ParticipantProfile = {
   participantId: string;
@@ -48,6 +25,42 @@ export type ParticipantProfile = {
   screenReader: string;
   screenReaderOther: string;
   imageDescriptionExperience: string;
+};
+
+export type SpatialQuestion = {
+  id: string;
+  frameOfReference: "relative" | "absolute" | "viewer-centered";
+  question: string;
+  options: string[];
+  correctAnswer: string;
+};
+
+export type GistQuestion = {
+  question: string;
+  expectedAnswer?: string;
+  options?: string[];
+};
+
+export type Stimulus = {
+  rowIndex: number;
+  uuid: string;
+  imageFilename: string;
+  imageUrl?: string;
+  complexityLevel: ComplexityLevel;
+  imageSet: ImageSet;
+  descriptions: {
+    baseline: string;
+    spatial: string;
+    semantic: string;
+  };
+  audio?: {
+    baseline?: string;
+    spatial?: string;
+    semantic?: string;
+  };
+  targetElements: string[];
+  spatialQuestions: SpatialQuestion[];
+  gistQuestion?: GistQuestion;
 };
 
 export type Ratings = {
@@ -99,6 +112,12 @@ export type WorkloadResponse = {
   frustration: number | null;
 };
 
+export type PreferenceRanking = {
+  first: "A" | "B" | "C" | "";
+  second: "A" | "B" | "C" | "";
+  third: "A" | "B" | "C" | "";
+};
+
 export type PreferenceResponse = {
   participantId: string;
   sequenceGroup: SequenceGroup;
@@ -108,14 +127,14 @@ export type PreferenceResponse = {
   uuid: string;
   rowIndex: number;
   complexityLevel: ComplexityLevel;
-  randomizedOrder: { label: "A" | "B" | "C"; condition: Condition; descriptionText: string }[];
+  randomizedOrder: {
+    label: "A" | "B" | "C";
+    condition: Condition;
+    descriptionText: string;
+  }[];
   replayCounts: Record<"A" | "B" | "C", number>;
   bestChoice: "A" | "B" | "C" | "";
-  ranking: {
-    first: "A" | "B" | "C" | "";
-    second: "A" | "B" | "C" | "";
-    third: "A" | "B" | "C" | "";
-  };
+  ranking: PreferenceRanking;
   explanation: string;
   submittedAt: string;
 };
@@ -130,6 +149,5 @@ export type StudyState = {
   comprehensionResponses: TrialResponse[];
   workloadResponse: WorkloadResponse | null;
   preferenceResponses: PreferenceResponse[];
-  interviewNotes: string;
   startedAt: string;
 };

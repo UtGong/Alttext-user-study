@@ -3,11 +3,15 @@ import { StudyState } from "@/types/study";
 export type SaveResultResponse = {
   ok: boolean;
   participantId?: string;
-  savedPath?: string;
+  documentId?: string;
+  collection?: string;
+  savedAt?: string;
   error?: string;
 };
 
-export async function saveResultToRepo(state: StudyState): Promise<SaveResultResponse> {
+export async function saveResultToFirebase(
+  state: StudyState
+): Promise<SaveResultResponse> {
   const response = await fetch("/api/save-result", {
     method: "POST",
     headers: {
@@ -19,7 +23,7 @@ export async function saveResultToRepo(state: StudyState): Promise<SaveResultRes
   const data = (await response.json()) as SaveResultResponse;
 
   if (!response.ok || !data.ok) {
-    throw new Error(data.error || "Failed to save result.");
+    throw new Error(data.error || "Failed to save result to Firebase.");
   }
 
   return data;

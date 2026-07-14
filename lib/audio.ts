@@ -5,8 +5,12 @@ export type SpeechVoiceOption = {
   label: string;
 };
 
+export function isSpeechSupported() {
+  return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
 export function getAvailableVoices(): SpeechVoiceOption[] {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+  if (!isSpeechSupported()) {
     return [];
   }
 
@@ -18,59 +22,119 @@ export function getAvailableVoices(): SpeechVoiceOption[] {
   }));
 }
 
-export function getPreferredVoice(voiceURI?: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+function getSelectedVoice(voiceURI?: string): SpeechSynthesisVoice | null {
+  if (!isSpeechSupported()) {
+    return null;
+  }
+
+  if (!voiceURI) {
     return null;
   }
 
   const voices = window.speechSynthesis.getVoices();
-
-  if (voiceURI) {
-    const selected = voices.find((voice) => voice.voiceURI === voiceURI);
-    if (selected) return selected;
-  }
-
-  const preferredEnglishVoice =
-    voices.find((voice) => voice.lang.startsWith("en") && voice.name.toLowerCase().includes("natural")) ||
-    voices.find((voice) => voice.lang.startsWith("en") && voice.name.toLowerCase().includes("google")) ||
-    voices.find((voice) => voice.lang.startsWith("en") && voice.name.toLowerCase().includes("microsoft")) ||
-    voices.find((voice) => voice.lang.startsWith("en"));
-
-  return preferredEnglishVoice ?? voices[0] ?? null;
+  return voices.find((voice) => voice.voiceURI === voiceURI) ?? null;
 }
 
-export function speakText(
-  text: string,
-  speed: number,
-  voiceURI?: string,
-  onEnd?: () => void
-) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+function estimateSpeechDurationMs(text: string, speed: number) {
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+  const wordsPerMinute = 165 * Math.max(speed, 0.5);
+  const estimatedMinutes = wordCount / wordsPerMinute;
+  const estimatedMs = estimatedMinutes * 60 * 1000;
+
+  return Math.max(2500, Math.min(estimatedMs + 1200, 120000));
+}
+
+export function stopSpeech() {
+  if (isSpeechSupported()) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+export function speakText({
+  text,
+  speed,
+  voiceURI,
+  onStart,
+  onEnd,
+  onError
+}: {
+  text: string;
+  speed: number;
+  voiceURI?: string;
+  onStart?: () => void;
+  onEnd?: () => void;
+  onError?: (message: string) => void;
+}) {
+  if (!isSpeechSupported()) {
+    onError?.("Speech synthesis is not supported in this browser.");
+    onEnd?.();
+    return;
+  }
+
+  const cleanedText = text.trim();
+
+  if (!cleanedText) {
+    onError?.("There is no description text to play.");
     onEnd?.();
     return;
   }
 
   window.speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(text);
+  const utterance = new SpeechSynthesisUtterance(cleanedText);
+  const selectedVoice = getSelectedVoice(voiceURI);
+
   utterance.rate = speed;
   utterance.pitch = 1;
   utterance.volume = 1;
 
-  const voice = getPreferredVoice(voiceURI);
-  if (voice) {
-    utterance.voice = voice;
-    utterance.lang = voice.lang;
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+    utterance.lang = selectedVoice.lang;
+  } else {
+    utterance.lang = "en-US";
   }
 
-  utterance.onend = () => onEnd?.();
-  utterance.onerror = () => onEnd?.();
+  let finished = false;
 
-  window.speechSynthesis.speak(utterance);
-}
+  const fallbackTimer = window.setTimeout(() => {
+    if (!finished) {
+      finished = true;
+      onEnd?.();
+    }
+  }, estimateSpeechDurationMs(cleanedText, speed));
 
-export function stopSpeech() {
-  if (typeof window !== "undefined" && "speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
+  utterance.onend = () => {
+    if (!finished) {
+      finished = true;
+      window.clearTimeout(fallbackTimer);
+      onEnd?.();
+    }
+  };
+
+  utterance.onerror = (event) => {
+    if (!finished) {
+      finished = true;
+      window.clearTimeout(fallbackTimer);
+      onError?.(`Speech failed: ${event.error}. Try the system default voice or another browser.`);
+      onEnd?.();
+    }
+  };
+
+  try {
+    window.speechSynthesis.speak(utterance);
+
+    // Do not wait for browser onstart. Some voices never fire it.
+    onStart?.();
+
+    window.setTimeout(() => {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+    }, 50);
+  } catch {
+    window.clearTimeout(fallbackTimer);
+    onError?.("Speech could not be started. Try another voice or browser.");
+    onEnd?.();
   }
 }

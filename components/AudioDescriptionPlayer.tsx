@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
-import { speakText } from "@/lib/audio";
+import { speakText, stopSpeech } from "@/lib/audio";
 
 type AudioDescriptionPlayerProps = {
   description: string;
@@ -27,9 +27,13 @@ export function AudioDescriptionPlayer({
 }: AudioDescriptionPlayerProps) {
   const [playedOnce, setPlayedOnce] = useState(false);
   const [status, setStatus] = useState("Not played yet.");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function play(isReplay: boolean) {
+    setErrorMessage("");
     setStatus(`Playing ${label}.`);
+
+    stopSpeech();
 
     if (isReplay) {
       onReplay?.();
@@ -41,21 +45,35 @@ export function AudioDescriptionPlayer({
 
     setPlayedOnce(true);
 
-    speakText(description, speed, voiceURI, () => {
-      setStatus(`${label} ended.`);
-      onEnded?.();
+    speakText({
+      text: description,
+      speed,
+      voiceURI,
+      onStart: () => {
+        setStatus(`Playing ${label}.`);
+      },
+      onEnd: () => {
+        setStatus(`${label} ended.`);
+        onEnded?.();
+      },
+      onError: (message) => {
+        setErrorMessage(message);
+        setStatus(`${label} could not be played.`);
+      }
     });
   }
 
   return (
-    <section className="card audio-card" aria-labelledby={`${label.replaceAll(" ", "-")}-heading`}>
+    <section
+      className="card audio-card"
+      aria-labelledby={`${label.replaceAll(" ", "-")}-heading`}
+    >
       <h3 id={`${label.replaceAll(" ", "-")}-heading`}>Audio {label}</h3>
 
       <p className="help-text">
-        Speed: {speed}x.{" "}
         {mode === "trial"
-          ? "During real trials, only play and replay are available."
-          : "Use this to confirm audio comfort."}
+          ? "Play the description before answering. You may replay it if needed."
+          : "Use this audio to confirm that the voice and speed are comfortable."}
       </p>
 
       <div className="button-row">
@@ -71,6 +89,12 @@ export function AudioDescriptionPlayer({
       <p className="visible-status" aria-live="polite">
         {status}
       </p>
+
+      {errorMessage && (
+        <p className="warning" role="alert">
+          {errorMessage}
+        </p>
+      )}
     </section>
   );
 }
