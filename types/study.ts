@@ -10,12 +10,12 @@ export type StudyPhase =
   | "complete";
 
 export type SequenceGroup = "A" | "B" | "C";
-
 export type Condition = "baseline" | "spatial" | "semantic";
-
 export type ComplexityLevel = "low" | "medium" | "high";
-
 export type ImageSet = "set1" | "set2" | "set3";
+export type StimulusRole = "comprehension" | "preference" | "reserve";
+export type DescriptionLabel = "A" | "B" | "C";
+export type SpatialObjectFocus = "main" | "secondary";
 
 export type ParticipantProfile = {
   participantId: string;
@@ -29,10 +29,12 @@ export type ParticipantProfile = {
 
 export type SpatialQuestion = {
   id: string;
-  frameOfReference: "relative" | "absolute" | "viewer-centered";
+  frameOfReference: "relative" | "absolute" | "viewer-centered" | "qualitative-relation";
+  objectFocus?: SpatialObjectFocus;
   question: string;
   options: string[];
-  correctAnswer: string;
+  correctAnswer?: string;
+  requiresManualCoding?: boolean;
 };
 
 export type GistQuestion = {
@@ -42,11 +44,13 @@ export type GistQuestion = {
 };
 
 export type Stimulus = {
+  role: StimulusRole;
   rowIndex: number;
   uuid: string;
   imageFilename: string;
   imageUrl?: string;
   complexityLevel: ComplexityLevel;
+  complexityScore?: number;
   imageSet: ImageSet;
   descriptions: {
     baseline: string;
@@ -69,18 +73,27 @@ export type Ratings = {
   perceivedQuality: number | null;
 };
 
+export type AudioPlayEvent = {
+  playedAt: string;
+  playNumber: number;
+  isReplay: boolean;
+};
+
 export type SpatialAnswer = {
   questionId: string;
   frameOfReference: string;
+  objectFocus: SpatialObjectFocus;
   question: string;
   answer: string;
-  correctAnswer: string;
-  isCorrect: boolean;
+  correctAnswer: string | null;
+  isCorrect: boolean | null;
+  requiresManualCoding: boolean;
 };
 
 export type TrialResponse = {
   participantId: string;
   sequenceGroup: SequenceGroup;
+  testMode: boolean;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   trialIndex: number;
@@ -91,19 +104,22 @@ export type TrialResponse = {
   condition: Condition;
   descriptionText: string;
   replayCount: number;
+  replayed: boolean;
+  audioPlayEvents: AudioPlayEvent[];
   startedAt: string;
   audioStartedAt?: string;
   audioEndedAt?: string;
   submittedAt: string;
+  gistAnswer: string;
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
-  gistAnswer: string;
   ratings: Ratings;
 };
 
 export type WorkloadResponse = {
   participantId: string;
   sequenceGroup: SequenceGroup;
+  testMode: boolean;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   submittedAt: string;
@@ -113,14 +129,20 @@ export type WorkloadResponse = {
 };
 
 export type PreferenceRanking = {
-  first: "A" | "B" | "C" | "";
-  second: "A" | "B" | "C" | "";
-  third: "A" | "B" | "C" | "";
+  first: DescriptionLabel | "";
+  second: DescriptionLabel | "";
+  third: DescriptionLabel | "";
+};
+
+export type PreferencePlaybackEvent = AudioPlayEvent & {
+  label: DescriptionLabel;
+  condition: Condition;
 };
 
 export type PreferenceResponse = {
   participantId: string;
   sequenceGroup: SequenceGroup;
+  testMode: boolean;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   trialIndex: number;
@@ -128,12 +150,14 @@ export type PreferenceResponse = {
   rowIndex: number;
   complexityLevel: ComplexityLevel;
   randomizedOrder: {
-    label: "A" | "B" | "C";
+    label: DescriptionLabel;
+    displayPosition: number;
     condition: Condition;
     descriptionText: string;
   }[];
-  replayCounts: Record<"A" | "B" | "C", number>;
-  bestChoice: "A" | "B" | "C" | "";
+  playbackEvents: PreferencePlaybackEvent[];
+  replayCounts: Record<DescriptionLabel, number>;
+  bestChoice: DescriptionLabel | "";
   ranking: PreferenceRanking;
   explanation: string;
   submittedAt: string;
@@ -141,6 +165,7 @@ export type PreferenceResponse = {
 
 export type StudyState = {
   phase: StudyPhase;
+  testMode: boolean;
   participant: ParticipantProfile;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
