@@ -135,6 +135,7 @@ export type PreferenceRanking = {
 };
 
 export type PreferencePlaybackEvent = AudioPlayEvent & {
+  eventSequence: number;
   label: DescriptionLabel;
   condition: Condition;
 };
