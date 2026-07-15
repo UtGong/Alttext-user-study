@@ -98,7 +98,7 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
     <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
       onPlayed={() => { setPlayed(true); setAudioStartedAt(new Date().toISOString()); }}
-      onPlayEvent={(e) => setPlayEvents((v) => [...v, e])}
+      onPlaybackEvent={(event) => setPlayEvents((current) => [...current, event])}
       onEnded={() => setAudioEndedAt(new Date().toISOString())} />
 
     <section className="question-card"><h3>Question 1: Main idea</h3><label className="field-label">
@@ -119,9 +119,9 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     </section>
 
     <section className="question-card"><h3>Question 4: Ratings</h3>
-      <LikertScale legend="I could form a clear mental image of the scene." name="mentalImageClarity" value={ratings.mentalImageClarity} onChange={(v) => setRatings((r) => ({ ...r, mentalImageClarity: v }))} />
-      <LikertScale legend="I understood where the described elements were located in the image." name="spatialClarity" value={ratings.spatialClarity} onChange={(v) => setRatings((r) => ({ ...r, spatialClarity: v }))} />
-      <LikertScale legend="This description was useful for understanding the image." name="perceivedQuality" value={ratings.perceivedQuality} onChange={(v) => setRatings((r) => ({ ...r, perceivedQuality: v }))} />
+      <LikertScale legend="I could form a clear mental image of the scene." name="mentalImageClarity" value={ratings.mentalImageClarity} onChange={(v) => setRatings((r) => ({ ...r, mentalImageClarity: v }))} required={!state.testMode} />
+      <LikertScale legend="I understood where the described elements were located in the image." name="spatialClarity" value={ratings.spatialClarity} onChange={(v) => setRatings((r) => ({ ...r, spatialClarity: v }))} required={!state.testMode} />
+      <LikertScale legend="This description was useful for understanding the image." name="perceivedQuality" value={ratings.perceivedQuality} onChange={(v) => setRatings((r) => ({ ...r, perceivedQuality: v }))} required={!state.testMode} />
     </section>
     <AccessibleButton type="submit" disabled={!played && !state.testMode}>Save and continue</AccessibleButton>
   </form>;
