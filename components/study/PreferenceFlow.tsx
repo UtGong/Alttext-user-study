@@ -70,7 +70,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
       <h3>Description {item.label}</h3>
       <AudioDescriptionPlayer description={item.descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="preference" label={`Description ${item.label}`}
         onReplay={() => setReplayCounts((v) => ({ ...v, [item.label]: v[item.label] + 1 }))}
-        onPlayEvent={(event) => setPlaybackEvents((v) => [...v, { ...event, label: item.label, condition: item.condition }])} />
+        onPlaybackEvent={(event) => setPlaybackEvents((v) => [...v, { ...event, label: item.label, condition: item.condition }])} />
       <div className="description-text-block"><h4>Text of Description {item.label}</h4><p>{item.descriptionText}</p></div>
     </section>)}
 
