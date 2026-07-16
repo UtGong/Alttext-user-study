@@ -69,6 +69,8 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         selectedAudioSpeed: state.selectedAudioSpeed,
         selectedVoiceURI: state.selectedVoiceURI,
         trialIndex: state.comprehensionIndex + 1,
+        imageId: stimulus.uuid,
+        imageFilename: stimulus.imageFilename,
         uuid: stimulus.uuid,
         rowIndex: stimulus.rowIndex,
         complexityLevel: stimulus.complexityLevel,
