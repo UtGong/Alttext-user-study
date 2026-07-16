@@ -75,6 +75,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
       selectedAudioSpeed: state.selectedAudioSpeed,
       selectedVoiceURI: state.selectedVoiceURI,
       trialIndex: state.preferenceIndex + 1,
+      imageId: stimulus.uuid,
+      imageFilename: stimulus.imageFilename,
       uuid: stimulus.uuid,
       rowIndex: stimulus.rowIndex,
       complexityLevel: stimulus.complexityLevel,
