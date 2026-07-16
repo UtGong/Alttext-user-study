@@ -97,6 +97,8 @@ export type TrialResponse = {
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   trialIndex: number;
+  imageId: string;
+  imageFilename: string;
   uuid: string;
   rowIndex: number;
   complexityLevel: ComplexityLevel;
@@ -147,6 +149,8 @@ export type PreferenceResponse = {
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   trialIndex: number;
+  imageId: string;
+  imageFilename: string;
   uuid: string;
   rowIndex: number;
   complexityLevel: ComplexityLevel;
