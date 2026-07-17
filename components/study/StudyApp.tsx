@@ -401,6 +401,7 @@ function Workload({
           value={value as number | null}
           onChange={setter as (nextValue: number) => void}
           labels={workloadLabels}
+          required={!state.testMode}
         />
       ))}
       <AccessibleButton type="submit">Continue</AccessibleButton>
