@@ -22,7 +22,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - Spatial relation questions
 - Semantic gist answer
 - 1–5 Likert ratings
-- Per-image workload ratings for condition-by-condition comparison
+- Mental demand, effort, and frustration ratings after the full comprehension section
 - Optional preference trials
 - Final interview notes
 - JSON export
@@ -129,14 +129,14 @@ During real trials:
 - Comprehension image order is randomized once per participant and persisted so a resumed session keeps the same order.
 - Spatial questions 1 to 3 include Yes, No, and Not sure.
 - Spatial questions 4 to 6 use Yes and No responses.
-- Section 8 separately measures overall scene clarity, spatial-relationship confidence, and content comprehension.
-- A mental-demand workload rating is collected after every image and exported with condition, complexity, and randomized display position.
+- Experience ratings separately measure overall scene clarity, spatial-relationship confidence, and content comprehension.
+- Mental demand, effort, and frustration are collected together after the full comprehension section.
 - In preference trials, descriptions A, B, and C can be replayed without a limit. All three must be played before a ranking is saved.
 - The ranking explanation is required and stored with playback events and replay counts.
 
 ## Data storage
 
-The full study state is autosaved in the browser and submitted to Firestore at completion. Version 2 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, revised Section 8 rating fields, per-image workload, preference playback events, replay counts, ranking, and ranking explanation. CSV exports provide condition-level workload rows and the revised rating constructs.
+The full study state is autosaved in the browser and submitted to Firestore at completion. Version 2 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, revised experience-rating fields, the three workload responses, preference playback events, replay counts, ranking, and ranking explanation. CSV exports include the workload responses and revised experience-rating constructs.
 
 ## Accessibility design notes
 
