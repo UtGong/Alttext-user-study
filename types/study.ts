@@ -117,6 +117,7 @@ export type TrialResponse = {
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
   ratings: Ratings;
+  workload: Pick<WorkloadResponse, "mentalDemand" | "effort" | "frustration">;
 };
 
 export type WorkloadResponse = {
