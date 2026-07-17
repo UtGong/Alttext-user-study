@@ -15,7 +15,7 @@
 
 - Do not reveal condition names to participants.
 - Comprehension images appear in a randomized order for each participant.
-- After the full comprehension section, collect mental demand, effort, and frustration ratings.
+- After each image, collect mental demand, effort, and frustration ratings.
 - During preference trials, let the participant play and replay descriptions A, B, and C freely.
 - Confirm that all three descriptions were played before the participant submits a ranking.
 - After each ranking, ask the participant to explain the reasons for their ordering.
@@ -28,7 +28,7 @@
 - Complete final interview notes.
 - Export JSON.
 - Export CSV.
-- Verify the workload CSV contains mental demand, effort, and frustration.
+- Verify the workload CSV contains one row per image with mental demand, effort, frustration, condition, and display position.
 - Verify preference exports contain ranking explanations and playback events.
 - Verify exported files are saved.
 - Clear session before the next participant.
