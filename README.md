@@ -22,7 +22,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - Spatial relation questions
 - Semantic gist answer
 - 1–5 Likert ratings
-- Mental demand, effort, and frustration ratings after the full comprehension section
+- Mental demand, effort, and frustration ratings after each image
 - Optional preference trials
 - Final interview notes
 - JSON export
@@ -130,13 +130,13 @@ During real trials:
 - Spatial questions 1 to 3 include Yes, No, and Not sure.
 - Spatial questions 4 to 6 use Yes and No responses.
 - Experience ratings separately measure overall scene clarity, spatial-relationship confidence, and content comprehension.
-- Mental demand, effort, and frustration are collected together after the full comprehension section.
+- Mental demand, effort, and frustration are collected after each image for condition-by-condition comparison.
 - In preference trials, descriptions A, B, and C can be replayed without a limit. All three must be played before a ranking is saved.
 - The ranking explanation is required and stored with playback events and replay counts.
 
 ## Data storage
 
-The full study state is autosaved in the browser and submitted to Firestore at completion. Version 2 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, revised experience-rating fields, the three workload responses, preference playback events, replay counts, ranking, and ranking explanation. CSV exports include the workload responses and revised experience-rating constructs.
+The full study state is autosaved in the browser and submitted to Firestore at completion. Version 2 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, revised experience-rating fields, three per-image workload responses, preference playback events, replay counts, ranking, and ranking explanation. CSV exports include one workload row per image for condition-by-condition comparison.
 
 ## Accessibility design notes
 
