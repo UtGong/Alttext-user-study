@@ -7,8 +7,8 @@ import { LikertScale } from "@/components/LikertScale";
 import { RadioGroup } from "@/components/RadioGroup";
 import { ComprehensionFlow } from "@/components/study/ComprehensionFlow";
 import { PreferenceFlow } from "@/components/study/PreferenceFlow";
-import { AUDIO_SPEED_OPTIONS, STORAGE_KEY } from "@/lib/config";
-import { preferenceStimuli } from "@/lib/stimuli";
+import { AUDIO_SPEED_OPTIONS, STORAGE_KEY, STUDY_SCHEMA_VERSION } from "@/lib/config";
+import { createRandomizedComprehensionOrder, preferenceStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
 
@@ -23,12 +23,14 @@ const participant: ParticipantProfile = {
 };
 
 const initial: StudyState = {
+  schemaVersion: STUDY_SCHEMA_VERSION,
   phase: "welcome",
   testMode: false,
   participant,
   selectedAudioSpeed: 1,
   selectedVoiceURI: "",
   comprehensionIndex: 0,
+  comprehensionOrder: [],
   preferenceIndex: 0,
   comprehensionResponses: [],
   workloadResponse: null,
@@ -54,7 +56,16 @@ export function StudyApp() {
     if (!raw) return;
 
     try {
-      setState({ ...initial, ...JSON.parse(raw) });
+      const saved = JSON.parse(raw) as Partial<StudyState>;
+      setState({
+        ...initial,
+        ...saved,
+        schemaVersion: STUDY_SCHEMA_VERSION,
+        comprehensionOrder:
+          saved.comprehensionOrder?.length
+            ? saved.comprehensionOrder
+            : createRandomizedComprehensionOrder()
+      });
     } catch {
       localStorage.removeItem(STORAGE_KEY);
     }
@@ -114,6 +125,7 @@ export function StudyApp() {
                     participantId: `TEST_${Date.now()}`
                   },
                   comprehensionIndex: 0,
+                  comprehensionOrder: createRandomizedComprehensionOrder(),
                   preferenceIndex: 0,
                   comprehensionResponses: [],
                   preferenceResponses: [],
@@ -327,6 +339,7 @@ function Practice({
             updateState({
               phase: "comprehension",
               comprehensionIndex: 0,
+              comprehensionOrder: createRandomizedComprehensionOrder(),
               comprehensionResponses: []
             })
           }
