@@ -73,10 +73,6 @@ export type Ratings = {
   contentComprehension: number | null;
 };
 
-export type PerImageWorkload = {
-  mentalDemand: number | null;
-};
-
 export type AudioPlayEvent = {
   playedAt: string;
   playNumber: number;
@@ -121,7 +117,6 @@ export type TrialResponse = {
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
   ratings: Ratings;
-  workload: PerImageWorkload;
 };
 
 export type WorkloadResponse = {
