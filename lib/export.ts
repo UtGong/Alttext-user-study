@@ -74,6 +74,9 @@ export function exportComprehensionCsv(state: StudyState) {
     "overallSceneClarity",
     "spatialRelationsConfidence",
     "contentComprehension",
+    "workloadMentalDemand",
+    "workloadEffort",
+    "workloadFrustration",
     "spatialAnswersJson"
   ];
 
@@ -100,6 +103,9 @@ export function exportComprehensionCsv(state: StudyState) {
     overallSceneClarity: response.ratings.overallSceneClarity,
     spatialRelationsConfidence: response.ratings.spatialRelationsConfidence,
     contentComprehension: response.ratings.contentComprehension,
+    workloadMentalDemand: response.workload.mentalDemand,
+    workloadEffort: response.workload.effort,
+    workloadFrustration: response.workload.frustration,
     spatialAnswersJson: response.spatialAnswers
   }));
 
@@ -118,25 +124,34 @@ export function exportWorkloadCsv(state: StudyState) {
     "sequenceGroup",
     "selectedAudioSpeed",
     "selectedVoiceURI",
+    "trialIndex",
+    "randomizedDisplayPosition",
+    "uuid",
+    "complexityLevel",
+    "imageSet",
+    "condition",
     "submittedAt",
     "mentalDemand",
     "effort",
     "frustration"
   ];
 
-  const response = state.workloadResponse;
-  const rows = response
-    ? [{
-        participantId: response.participantId,
-        sequenceGroup: response.sequenceGroup,
-        selectedAudioSpeed: response.selectedAudioSpeed,
-        selectedVoiceURI: response.selectedVoiceURI,
-        submittedAt: response.submittedAt,
-        mentalDemand: response.mentalDemand,
-        effort: response.effort,
-        frustration: response.frustration
-      }]
-    : [];
+  const rows = state.comprehensionResponses.map((response) => ({
+    participantId: response.participantId,
+    sequenceGroup: response.sequenceGroup,
+    selectedAudioSpeed: response.selectedAudioSpeed,
+    selectedVoiceURI: response.selectedVoiceURI,
+    trialIndex: response.trialIndex,
+    randomizedDisplayPosition: response.randomizedDisplayPosition,
+    uuid: response.uuid,
+    complexityLevel: response.complexityLevel,
+    imageSet: response.imageSet,
+    condition: response.condition,
+    submittedAt: response.submittedAt,
+    mentalDemand: response.workload.mentalDemand,
+    effort: response.workload.effort,
+    frustration: response.workload.frustration
+  }));
 
   downloadFile(
     `blv-study-workload-${timestamp}.csv`,
