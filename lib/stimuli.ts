@@ -12,6 +12,25 @@ export const preferenceStimuli = stimuli
   .filter((stimulus) => stimulus.role === "preference" || stimulus.role === "reserve")
   .slice(0, 3);
 
+export function createRandomizedComprehensionOrder(): string[] {
+  const order = comprehensionStimuli.map((stimulus) => stimulus.uuid);
+
+  for (let index = order.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [order[index], order[randomIndex]] = [order[randomIndex], order[index]];
+  }
+
+  return order;
+}
+
+export function getComprehensionStimulus(order: string[], index: number): Stimulus {
+  const uuid = order[index];
+  return (
+    comprehensionStimuli.find((stimulus) => stimulus.uuid === uuid) ??
+    comprehensionStimuli[index]
+  );
+}
+
 export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): Condition {
   return LATIN_SQUARE[sequenceGroup][stimulus.imageSet];
 }

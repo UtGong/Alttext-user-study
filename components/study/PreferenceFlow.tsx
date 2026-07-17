@@ -62,11 +62,15 @@ export function PreferenceFlow({ state, updateState }: Props) {
   const values = [ranking.first, ranking.second, ranking.third].filter(Boolean);
   const duplicate = values.length !== new Set(values).size;
   const complete = Boolean(ranking.first && ranking.second && ranking.third);
+  const playedLabels = new Set(playbackEvents.map((event) => event.label));
+  const allDescriptionsPlayed = ["A", "B", "C"].every((label) =>
+    playedLabels.has(label as DescriptionLabel)
+  );
 
   function submit(event: FormEvent) {
     event.preventDefault();
 
-    if (!state.testMode && (!complete || duplicate)) return;
+    if (!state.testMode && (!allDescriptionsPlayed || !complete || duplicate)) return;
 
     const response: PreferenceResponse = {
       participantId: state.participant.participantId,
@@ -169,7 +173,15 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
       <section className="question-card">
         <h3>Question 2: Ranking</h3>
-        <p>Choose the ranking from best to worst.</p>
+        <p>
+          Replay descriptions A, B, and C as often as needed, then choose the ranking from
+          best to worst. All three descriptions must be played before the ranking is saved.
+        </p>
+        {!allDescriptionsPlayed && !state.testMode && (
+          <p className="help-text" role="status">
+            Listen to all three descriptions before submitting your ranking.
+          </p>
+        )}
 
         {(["first", "second", "third"] as const).map((position) => (
           <label key={position} className="field-label">
@@ -217,7 +229,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
       <AccessibleButton
         type="submit"
-        disabled={!state.testMode && (!complete || duplicate)}
+        disabled={!state.testMode && (!allDescriptionsPlayed || !complete || duplicate)}
       >
         Save preference response
       </AccessibleButton>

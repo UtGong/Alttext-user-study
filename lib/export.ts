@@ -57,6 +57,7 @@ export function exportComprehensionCsv(state: StudyState) {
     "selectedAudioSpeed",
     "selectedVoiceURI",
     "trialIndex",
+    "randomizedDisplayPosition",
     "uuid",
     "rowIndex",
     "complexityLevel",
@@ -70,9 +71,10 @@ export function exportComprehensionCsv(state: StudyState) {
     "descriptionText",
     "freeRecall",
     "gistAnswer",
-    "mentalImageClarity",
-    "spatialClarity",
-    "perceivedQuality",
+    "overallSceneClarity",
+    "spatialRelationsConfidence",
+    "contentComprehension",
+    "workloadMentalDemand",
     "spatialAnswersJson"
   ];
 
@@ -82,6 +84,7 @@ export function exportComprehensionCsv(state: StudyState) {
     selectedAudioSpeed: response.selectedAudioSpeed,
     selectedVoiceURI: response.selectedVoiceURI,
     trialIndex: response.trialIndex,
+    randomizedDisplayPosition: response.randomizedDisplayPosition,
     uuid: response.uuid,
     rowIndex: response.rowIndex,
     complexityLevel: response.complexityLevel,
@@ -95,9 +98,10 @@ export function exportComprehensionCsv(state: StudyState) {
     descriptionText: response.descriptionText,
     freeRecall: response.freeRecall,
     gistAnswer: response.gistAnswer,
-    mentalImageClarity: response.ratings.mentalImageClarity,
-    spatialClarity: response.ratings.spatialClarity,
-    perceivedQuality: response.ratings.perceivedQuality,
+    overallSceneClarity: response.ratings.overallSceneClarity,
+    spatialRelationsConfidence: response.ratings.spatialRelationsConfidence,
+    contentComprehension: response.ratings.contentComprehension,
+    workloadMentalDemand: response.workload.mentalDemand,
     spatialAnswersJson: response.spatialAnswers
   }));
 
@@ -116,28 +120,32 @@ export function exportWorkloadCsv(state: StudyState) {
     "sequenceGroup",
     "selectedAudioSpeed",
     "selectedVoiceURI",
+    "trialIndex",
+    "randomizedDisplayPosition",
+    "uuid",
+    "rowIndex",
+    "complexityLevel",
+    "imageSet",
+    "condition",
     "submittedAt",
-    "mentalDemand",
-    "effort",
-    "frustration"
+    "mentalDemand"
   ];
 
-  const response = state.workloadResponse;
-
-  const rows = response
-    ? [
-        {
-          participantId: response.participantId,
-          sequenceGroup: response.sequenceGroup,
-          selectedAudioSpeed: response.selectedAudioSpeed,
-          selectedVoiceURI: response.selectedVoiceURI,
-          submittedAt: response.submittedAt,
-          mentalDemand: response.mentalDemand,
-          effort: response.effort,
-          frustration: response.frustration
-        }
-      ]
-    : [];
+  const rows = state.comprehensionResponses.map((response) => ({
+    participantId: response.participantId,
+    sequenceGroup: response.sequenceGroup,
+    selectedAudioSpeed: response.selectedAudioSpeed,
+    selectedVoiceURI: response.selectedVoiceURI,
+    trialIndex: response.trialIndex,
+    randomizedDisplayPosition: response.randomizedDisplayPosition,
+    uuid: response.uuid,
+    rowIndex: response.rowIndex,
+    complexityLevel: response.complexityLevel,
+    imageSet: response.imageSet,
+    condition: response.condition,
+    submittedAt: response.submittedAt,
+    mentalDemand: response.workload.mentalDemand
+  }));
 
   downloadFile(
     `blv-study-workload-${timestamp}.csv`,

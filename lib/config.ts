@@ -15,3 +15,4 @@ export const LATIN_SQUARE: Record<SequenceGroup, Record<ImageSet, Condition>> = 
 };
 
 export const STORAGE_KEY = "blv-user-study-state-v1";
+export const STUDY_SCHEMA_VERSION = 2 as const;

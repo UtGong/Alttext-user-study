@@ -9,11 +9,16 @@
 - Ask participant to select audio speed.
 - Run the practice trial.
 - Confirm whether the selected speed is comfortable.
+- Confirm that the randomized image order is recorded in the saved study state.
 
 ## During the study
 
 - Do not reveal condition names to participants.
-- Let the participant replay descriptions if needed.
+- Comprehension images appear in a randomized order for each participant.
+- Collect the workload rating immediately after each image.
+- During preference trials, let the participant play and replay descriptions A, B, and C freely.
+- Confirm that all three descriptions were played before the participant submits a ranking.
+- After each ranking, ask the participant to explain the reasons for their ordering.
 - Do not help answer comprehension questions.
 - Record any accessibility issues or confusion.
 - If the participant asks to stop, stop the session.
@@ -23,6 +28,8 @@
 - Complete final interview notes.
 - Export JSON.
 - Export CSV.
+- Verify the workload CSV contains one row per image with its condition and display position.
+- Verify preference exports contain ranking explanations and playback events.
 - Verify exported files are saved.
 - Clear session before the next participant.
 

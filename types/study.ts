@@ -68,9 +68,13 @@ export type Stimulus = {
 };
 
 export type Ratings = {
-  mentalImageClarity: number | null;
-  spatialClarity: number | null;
-  perceivedQuality: number | null;
+  overallSceneClarity: number | null;
+  spatialRelationsConfidence: number | null;
+  contentComprehension: number | null;
+};
+
+export type PerImageWorkload = {
+  mentalDemand: number | null;
 };
 
 export type AudioPlayEvent = {
@@ -97,6 +101,7 @@ export type TrialResponse = {
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   trialIndex: number;
+  randomizedDisplayPosition: number;
   imageId: string;
   imageFilename: string;
   uuid: string;
@@ -116,6 +121,7 @@ export type TrialResponse = {
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
   ratings: Ratings;
+  workload: PerImageWorkload;
 };
 
 export type WorkloadResponse = {
@@ -169,12 +175,14 @@ export type PreferenceResponse = {
 };
 
 export type StudyState = {
+  schemaVersion: 2;
   phase: StudyPhase;
   testMode: boolean;
   participant: ParticipantProfile;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   comprehensionIndex: number;
+  comprehensionOrder: string[];
   preferenceIndex: number;
   comprehensionResponses: TrialResponse[];
   workloadResponse: WorkloadResponse | null;

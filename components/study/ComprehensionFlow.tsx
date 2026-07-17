@@ -6,23 +6,46 @@ import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { LikertScale } from "@/components/LikertScale";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { RadioGroup } from "@/components/RadioGroup";
-import { comprehensionStimuli, getConditionForStimulus, getDescriptionForStimulus } from "@/lib/stimuli";
+import {
+  comprehensionStimuli,
+  getComprehensionStimulus,
+  getConditionForStimulus,
+  getDescriptionForStimulus,
+  preferenceStimuli
+} from "@/lib/stimuli";
 import { AudioPlayEvent, Ratings, SpatialAnswer, SpatialQuestion, StudyState } from "@/types/study";
 
 type Props = { state: StudyState; updateState: (patch: Partial<StudyState>) => void };
 
 function sixQuestions(stimulus: (typeof comprehensionStimuli)[number]): SpatialQuestion[] {
-  const main = stimulus.spatialQuestions.slice(0, 3).map((q) => ({ ...q, objectFocus: "main" as const }));
+  const main = stimulus.spatialQuestions.slice(0, 3).map((question) => ({
+    ...question,
+    objectFocus: "main" as const,
+    options: Array.from(
+      new Set([
+        ...question.options.filter((option) => option !== "Not sure"),
+        "Not sure"
+      ])
+    )
+  }));
   const elements = stimulus.targetElements;
-  const secondary = [0, 1, 2].map((i) => {
-    const a = elements[(i + 2) % elements.length] ?? "secondary object";
-    const b = elements[(i + 3) % elements.length] ?? "another object";
+  const templates = [
+    (a: string, b: string) =>
+      `Were ${a} and ${b} described as being close to each other?`,
+    (a: string, b: string) =>
+      `Were ${a} and ${b} described as being on the same side of the image?`,
+    (a: string, b: string) =>
+      `Was the position of ${a} described relative to ${b}?`
+  ];
+  const secondary = templates.map((template, index) => {
+    const a = elements[(index + 2) % elements.length] ?? "the secondary object";
+    const b = elements[(index + 3) % elements.length] ?? "another object";
     return {
-      id: `${stimulus.rowIndex}_secondary_${i + 1}`,
+      id: `${stimulus.rowIndex}_secondary_${index + 1}`,
       frameOfReference: "qualitative-relation" as const,
       objectFocus: "secondary" as const,
-      question: `Where was ${a} in relation to ${b}?`,
-      options: ["Left", "Right", "Above", "Below", "In front of", "Behind", "Not sure"],
+      question: template(a, b),
+      options: ["Yes", "No"],
       requiresManualCoding: true
     };
   });
@@ -30,7 +53,10 @@ function sixQuestions(stimulus: (typeof comprehensionStimuli)[number]): SpatialQ
 }
 
 export function ComprehensionFlow({ state, updateState }: Props) {
-  const stimulus = comprehensionStimuli[state.comprehensionIndex];
+  const stimulus = getComprehensionStimulus(
+    state.comprehensionOrder,
+    state.comprehensionIndex
+  );
   const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus);
   const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus);
   const questions = useMemo(() => sixQuestions(stimulus), [stimulus]);
@@ -39,7 +65,12 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   const [gistAnswer, setGistAnswer] = useState("");
   const [freeRecall, setFreeRecall] = useState("");
   const [spatialAnswers, setSpatialAnswers] = useState<Record<string, string>>({});
-  const [ratings, setRatings] = useState<Ratings>({ mentalImageClarity: null, spatialClarity: null, perceivedQuality: null });
+  const [ratings, setRatings] = useState<Ratings>({
+    overallSceneClarity: null,
+    spatialRelationsConfidence: null,
+    contentComprehension: null
+  });
+  const [mentalDemand, setMentalDemand] = useState<number | null>(null);
   const [startedAt] = useState(new Date().toISOString());
   const [audioStartedAt, setAudioStartedAt] = useState<string>();
   const [audioEndedAt, setAudioEndedAt] = useState<string>();
@@ -56,7 +87,7 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         question: q.question,
         answer,
         correctAnswer: q.correctAnswer ?? null,
-        isCorrect: manual ? null : answer === q.correctAnswer,
+        isCorrect: manual || answer === "Not sure" ? null : answer === q.correctAnswer,
         requiresManualCoding: manual
       };
     });
@@ -69,6 +100,7 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         selectedAudioSpeed: state.selectedAudioSpeed,
         selectedVoiceURI: state.selectedVoiceURI,
         trialIndex: state.comprehensionIndex + 1,
+        randomizedDisplayPosition: state.comprehensionIndex + 1,
         imageId: stimulus.uuid,
         imageFilename: stimulus.imageFilename,
         uuid: stimulus.uuid,
@@ -87,10 +119,16 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         gistAnswer,
         freeRecall,
         spatialAnswers: answers,
-        ratings
+        ratings,
+        workload: { mentalDemand }
       }],
       comprehensionIndex: next,
-      phase: next >= comprehensionStimuli.length ? "workload" : "comprehension"
+      phase:
+        next >= comprehensionStimuli.length
+          ? preferenceStimuli.length
+            ? "preference"
+            : "interview"
+          : "comprehension"
     });
   }
 
@@ -114,16 +152,20 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     </label><p className="help-text">There is no single correct wording. We are interested in the mental representation you formed from the description.</p></section>
 
     <section className="question-card"><h3>Question 3: Spatial relations</h3>
-      <p>The first three questions concern main scene elements. The next three concern secondary scene elements.</p>
+      <p>Questions 1 to 3 include a Not sure option. Questions 4 to 6 use Yes or No responses.</p>
       {questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""}
         onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))}
         options={q.options.map((x) => ({ value: x, label: x }))} required={!state.testMode} />)}
     </section>
 
-    <section className="question-card"><h3>Question 4: Ratings</h3>
-      <LikertScale legend="I could form a clear mental image of the scene." name="mentalImageClarity" value={ratings.mentalImageClarity} onChange={(v) => setRatings((r) => ({ ...r, mentalImageClarity: v }))} required={!state.testMode} />
-      <LikertScale legend="I understood where the described elements were located in the image." name="spatialClarity" value={ratings.spatialClarity} onChange={(v) => setRatings((r) => ({ ...r, spatialClarity: v }))} required={!state.testMode} />
-      <LikertScale legend="This description was useful for understanding the image." name="perceivedQuality" value={ratings.perceivedQuality} onChange={(v) => setRatings((r) => ({ ...r, perceivedQuality: v }))} required={!state.testMode} />
+    <section className="question-card"><h3>Section 8: Experience ratings</h3>
+      <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((current) => ({ ...current, overallSceneClarity: value }))} required={!state.testMode} />
+      <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((current) => ({ ...current, spatialRelationsConfidence: value }))} required={!state.testMode} />
+      <LikertScale legend="I understood the main subject and actions in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((current) => ({ ...current, contentComprehension: value }))} required={!state.testMode} />
+    </section>
+
+    <section className="question-card"><h3>Workload for this image</h3>
+      <LikertScale legend="How mentally demanding was it to understand this image description?" name="mentalDemand" value={mentalDemand} onChange={setMentalDemand} labels={["Very low", "Low", "Moderate", "High", "Very high"]} required={!state.testMode} />
     </section>
     <AccessibleButton type="submit" disabled={!played && !state.testMode}>Save and continue</AccessibleButton>
   </form>;

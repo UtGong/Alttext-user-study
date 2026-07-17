@@ -75,9 +75,27 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
+      schemaVersion: 2,
+      comprehensionOrder: Array.isArray(body?.comprehensionOrder)
+        ? body.comprehensionOrder
+        : [],
+      responseSummary: {
+        comprehensionCount: Array.isArray(body?.comprehensionResponses)
+          ? body.comprehensionResponses.length
+          : 0,
+        preferenceCount: Array.isArray(body?.preferenceResponses)
+          ? body.preferenceResponses.length
+          : 0,
+        hasPerImageWorkload: Array.isArray(body?.comprehensionResponses)
+          ? body.comprehensionResponses.every(
+              (response: { workload?: { mentalDemand?: unknown } }) =>
+                response?.workload?.mentalDemand !== undefined
+            )
+          : false
+      },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v1"
+      appVersion: "blv-user-study-nextjs-v2"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);
