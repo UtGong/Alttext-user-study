@@ -10,8 +10,7 @@ import {
   comprehensionStimuli,
   getComprehensionStimulus,
   getConditionForStimulus,
-  getDescriptionForStimulus,
-  preferenceStimuli
+  getDescriptionForStimulus
 } from "@/lib/stimuli";
 import { AudioPlayEvent, Ratings, SpatialAnswer, SpatialQuestion, StudyState } from "@/types/study";
 
@@ -70,7 +69,6 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     spatialRelationsConfidence: null,
     contentComprehension: null
   });
-  const [mentalDemand, setMentalDemand] = useState<number | null>(null);
   const [startedAt] = useState(new Date().toISOString());
   const [audioStartedAt, setAudioStartedAt] = useState<string>();
   const [audioEndedAt, setAudioEndedAt] = useState<string>();
@@ -119,16 +117,10 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         gistAnswer,
         freeRecall,
         spatialAnswers: answers,
-        ratings,
-        workload: { mentalDemand }
+        ratings
       }],
       comprehensionIndex: next,
-      phase:
-        next >= comprehensionStimuli.length
-          ? preferenceStimuli.length
-            ? "preference"
-            : "interview"
-          : "comprehension"
+      phase: next >= comprehensionStimuli.length ? "workload" : "comprehension"
     });
   }
 
@@ -158,15 +150,12 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         options={q.options.map((x) => ({ value: x, label: x }))} required={!state.testMode} />)}
     </section>
 
-    <section className="question-card"><h3>Section 8: Experience ratings</h3>
+    <section className="question-card"><h3>Experience ratings</h3>
       <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((current) => ({ ...current, overallSceneClarity: value }))} required={!state.testMode} />
       <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((current) => ({ ...current, spatialRelationsConfidence: value }))} required={!state.testMode} />
       <LikertScale legend="I understood the main subject and actions in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((current) => ({ ...current, contentComprehension: value }))} required={!state.testMode} />
     </section>
 
-    <section className="question-card"><h3>Workload for this image</h3>
-      <LikertScale legend="How mentally demanding was it to understand this image description?" name="mentalDemand" value={mentalDemand} onChange={setMentalDemand} labels={["Very low", "Low", "Moderate", "High", "Very high"]} required={!state.testMode} />
-    </section>
     <AccessibleButton type="submit" disabled={!played && !state.testMode}>Save and continue</AccessibleButton>
   </form>;
 }

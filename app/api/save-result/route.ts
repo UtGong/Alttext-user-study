@@ -86,12 +86,10 @@ export async function POST(request: NextRequest) {
         preferenceCount: Array.isArray(body?.preferenceResponses)
           ? body.preferenceResponses.length
           : 0,
-        hasPerImageWorkload: Array.isArray(body?.comprehensionResponses)
-          ? body.comprehensionResponses.every(
-              (response: { workload?: { mentalDemand?: unknown } }) =>
-                response?.workload?.mentalDemand !== undefined
-            )
-          : false
+        hasOverallWorkload:
+          body?.workloadResponse?.mentalDemand !== undefined &&
+          body?.workloadResponse?.effort !== undefined &&
+          body?.workloadResponse?.frustration !== undefined
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
