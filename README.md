@@ -1,10 +1,11 @@
 # BLV User Study Interface
 
-This is a Next.js + TypeScript prototype for a blind and low vision user study comparing three image-description ordering conditions:
+This is a Next.js + TypeScript prototype for a blind and low vision user study comparing four image-description ordering conditions:
 
 1. Baseline: no explicit ordering constraint
 2. Spatial ordering: front-to-background ordering
 3. Semantic ordering: ordering based on semantic relationships
+4. Spatial 2D ordering: explicit two-dimensional image-frame organization
 
 The interface is designed to be screen-reader accessible, keyboard-first, audio-first, and easy for researchers to run locally.
 
@@ -14,14 +15,14 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - Researcher sequence group selection: A, B, or C
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 15 comprehension trials
+- 20 comprehension trials
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
 - Replay count logging
 - Free recall response collection
 - Spatial relation questions
 - Semantic gist answer
-- 1–5 Likert ratings
+- Verbal Likert ratings with stable 1–5 analysis values
 - Mental demand, effort, and frustration ratings after each image
 - Optional preference trials
 - Final interview notes
@@ -85,7 +86,7 @@ Each stimulus includes:
 - image UUID
 - complexity level
 - image set
-- baseline, spatial, and semantic descriptions
+- baseline, spatial, semantic, and spatial 2D descriptions
 - target elements
 - spatial questions
 - gist question

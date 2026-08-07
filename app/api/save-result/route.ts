@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
-      schemaVersion: 2,
+      schemaVersion: 3,
       comprehensionOrder: Array.isArray(body?.comprehensionOrder)
         ? body.comprehensionOrder
         : [],
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v2"
+      appVersion: "blv-user-study-nextjs-v3"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);

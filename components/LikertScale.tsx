@@ -12,7 +12,7 @@ type LikertScaleProps = {
 const defaultLabels = [
   "Strongly disagree",
   "Disagree",
-  "Neutral",
+  "Neither agree nor disagree",
   "Agree",
   "Strongly agree"
 ];
@@ -40,9 +40,7 @@ export function LikertScale({
               onChange={() => onChange(score)}
               required={required}
             />
-            <span>
-              {score}. {labels[score - 1]}
-            </span>
+            <span>{labels[score - 1]}</span>
           </label>
         ))}
       </div>

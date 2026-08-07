@@ -36,8 +36,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
   const randomizedOrder = useMemo(
     () =>
-      shuffle(["baseline", "spatial", "semantic"]).map((condition, index) => ({
-        label: ["A", "B", "C"][index] as DescriptionLabel,
+      shuffle(["baseline", "spatial", "semantic", "spatial2d"]).map((condition, index) => ({
+        label: ["A", "B", "C", "D"][index] as DescriptionLabel,
         displayPosition: index + 1,
         condition,
         descriptionText: stimulus.descriptions[condition]
@@ -49,21 +49,24 @@ export function PreferenceFlow({ state, updateState }: Props) {
   const [replayCounts, setReplayCounts] = useState<Record<DescriptionLabel, number>>({
     A: 0,
     B: 0,
-    C: 0
+    C: 0,
+    D: 0
   });
   const [bestChoice, setBestChoice] = useState<DescriptionLabel | "">("");
   const [ranking, setRanking] = useState<PreferenceRanking>({
     first: "",
     second: "",
-    third: ""
+    third: "",
+    fourth: ""
   });
+  const [startedAt] = useState(new Date().toISOString());
   const [explanation, setExplanation] = useState("");
 
-  const values = [ranking.first, ranking.second, ranking.third].filter(Boolean);
+  const values = [ranking.first, ranking.second, ranking.third, ranking.fourth].filter(Boolean);
   const duplicate = values.length !== new Set(values).size;
-  const complete = Boolean(ranking.first && ranking.second && ranking.third);
+  const complete = Boolean(ranking.first && ranking.second && ranking.third && ranking.fourth);
   const playedLabels = new Set(playbackEvents.map((event) => event.label));
-  const allDescriptionsPlayed = ["A", "B", "C"].every((label) =>
+  const allDescriptionsPlayed = ["A", "B", "C", "D"].every((label) =>
     playedLabels.has(label as DescriptionLabel)
   );
 
@@ -72,6 +75,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
     if (!state.testMode && (!allDescriptionsPlayed || !complete || duplicate)) return;
 
+    const submittedAt = new Date().toISOString();
     const response: PreferenceResponse = {
       participantId: state.participant.participantId,
       sequenceGroup: state.participant.sequenceGroup,
@@ -88,9 +92,12 @@ export function PreferenceFlow({ state, updateState }: Props) {
       playbackEvents,
       replayCounts,
       bestChoice,
+      preferredCondition: randomizedOrder.find((item) => item.label === bestChoice)?.condition ?? "",
       ranking,
       explanation,
-      submittedAt: new Date().toISOString()
+      startedAt,
+      responseTimeMs: Date.parse(submittedAt) - Date.parse(startedAt),
+      submittedAt
     };
 
     const next = state.preferenceIndex + 1;
@@ -112,7 +119,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
       <h2>Preference Trial {state.preferenceIndex + 1}</h2>
       <p>
-        Listen to the three descriptions. You may play them in any order and replay them as
+        Listen to the four descriptions. You may play them in any order and replay them as
         needed.
       </p>
 
@@ -163,7 +170,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
           name="bestChoice"
           value={bestChoice}
           onChange={(value) => setBestChoice(value as DescriptionLabel)}
-          options={["A", "B", "C"].map((label) => ({
+          options={["A", "B", "C", "D"].map((label) => ({
             value: label,
             label: `Description ${label}`
           }))}
@@ -174,8 +181,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
       <section className="question-card">
         <h3>Question 2: Ranking</h3>
         <p>
-          Replay descriptions A, B, and C as often as needed, then choose the ranking from
-          best to worst. All three descriptions must be played before the ranking is saved.
+          Replay descriptions A, B, C, and D as often as needed, then choose the ranking from
+          best to worst. All four descriptions must be played before the ranking is saved.
         </p>
         {!allDescriptionsPlayed && !state.testMode && (
           <p className="help-text" role="status">
@@ -183,13 +190,15 @@ export function PreferenceFlow({ state, updateState }: Props) {
           </p>
         )}
 
-        {(["first", "second", "third"] as const).map((position) => (
+        {(["first", "second", "third", "fourth"] as const).map((position) => (
           <label key={position} className="field-label">
             {position === "first"
               ? "Best"
               : position === "second"
                 ? "Second-best"
-                : "Third-best"}{" "}
+                : position === "third"
+                  ? "Third-best"
+                  : "Fourth-best"}{" "}
             description
             <select
               required={!state.testMode}
@@ -205,6 +214,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
               <option value="A">Description A</option>
               <option value="B">Description B</option>
               <option value="C">Description C</option>
+              <option value="D">Description D</option>
             </select>
           </label>
         ))}
