@@ -58,6 +58,7 @@ export function exportComprehensionCsv(state: StudyState) {
     "selectedVoiceURI",
     "trialIndex",
     "randomizedDisplayPosition",
+    "imageFilename",
     "uuid",
     "rowIndex",
     "complexityLevel",
@@ -71,13 +72,24 @@ export function exportComprehensionCsv(state: StudyState) {
     "descriptionText",
     "freeRecall",
     "gistAnswer",
+    "gistScore",
+    "spatialAccuracyScore",
+    "spatialEligibleQuestionCount",
     "overallSceneClarity",
+    "overallSceneClarityLabel",
     "spatialRelationsConfidence",
+    "spatialRelationsConfidenceLabel",
     "contentComprehension",
+    "contentComprehensionLabel",
     "workloadMentalDemand",
+    "workloadMentalDemandLabel",
     "workloadEffort",
+    "workloadEffortLabel",
     "workloadFrustration",
-    "spatialAnswersJson"
+    "workloadFrustrationLabel",
+    "spatialAnswersJson",
+    "audioPlayEventsJson",
+    "stepTimestampsJson"
   ];
 
   const rows = state.comprehensionResponses.map((response) => ({
@@ -87,6 +99,7 @@ export function exportComprehensionCsv(state: StudyState) {
     selectedVoiceURI: response.selectedVoiceURI,
     trialIndex: response.trialIndex,
     randomizedDisplayPosition: response.randomizedDisplayPosition,
+    imageFilename: response.imageFilename,
     uuid: response.uuid,
     rowIndex: response.rowIndex,
     complexityLevel: response.complexityLevel,
@@ -100,13 +113,24 @@ export function exportComprehensionCsv(state: StudyState) {
     descriptionText: response.descriptionText,
     freeRecall: response.freeRecall,
     gistAnswer: response.gistAnswer,
-    overallSceneClarity: response.ratings.overallSceneClarity,
-    spatialRelationsConfidence: response.ratings.spatialRelationsConfidence,
-    contentComprehension: response.ratings.contentComprehension,
-    workloadMentalDemand: response.workload.mentalDemand,
-    workloadEffort: response.workload.effort,
-    workloadFrustration: response.workload.frustration,
-    spatialAnswersJson: response.spatialAnswers
+    gistScore: response.gistScore,
+    spatialAccuracyScore: response.spatialAccuracyScore,
+    spatialEligibleQuestionCount: response.spatialEligibleQuestionCount,
+    overallSceneClarity: response.ratings.overallSceneClarity?.value,
+    overallSceneClarityLabel: response.ratings.overallSceneClarity?.label,
+    spatialRelationsConfidence: response.ratings.spatialRelationsConfidence?.value,
+    spatialRelationsConfidenceLabel: response.ratings.spatialRelationsConfidence?.label,
+    contentComprehension: response.ratings.contentComprehension?.value,
+    contentComprehensionLabel: response.ratings.contentComprehension?.label,
+    workloadMentalDemand: response.workload.mentalDemand?.value,
+    workloadMentalDemandLabel: response.workload.mentalDemand?.label,
+    workloadEffort: response.workload.effort?.value,
+    workloadEffortLabel: response.workload.effort?.label,
+    workloadFrustration: response.workload.frustration?.value,
+    workloadFrustrationLabel: response.workload.frustration?.label,
+    spatialAnswersJson: response.spatialAnswers,
+    audioPlayEventsJson: response.audioPlayEvents,
+    stepTimestampsJson: response.stepTimestamps
   }));
 
   downloadFile(
@@ -132,8 +156,11 @@ export function exportWorkloadCsv(state: StudyState) {
     "condition",
     "submittedAt",
     "mentalDemand",
+    "mentalDemandLabel",
     "effort",
-    "frustration"
+    "effortLabel",
+    "frustration",
+    "frustrationLabel"
   ];
 
   const rows = state.comprehensionResponses.map((response) => ({
@@ -148,9 +175,12 @@ export function exportWorkloadCsv(state: StudyState) {
     imageSet: response.imageSet,
     condition: response.condition,
     submittedAt: response.submittedAt,
-    mentalDemand: response.workload.mentalDemand,
-    effort: response.workload.effort,
-    frustration: response.workload.frustration
+    mentalDemand: response.workload.mentalDemand?.value,
+    mentalDemandLabel: response.workload.mentalDemand?.label,
+    effort: response.workload.effort?.value,
+    effortLabel: response.workload.effort?.label,
+    frustration: response.workload.frustration?.value,
+    frustrationLabel: response.workload.frustration?.label
   }));
 
   downloadFile(
@@ -176,9 +206,13 @@ export function exportPreferenceCsv(state: StudyState) {
     "randomizedOrderJson",
     "replayCountsJson",
     "bestChoice",
+    "preferredCondition",
     "rankingFirst",
     "rankingSecond",
     "rankingThird",
+    "rankingFourth",
+    "startedAt",
+    "responseTimeMs",
     "explanation"
   ];
 
@@ -195,9 +229,13 @@ export function exportPreferenceCsv(state: StudyState) {
     randomizedOrderJson: response.randomizedOrder,
     replayCountsJson: response.replayCounts,
     bestChoice: response.bestChoice,
+    preferredCondition: response.preferredCondition,
     rankingFirst: response.ranking.first,
     rankingSecond: response.ranking.second,
     rankingThird: response.ranking.third,
+    rankingFourth: response.ranking.fourth,
+    startedAt: response.startedAt,
+    responseTimeMs: response.responseTimeMs,
     explanation: response.explanation
   }));
 

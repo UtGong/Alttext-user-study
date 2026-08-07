@@ -9,12 +9,12 @@ export type StudyPhase =
   | "interview"
   | "complete";
 
-export type SequenceGroup = "A" | "B" | "C";
-export type Condition = "baseline" | "spatial" | "semantic";
+export type SequenceGroup = "A" | "B" | "C" | "D";
+export type Condition = "baseline" | "spatial" | "semantic" | "spatial2d";
 export type ComplexityLevel = "low" | "medium" | "high";
-export type ImageSet = "set1" | "set2" | "set3";
+export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference";
 export type StimulusRole = "comprehension" | "preference" | "reserve";
-export type DescriptionLabel = "A" | "B" | "C";
+export type DescriptionLabel = "A" | "B" | "C" | "D";
 export type SpatialObjectFocus = "main" | "secondary";
 
 export type ParticipantProfile = {
@@ -29,7 +29,7 @@ export type ParticipantProfile = {
 
 export type SpatialQuestion = {
   id: string;
-  frameOfReference: "relative" | "absolute" | "viewer-centered" | "qualitative-relation";
+  frameOfReference: "intrinsic" | "relative" | "absolute" | "viewer-centered" | "qualitative-relation";
   objectFocus?: SpatialObjectFocus;
   question: string;
   options: string[];
@@ -56,21 +56,28 @@ export type Stimulus = {
     baseline: string;
     spatial: string;
     semantic: string;
+    spatial2d: string;
   };
   audio?: {
     baseline?: string;
     spatial?: string;
     semantic?: string;
+    spatial2d?: string;
   };
   targetElements: string[];
   spatialQuestions: SpatialQuestion[];
   gistQuestion?: GistQuestion;
 };
 
+export type LikertResponse = {
+  value: number;
+  label: string;
+};
+
 export type Ratings = {
-  overallSceneClarity: number | null;
-  spatialRelationsConfidence: number | null;
-  contentComprehension: number | null;
+  overallSceneClarity: LikertResponse | null;
+  spatialRelationsConfidence: LikertResponse | null;
+  contentComprehension: LikertResponse | null;
 };
 
 export type AudioPlayEvent = {
@@ -114,10 +121,14 @@ export type TrialResponse = {
   audioEndedAt?: string;
   submittedAt: string;
   gistAnswer: string;
+  gistScore: number | null;
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
+  spatialAccuracyScore: number;
+  spatialEligibleQuestionCount: number;
   ratings: Ratings;
   workload: Pick<WorkloadResponse, "mentalDemand" | "effort" | "frustration">;
+  stepTimestamps: Record<string, { startedAt: string; completedAt: string; responseTimeMs: number }>;
 };
 
 export type WorkloadResponse = {
@@ -127,15 +138,16 @@ export type WorkloadResponse = {
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   submittedAt: string;
-  mentalDemand: number | null;
-  effort: number | null;
-  frustration: number | null;
+  mentalDemand: LikertResponse | null;
+  effort: LikertResponse | null;
+  frustration: LikertResponse | null;
 };
 
 export type PreferenceRanking = {
   first: DescriptionLabel | "";
   second: DescriptionLabel | "";
   third: DescriptionLabel | "";
+  fourth: DescriptionLabel | "";
 };
 
 export type PreferencePlaybackEvent = AudioPlayEvent & {
@@ -165,13 +177,16 @@ export type PreferenceResponse = {
   playbackEvents: PreferencePlaybackEvent[];
   replayCounts: Record<DescriptionLabel, number>;
   bestChoice: DescriptionLabel | "";
+  preferredCondition: Condition | "";
   ranking: PreferenceRanking;
   explanation: string;
+  startedAt: string;
+  responseTimeMs: number;
   submittedAt: string;
 };
 
 export type StudyState = {
-  schemaVersion: 2;
+  schemaVersion: 3;
   phase: StudyPhase;
   testMode: boolean;
   participant: ParticipantProfile;

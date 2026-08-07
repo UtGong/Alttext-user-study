@@ -6,7 +6,7 @@ export const stimuli = rawStimuli as Stimulus[];
 
 export const comprehensionStimuli = stimuli
   .filter((stimulus) => stimulus.role === "comprehension")
-  .slice(0, 15);
+  .slice(0, 20);
 
 export const preferenceStimuli = stimuli
   .filter((stimulus) => stimulus.role === "preference" || stimulus.role === "reserve")
@@ -32,6 +32,9 @@ export function getComprehensionStimulus(order: string[], index: number): Stimul
 }
 
 export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): Condition {
+  if (stimulus.imageSet === "preference") {
+    throw new Error("Preference stimuli do not have an assigned comprehension condition.");
+  }
   return LATIN_SQUARE[sequenceGroup][stimulus.imageSet];
 }
 

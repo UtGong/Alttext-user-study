@@ -10,7 +10,8 @@ import { PreferenceFlow } from "@/components/study/PreferenceFlow";
 import { AUDIO_SPEED_OPTIONS, STORAGE_KEY, STUDY_SCHEMA_VERSION } from "@/lib/config";
 import { createRandomizedComprehensionOrder, preferenceStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
-import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
+import { createMockStudyData } from "@/lib/mockStudyData";
+import { LikertResponse, ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
 
 const participant: ParticipantProfile = {
   participantId: "",
@@ -106,7 +107,7 @@ export function StudyApp() {
           <h2>Welcome</h2>
           <p>
             Listen to image descriptions and answer questions about what you understood. Later,
-            compare three descriptions of the same image.
+            compare four descriptions of the same image.
           </p>
           <div className="button-row">
             <AccessibleButton
@@ -118,14 +119,14 @@ export function StudyApp() {
               variant="secondary"
               onClick={() =>
                 updateState({
-                  phase: "comprehension",
+                  phase: "setup",
                   testMode: true,
                   participant: {
                     ...participant,
                     participantId: `TEST_${Date.now()}`
                   },
                   comprehensionIndex: 0,
-                  comprehensionOrder: createRandomizedComprehensionOrder(),
+                  comprehensionOrder: [],
                   preferenceIndex: 0,
                   comprehensionResponses: [],
                   preferenceResponses: [],
@@ -219,7 +220,7 @@ function Setup({
         onChange={(value) =>
           change({ sequenceGroup: value as SequenceGroup })
         }
-        options={["A", "B", "C"].map((value) => ({
+        options={["A", "B", "C", "D"].map((value) => ({
           value,
           label: `Group ${value}`
         }))}
@@ -267,6 +268,16 @@ function Setup({
       <AccessibleButton type="submit">
         Continue to audio setup
       </AccessibleButton>
+
+      {state.testMode && (
+        <AccessibleButton
+          type="button"
+          variant="secondary"
+          onClick={() => updateState(createMockStudyData(state))}
+        >
+          Generate mock data and go to save page
+        </AccessibleButton>
+      )}
     </form>
   );
 }
@@ -367,6 +378,8 @@ function Workload({
   const [mentalDemand, setMentalDemand] = useState<number | null>(null);
   const [effort, setEffort] = useState<number | null>(null);
   const [frustration, setFrustration] = useState<number | null>(null);
+  const response = (value: number | null): LikertResponse | null =>
+    value === null ? null : { value, label: workloadLabels[value - 1] };
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -378,9 +391,9 @@ function Workload({
         selectedAudioSpeed: state.selectedAudioSpeed,
         selectedVoiceURI: state.selectedVoiceURI,
         submittedAt: new Date().toISOString(),
-        mentalDemand,
-        effort,
-        frustration
+        mentalDemand: response(mentalDemand),
+        effort: response(effort),
+        frustration: response(frustration)
       },
       phase: preferenceStimuli.length ? "preference" : "interview"
     });

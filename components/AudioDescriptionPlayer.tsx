@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
-import { speakText, stopSpeech } from "@/lib/audio";
+import { speakText } from "@/lib/audio";
 import { AudioPlayEvent } from "@/types/study";
 
 type AudioDescriptionPlayerProps = {
@@ -47,8 +47,6 @@ export function AudioDescriptionPlayer({
 
     setErrorMessage("");
     setStatus(`Playing ${label}.`);
-    stopSpeech();
-
     if (isReplay) {
       setReplayCount((count) => count + 1);
       onReplay?.();
@@ -100,7 +98,7 @@ export function AudioDescriptionPlayer({
       <p className="help-text">{replayHelp}</p>
 
       <div className="button-row">
-        <AccessibleButton type="button" onClick={() => play(false)}>
+        <AccessibleButton type="button" onClick={() => play(false)} disabled={playedOnce}>
           Play {label}
         </AccessibleButton>
 

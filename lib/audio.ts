@@ -116,6 +116,15 @@ export function speakText({
     if (!finished) {
       finished = true;
       window.clearTimeout(fallbackTimer);
+
+      // Browsers report canceling the current utterance as an error when the
+      // participant starts it again or switches playback settings. This is an
+      // expected control action, not a playback failure. It must also not call
+      // onEnd, because the interrupted utterance did not finish.
+      if (event.error === "interrupted" || event.error === "canceled") {
+        return;
+      }
+
       onError?.(`Speech failed: ${event.error}. Try the system default voice or another browser.`);
       onEnd?.();
     }
@@ -133,6 +142,7 @@ export function speakText({
       }
     }, 50);
   } catch {
+    finished = true;
     window.clearTimeout(fallbackTimer);
     onError?.("Speech could not be started. Try another voice or browser.");
     onEnd?.();

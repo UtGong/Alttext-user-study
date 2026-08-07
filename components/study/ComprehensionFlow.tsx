@@ -1,176 +1,99 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
 import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { LikertScale } from "@/components/LikertScale";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { RadioGroup } from "@/components/RadioGroup";
-import {
-  comprehensionStimuli,
-  getComprehensionStimulus,
-  getConditionForStimulus,
-  getDescriptionForStimulus,
-  preferenceStimuli
-} from "@/lib/stimuli";
-import { AudioPlayEvent, Ratings, SpatialAnswer, SpatialQuestion, StudyState, WorkloadResponse } from "@/types/study";
+import { comprehensionStimuli, getComprehensionStimulus, getConditionForStimulus, getDescriptionForStimulus, preferenceStimuli } from "@/lib/stimuli";
+import { AudioPlayEvent, LikertResponse, SpatialAnswer, StudyState } from "@/types/study";
 
 type Props = { state: StudyState; updateState: (patch: Partial<StudyState>) => void };
+type Step = "audio" | "gist" | "recall" | "spatial" | "ratings" | "workload";
 
-function sixQuestions(stimulus: (typeof comprehensionStimuli)[number]): SpatialQuestion[] {
-  const main = stimulus.spatialQuestions.slice(0, 3).map((question) => ({
-    ...question,
-    objectFocus: "main" as const,
-    options: Array.from(
-      new Set([
-        ...question.options.filter((option) => option !== "Not sure"),
-        "Not sure"
-      ])
-    )
-  }));
-  const elements = stimulus.targetElements;
-  const templates = [
-    (a: string, b: string) =>
-      `Were ${a} and ${b} described as being close to each other?`,
-    (a: string, b: string) =>
-      `Were ${a} and ${b} described as being on the same side of the image?`,
-    (a: string, b: string) =>
-      `Was the position of ${a} described relative to ${b}?`
-  ];
-  const secondary = templates.map((template, index) => {
-    const a = elements[(index + 2) % elements.length] ?? "the secondary object";
-    const b = elements[(index + 3) % elements.length] ?? "another object";
-    return {
-      id: `${stimulus.rowIndex}_secondary_${index + 1}`,
-      frameOfReference: "qualitative-relation" as const,
-      objectFocus: "secondary" as const,
-      question: template(a, b),
-      options: ["Yes", "No"],
-      requiresManualCoding: true
-    };
-  });
-  return [...main, ...secondary];
-}
+const agreementLabels = ["Strongly disagree", "Disagree", "Neither agree nor disagree", "Agree", "Strongly agree"];
+const workloadLabels = ["Very low", "Low", "Moderate", "High", "Very high"];
+const likert = (value: number | null, labels: string[]): LikertResponse | null => value === null ? null : ({ value, label: labels[value - 1] });
 
 export function ComprehensionFlow({ state, updateState }: Props) {
-  const stimulus = getComprehensionStimulus(
-    state.comprehensionOrder,
-    state.comprehensionIndex
-  );
+  const stimulus = getComprehensionStimulus(state.comprehensionOrder, state.comprehensionIndex);
   const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus);
   const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus);
-  const questions = useMemo(() => sixQuestions(stimulus), [stimulus]);
+  const questions = stimulus.spatialQuestions ?? [];
+  const [step, setStep] = useState<Step>("audio");
   const [played, setPlayed] = useState(state.testMode);
+  const [audioCompleted, setAudioCompleted] = useState(state.testMode);
   const [playEvents, setPlayEvents] = useState<AudioPlayEvent[]>([]);
   const [gistAnswer, setGistAnswer] = useState("");
   const [freeRecall, setFreeRecall] = useState("");
   const [spatialAnswers, setSpatialAnswers] = useState<Record<string, string>>({});
-  const [ratings, setRatings] = useState<Ratings>({
-    overallSceneClarity: null,
-    spatialRelationsConfidence: null,
-    contentComprehension: null
-  });
-  const [workload, setWorkload] = useState<Pick<WorkloadResponse, "mentalDemand" | "effort" | "frustration">>({
-    mentalDemand: null,
-    effort: null,
-    frustration: null
-  });
+  const [ratings, setRatings] = useState({ overallSceneClarity: null as number | null, spatialRelationsConfidence: null as number | null, contentComprehension: null as number | null });
+  const [workload, setWorkload] = useState({ mentalDemand: null as number | null, effort: null as number | null, frustration: null as number | null });
   const [startedAt] = useState(new Date().toISOString());
+  const [stepStartedAt, setStepStartedAt] = useState(startedAt);
+  const [stepTimestamps, setStepTimestamps] = useState<Record<string, { startedAt: string; completedAt: string; responseTimeMs: number }>>({});
   const [audioStartedAt, setAudioStartedAt] = useState<string>();
   const [audioEndedAt, setAudioEndedAt] = useState<string>();
 
+  function advance(next: Step) {
+    const completedAt = new Date().toISOString();
+    setStepTimestamps((current) => ({ ...current, [step]: { startedAt: stepStartedAt, completedAt, responseTimeMs: Date.parse(completedAt) - Date.parse(stepStartedAt) } }));
+    setStepStartedAt(completedAt);
+    setStep(next);
+  }
+
   function submit(event: FormEvent) {
     event.preventDefault();
+    const submittedAt = new Date().toISOString();
+    const finalSteps = { ...stepTimestamps, workload: { startedAt: stepStartedAt, completedAt: submittedAt, responseTimeMs: Date.parse(submittedAt) - Date.parse(stepStartedAt) } };
     const answers: SpatialAnswer[] = questions.map((q) => {
       const answer = spatialAnswers[q.id] ?? "";
-      const manual = Boolean(q.requiresManualCoding);
-      return {
-        questionId: q.id,
-        frameOfReference: q.frameOfReference,
-        objectFocus: q.objectFocus ?? "main",
-        question: q.question,
-        answer,
-        correctAnswer: q.correctAnswer ?? null,
-        isCorrect: manual || answer === "Not sure" ? null : answer === q.correctAnswer,
-        requiresManualCoding: manual
-      };
+      return { questionId: q.id, frameOfReference: q.frameOfReference, objectFocus: q.objectFocus ?? "main", question: q.question, answer, correctAnswer: q.correctAnswer ?? null, isCorrect: q.correctAnswer ? answer === q.correctAnswer : null, requiresManualCoding: Boolean(q.requiresManualCoding) };
     });
+    const eligible = answers.filter((answer) => answer.correctAnswer !== null);
+    const gistCorrectAnswer = stimulus.gistQuestion?.expectedAnswer && stimulus.gistQuestion.options?.includes(stimulus.gistQuestion.expectedAnswer) ? stimulus.gistQuestion.expectedAnswer : null;
     const next = state.comprehensionIndex + 1;
     updateState({
       comprehensionResponses: [...state.comprehensionResponses, {
-        participantId: state.participant.participantId,
-        sequenceGroup: state.participant.sequenceGroup,
-        testMode: state.testMode,
-        selectedAudioSpeed: state.selectedAudioSpeed,
-        selectedVoiceURI: state.selectedVoiceURI,
-        trialIndex: state.comprehensionIndex + 1,
-        randomizedDisplayPosition: state.comprehensionIndex + 1,
-        imageId: stimulus.uuid,
-        imageFilename: stimulus.imageFilename,
-        uuid: stimulus.uuid,
-        rowIndex: stimulus.rowIndex,
-        complexityLevel: stimulus.complexityLevel,
-        imageSet: stimulus.imageSet,
-        condition,
-        descriptionText,
-        replayCount: Math.max(0, playEvents.length - 1),
-        replayed: playEvents.length > 1,
-        audioPlayEvents: playEvents,
-        startedAt,
-        audioStartedAt,
-        audioEndedAt,
-        submittedAt: new Date().toISOString(),
-        gistAnswer,
-        freeRecall,
-        spatialAnswers: answers,
-        ratings,
-        workload
+        participantId: state.participant.participantId, sequenceGroup: state.participant.sequenceGroup, testMode: state.testMode,
+        selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI, trialIndex: next, randomizedDisplayPosition: next,
+        imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel,
+        imageSet: stimulus.imageSet, condition, descriptionText, replayCount: Math.max(0, playEvents.length - 1), replayed: playEvents.length > 1,
+        audioPlayEvents: playEvents, startedAt, audioStartedAt, audioEndedAt, submittedAt, gistAnswer,
+        gistScore: gistCorrectAnswer ? Number(gistAnswer === gistCorrectAnswer) : null, freeRecall, spatialAnswers: answers,
+        spatialAccuracyScore: eligible.filter((answer) => answer.isCorrect).length, spatialEligibleQuestionCount: eligible.length,
+        ratings: { overallSceneClarity: likert(ratings.overallSceneClarity, agreementLabels), spatialRelationsConfidence: likert(ratings.spatialRelationsConfidence, agreementLabels), contentComprehension: likert(ratings.contentComprehension, agreementLabels) },
+        workload: { mentalDemand: likert(workload.mentalDemand, workloadLabels), effort: likert(workload.effort, workloadLabels), frustration: likert(workload.frustration, workloadLabels) }, stepTimestamps: finalSteps
       }],
       comprehensionIndex: next,
-      phase: next >= comprehensionStimuli.length
-        ? preferenceStimuli.length ? "preference" : "interview"
-        : "comprehension"
+      phase: next >= comprehensionStimuli.length ? (preferenceStimuli.length ? "preference" : "interview") : "comprehension"
     });
   }
 
+  const required = !state.testMode;
   return <form className="panel" onSubmit={submit}>
     <ProgressIndicator label="Comprehension trial" current={state.comprehensionIndex + 1} total={comprehensionStimuli.length} />
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
+
     <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
-      onPlayed={() => { setPlayed(true); setAudioStartedAt(new Date().toISOString()); }}
-      onPlaybackEvent={(event) => setPlayEvents((current) => [...current, event])}
-      onEnded={() => setAudioEndedAt(new Date().toISOString())} />
+      onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, event])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
 
-    <section className="question-card"><h3>Question 1: Main idea</h3><label className="field-label">
-      {stimulus.gistQuestion?.question ?? "What kind of scene or main subject was described?"}
-      <textarea required={!state.testMode} rows={3} value={gistAnswer} onChange={(e) => setGistAnswer(e.target.value)} />
-    </label></section>
+    {step === "audio" && <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("gist")}>Continue</AccessibleButton>}
 
-    <section className="question-card"><h3>Question 2: Free recall</h3><label className="field-label">
-      Please describe the scene in your own words. Include the objects or people you remember, how they were related or arranged, and any actions or other details that helped you understand the scene.
-      <textarea required={!state.testMode} rows={6} value={freeRecall} onChange={(e) => setFreeRecall(e.target.value)} />
-    </label><p className="help-text">There is no single correct wording. We are interested in the mental representation you formed from the description.</p></section>
+    {step === "gist" && <section className="question-card"><h3>Main idea</h3><label className="field-label">{stimulus.gistQuestion?.question ?? "What kind of scene or main subject was described?"}<textarea required={required} rows={3} value={gistAnswer} onChange={(e) => setGistAnswer(e.target.value)} /></label><AccessibleButton type="button" disabled={required && !gistAnswer.trim()} onClick={() => advance("recall")}>Continue</AccessibleButton></section>}
 
-    <section className="question-card"><h3>Question 3: Spatial relations</h3>
-      <p>Questions 1 to 3 include a Not sure option. Questions 4 to 6 use Yes or No responses.</p>
-      {questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""}
-        onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))}
-        options={q.options.map((x) => ({ value: x, label: x }))} required={!state.testMode} />)}
-    </section>
+    {step === "recall" && <section className="question-card"><h3>Free recall</h3><label className="field-label">Please describe the scene in your own words.<textarea required={required} rows={6} value={freeRecall} onChange={(e) => setFreeRecall(e.target.value)} /></label><AccessibleButton type="button" disabled={required && !freeRecall.trim()} onClick={() => advance(questions.length ? "spatial" : "ratings")}>Continue</AccessibleButton></section>}
 
-    <section className="question-card"><h3>Experience ratings</h3>
-      <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((current) => ({ ...current, overallSceneClarity: value }))} required={!state.testMode} />
-      <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((current) => ({ ...current, spatialRelationsConfidence: value }))} required={!state.testMode} />
-      <LikertScale legend="I understood the main subject and actions in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((current) => ({ ...current, contentComprehension: value }))} required={!state.testMode} />
-    </section>
+    {step === "spatial" && questions.length > 0 && <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={q.options.map((x) => ({ value: x, label: x }))} required={required} />)}<AccessibleButton type="button" disabled={required && questions.some((q) => !spatialAnswers[q.id])} onClick={() => advance("ratings")}>Continue</AccessibleButton></section>}
 
-    <section className="question-card"><h3>Workload</h3>
-      <LikertScale legend="How mentally demanding was it to understand this image description?" name="mentalDemand" value={workload.mentalDemand} onChange={(mentalDemand) => setWorkload((current) => ({ ...current, mentalDemand }))} labels={["Very low", "Low", "Moderate", "High", "Very high"]} required={!state.testMode} />
-      <LikertScale legend="How much effort did you need to understand this image description?" name="effort" value={workload.effort} onChange={(effort) => setWorkload((current) => ({ ...current, effort }))} labels={["Very low", "Low", "Moderate", "High", "Very high"]} required={!state.testMode} />
-      <LikertScale legend="How frustrated did you feel while understanding this image description?" name="frustration" value={workload.frustration} onChange={(frustration) => setWorkload((current) => ({ ...current, frustration }))} labels={["Very low", "Low", "Moderate", "High", "Very high"]} required={!state.testMode} />
-    </section>
+    {step === "ratings" && <section className="question-card"><h3>Experience ratings</h3>
+      <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((v) => ({ ...v, overallSceneClarity: value }))} required={required} labels={agreementLabels} />
+      <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((v) => ({ ...v, spatialRelationsConfidence: value }))} required={required} labels={agreementLabels} />
+      <LikertScale legend="I understood the main subject and actions in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((v) => ({ ...v, contentComprehension: value }))} required={required} labels={agreementLabels} />
+      <AccessibleButton type="button" disabled={required && Object.values(ratings).some((value) => value === null)} onClick={() => advance("workload")}>Continue</AccessibleButton></section>}
 
-    <AccessibleButton type="submit" disabled={!played && !state.testMode}>Save and continue</AccessibleButton>
+    {step === "workload" && <section className="question-card"><h3>Workload</h3>{([['mentalDemand','How mentally demanding was it to understand this image description?'],['effort','How much effort did you need to understand this image description?'],['frustration','How frustrated did you feel while understanding this image description?']] as const).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} />)}<AccessibleButton type="submit" disabled={required && Object.values(workload).some((value) => value === null)}>Save and continue</AccessibleButton></section>}
   </form>;
 }
