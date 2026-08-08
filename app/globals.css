@@ -391,21 +391,3 @@ select {
 .preference-description-card {
   margin-bottom: 2rem;
 }
-
-.description-text-block {
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem;
-  margin-top: 1rem;
-  background: #f8fafc;
-}
-
-.description-text-block h4 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.description-text-block p {
-  margin-bottom: 0;
-  line-height: 1.7;
-}
