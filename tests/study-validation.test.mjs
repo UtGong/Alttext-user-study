@@ -45,6 +45,7 @@ test("preference flow randomizes and records four conditions", async () => {
   assert.match(source, /randomizedOrder,/);
   assert.match(source, /preferredCondition:/);
   assert.match(source, /\["A", "B", "C", "D"\]/);
+  assert.doesNotMatch(source, /Text of Description|description-text-block/);
 });
 
 test("exports include randomized order and verbal and internal Likert values", async () => {

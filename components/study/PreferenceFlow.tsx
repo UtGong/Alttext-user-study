@@ -155,11 +155,6 @@ export function PreferenceFlow({ state, updateState }: Props) {
               ])
             }
           />
-
-          <div className="description-text-block">
-            <h4>Text of Description {item.label}</h4>
-            <p>{item.descriptionText}</p>
-          </div>
         </section>
       ))}
 
