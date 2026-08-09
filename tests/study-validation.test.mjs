@@ -82,3 +82,17 @@ test("test mode can generate mock records and jump to the save page", async () =
   assert.match(mock, /comprehensionStimuli\.map/);
   assert.match(mock, /preferenceStimuli\.map/);
 });
+
+test("study requires recorded consent before participant setup and saving", async () => {
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
+  const route = await readFile(new URL("../app/api/save-result/route.ts", import.meta.url), "utf8");
+
+  assert.match(types, /\| "consent"/);
+  assert.match(types, /acceptedAt: string/);
+  assert.match(app, /Consent to Participate/);
+  assert.match(app, /Participation is voluntary/);
+  assert.match(app, /You may stop immediately if you feel uncomfortable/);
+  assert.match(app, /phase: "setup",[\s\S]*accepted: true/);
+  assert.match(route, /A valid consent record is required before saving study data/);
+});

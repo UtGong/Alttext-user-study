@@ -58,6 +58,17 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    if (
+      body?.consent?.accepted !== true ||
+      typeof body?.consent?.acceptedAt !== "string" ||
+      body.consent.acceptedAt.length === 0
+    ) {
+      return NextResponse.json(
+        { ok: false, error: "A valid consent record is required before saving study data." },
+        { status: 400 }
+      );
+    }
+
     const rawParticipantId = body?.participant?.participantId;
 
     const participantId =
@@ -75,11 +86,12 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
-      schemaVersion: 3,
+      schemaVersion: 4,
       comprehensionOrder: Array.isArray(body?.comprehensionOrder)
         ? body.comprehensionOrder
         : [],
       responseSummary: {
+        consentAccepted: true,
         comprehensionCount: Array.isArray(body?.comprehensionResponses)
           ? body.comprehensionResponses.length
           : 0,
@@ -97,7 +109,7 @@ export async function POST(request: NextRequest) {
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v3"
+      appVersion: "blv-user-study-nextjs-v4"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);

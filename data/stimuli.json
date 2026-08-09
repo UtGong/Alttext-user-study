@@ -1099,18 +1099,18 @@
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A carved relief depicting a kneeling man with clasped hands positioned in the center-right, facing left toward a large crucifix that stands upright in the upper-left. At the base of the crucifix, near the lower-left corner, lies a skull. To the right of the kneeling man, another figure is shown kneeling, with one hand raised. A smaller cross is visible in the upper-right background.",
-      "spatial": "In the lower left of the painting, a skull rests on the ground. Directly above it, a kneeling man is depicted in prayer, his hands clasped and his head bowed. To his right and slightly higher, another kneeling man is shown, also in a posture of devotion, his gaze directed upward. Positioned above both kneeling figures is a large crucifix, with a figure of Christ affixed to it, dominating the central vertical axis of the composition. In the lower left corner, near the base of the scene, a smaller cross stands alone, its form simple and stark against the textured background.",
-      "semantic": "In the lower right of the painting, a kneeling man with a halo is depicted in prayer, his hands clasped before him. To his left and slightly behind him, another kneeling man is shown, positioned directly beneath the figure of Christ on the crucifix. The crucifix itself rises vertically in the center of the composition, its crossbeam extending toward the upper left. At the base of the crucifix, near the bottom edge of the canvas, lies a skull. To the far left, a smaller cross is carved into the stone, standing alone in the lower-left corner of the scene.",
-      "spatial2d": "In the upper left of the painting, a crucifix stands tall, its vertical beam anchored near the top edge and extending downward. At the center of the crucifix, a figure is depicted as a kneeling man, positioned directly beneath the crossbeam. Moving rightward from this central figure, another kneeling man is shown in profile, his hands clasped in prayer and his gaze directed toward the crucifix. At the base of the crucifix, near the lower center of the scene, lies a skull resting on the ground. Finally, in the lower left corner of the painting, a smaller cross is carved into the stone, standing alone against the textured background."
+      "baseline": "A pale peach marble relief depicts a kneeling man with clasped hands facing a crucifix. A skull rests near the base of the crucifix, and a smaller cross is carved into the lower-left part of the scene.",
+      "spatial": "In the foreground of the pale peach marble relief, a kneeling man clasps his hands in prayer. Slightly behind and to his left, a skull rests at the base of a crucifix. Farther left, a smaller cross is carved near the lower edge of the scene.",
+      "semantic": "A kneeling man prays before a crucifix in this pale peach marble relief. The religious scene also includes a smaller cross, while a skull at the base of the crucifix introduces a symbol of mortality.",
+      "spatial2d": "A crucifix rises in the upper-left area of the pale peach marble relief. A smaller cross appears near the lower-left corner, and a skull rests below the crucifix near the lower center. To their right, a kneeling man faces left with his hands clasped in prayer."
     },
     "audio": {},
     "targetElements": [
-      "kneeling man",
+      "pale peach marble",
       "crucifix",
-      "smaller cross",
       "kneeling man",
-      "skull"
+      "skull",
+      "smaller cross"
     ],
     "spatialQuestions": [],
     "gistQuestion": {
@@ -1119,26 +1119,26 @@
     }
   },
   {
-    "rowIndex": 74,
-    "uuid": "1740093e-a916-4cd2-b8ab-0b1d2fc1c9f4",
-    "imageFilename": "sample_1740093e-a916-4cd2-b8ab-0b1d2fc1c9f4.png",
+    "rowIndex": 45,
+    "uuid": "cee66f21-05f2-4009-80e6-3e6b282966a9",
+    "imageFilename": "sample_cee66f21-05f2-4009-80e6-3e6b282966a9.png",
     "complexityLevel": "low",
-    "complexityScore": 0.537,
+    "complexityScore": 0.6458,
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "Two men are seated on opposite sides of a narrow wooden table, positioned in the foreground. The first player, on the left, sits on a wooden chair and holds playing cards. The second player, on the right, is also seated on a wooden chair and holds playing cards. The narrow table is situated between them, with its surface oriented horizontally.",
-      "spatial": "A narrow table occupies the central foreground of the scene, positioned just left of center. To its immediate left, a wooden chair stands, upon which a man is seated, holding a large mug. This first player is positioned slightly to the left of the table, his gaze directed forward. To the right of the table, another player is seated on a wooden chest, leaning forward intently over the table’s surface. Behind this second player, two men stand close together, one holding a pipe, their forms partially obscuring the background.",
-      "semantic": "In the lower-left of the painting, a wooden chair sits near the viewer’s left edge, occupied by a man with long hair and a mustache, who is the first player. To his immediate right, a narrow table holds playing cards and a small object, positioned directly in front of him. Seated at the table, slightly to the right of the first player, is another player, leaning forward with focused attention on the game. Behind this second player, two men stand close together, both holding pipes and looking toward the table, their figures forming a backdrop to the central gaming activity.",
-      "spatial2d": "In the upper left of the painting, two men stand near the wall, one holding a pipe. Directly below them and slightly to the right, the first player is seated on a wooden chair, positioned to the left of a narrow table. The table, situated just to the right of the chair, holds playing cards and a small object. Seated at the table, to the right of the first player, is another player, leaning forward with his hands on the table, engaged in the game."
+      "baseline": "A single slender tree divides a stylized landscape painted in cool tones. A yellow expanse fills the foreground, with pale water beyond it. Gray cliffs rise on the right, while low hills form the horizon in the distance.",
+      "spatial": "A yellow expanse stretches across the foreground beneath a single slender tree. Beyond it lies a band of pale water, followed by gray cliffs on the right. Low hills recede along the horizon in the background.",
+      "semantic": "A single slender tree is the main natural feature of this landscape. Around it, a yellow expanse suggests a field, pale water forms a calm horizontal band, gray cliffs define the right edge, and distant hills mark the horizon.",
+      "spatial2d": "A yellow expanse fills the lower third of the image. A single slender tree rises vertically through the center. Pale water crosses the lower middle, gray cliffs occupy the right side, and a line of distant hills forms the horizon across the image."
     },
     "audio": {},
     "targetElements": [
-      "player",
-      "Two men",
-      "first player",
-      "narrow table",
-      "wooden chair"
+      "single slender tree",
+      "water",
+      "horizon",
+      "gray cliffs",
+      "yellow expanse"
     ],
     "spatialQuestions": [],
     "gistQuestion": {
@@ -1147,26 +1147,26 @@
     }
   },
   {
-    "rowIndex": 79,
-    "uuid": "1bfc4f01-042a-4ece-8e47-134a96e99fac",
-    "imageFilename": "sample_1bfc4f01-042a-4ece-8e47-134a96e99fac.png",
-    "complexityLevel": "low",
-    "complexityScore": 0.6531,
+    "rowIndex": 71,
+    "uuid": "0dde1c3c-6c08-431d-85e2-7288c2c93f26",
+    "imageFilename": "sample_0dde1c3c-6c08-431d-85e2-7288c2c93f26.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7924,
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A bearded man sits on the left side of a straight, twisting column, looking up toward a clean-shaven man who is seated on the right side of the same column and looking down. The column runs vertically through the center of the composition, separating the two men and framing the scene.",
-      "spatial": "A twisting column rises vertically in the center-right of the painting, its surface spiraling in dynamic motion. To its left, a straight, unadorned column stands tall, anchoring the composition. In front of this straight column, a bearded man stands, his posture engaged as he interacts with a seated figure who looks up toward him. This seated man is positioned low in the foreground, his gaze directed upward, creating a visual connection with the standing bearded man. Further to the left, a clean-shaven man is depicted looking down, his attention focused on the scene unfolding before him, situated near the left edge of the canvas.",
-      "semantic": "In the upper left of the painting, a bearded man stands, his gaze directed downward toward a group of figures below him. To his right, a clean-shaven man looks down with a solemn expression, positioned just beside the first figure. Between them, a straight, twisted column rises vertically, anchoring the central composition. Continuing to the right, a second column twists dramatically, its form spiraling upward and drawing the eye toward the upper right of the scene. In the foreground, seated at the base of this twisting column, another man sits with his head tilted upward, his gaze fixed on the figures above him, completing the visual narrative of the scene.",
-      "spatial2d": "In the upper left of the painting, a straight, twisted column rises vertically. Immediately to its right, a bearded man stands, his posture engaged as he interacts with a seated figure. This seated man, positioned slightly lower and to the right of the bearded man, looks upward with an expressive gesture. To the right of the seated figure, another column twists dramatically, its form spiraling toward the upper right of the canvas. Along the left side of this twisting column, a clean-shaven man is depicted looking downward, his gaze directed toward the figures below him."
+      "baseline": "A pink orchid dominates a misty forest scene. To its right, a perched hummingbird and a flying hummingbird gather around a nest resting on a mossy branch.",
+      "spatial": "A pink orchid rises in the left foreground. On the right, a perched hummingbird rests below a flying hummingbird. Both face a nest suspended from a mossy branch.",
+      "semantic": "A pink orchid provides nectar and shelter in this tropical scene. A perched hummingbird and a flying hummingbird attend a nest woven into a mossy branch.",
+      "spatial2d": "A pink orchid fills the left-center of the image. A perched hummingbird appears at the lower right, with a flying hummingbird above it. A nest sits between the birds on a mossy branch."
     },
     "audio": {},
     "targetElements": [
-      "straight twists column",
-      "bearded man",
-      "sits with seated looks up man",
-      "clean shaven looks down with man",
-      "twists twisting column"
+      "pink orchid",
+      "perched hummingbird",
+      "flying hummingbird",
+      "nest",
+      "mossy branch"
     ],
     "spatialQuestions": [],
     "gistQuestion": {
