@@ -2,3 +2,4 @@ study-results/
 .next/
 node_modules/
 .env.local
+tsconfig.tsbuildinfo

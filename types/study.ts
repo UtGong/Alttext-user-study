@@ -1,5 +1,7 @@
 export type StudyPhase =
   | "welcome"
+  | "consent"
+  | "declined"
   | "setup"
   | "audio-settings"
   | "practice"
@@ -25,6 +27,12 @@ export type ParticipantProfile = {
   screenReader: string;
   screenReaderOther: string;
   imageDescriptionExperience: string;
+};
+
+export type ConsentRecord = {
+  accepted: boolean;
+  acceptedAt: string;
+  version: string;
 };
 
 export type SpatialQuestion = {
@@ -186,9 +194,10 @@ export type PreferenceResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 3;
+  schemaVersion: 4;
   phase: StudyPhase;
   testMode: boolean;
+  consent: ConsentRecord;
   participant: ParticipantProfile;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;

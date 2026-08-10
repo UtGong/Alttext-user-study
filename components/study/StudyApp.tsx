@@ -7,7 +7,12 @@ import { LikertScale } from "@/components/LikertScale";
 import { RadioGroup } from "@/components/RadioGroup";
 import { ComprehensionFlow } from "@/components/study/ComprehensionFlow";
 import { PreferenceFlow } from "@/components/study/PreferenceFlow";
-import { AUDIO_SPEED_OPTIONS, STORAGE_KEY, STUDY_SCHEMA_VERSION } from "@/lib/config";
+import {
+  AUDIO_SPEED_OPTIONS,
+  CONSENT_VERSION,
+  STORAGE_KEY,
+  STUDY_SCHEMA_VERSION
+} from "@/lib/config";
 import { createRandomizedComprehensionOrder, preferenceStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { createMockStudyData } from "@/lib/mockStudyData";
@@ -27,6 +32,11 @@ const initial: StudyState = {
   schemaVersion: STUDY_SCHEMA_VERSION,
   phase: "welcome",
   testMode: false,
+  consent: {
+    accepted: false,
+    acceptedAt: "",
+    version: CONSENT_VERSION
+  },
   participant,
   selectedAudioSpeed: 1,
   selectedVoiceURI: "",
@@ -58,6 +68,12 @@ export function StudyApp() {
 
     try {
       const saved = JSON.parse(raw) as Partial<StudyState>;
+
+      if (saved.schemaVersion !== STUDY_SCHEMA_VERSION) {
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+
       setState({
         ...initial,
         ...saved,
@@ -86,7 +102,21 @@ export function StudyApp() {
 
   const reset = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setState({ ...initial, startedAt: new Date().toISOString() });
+    setState({
+      ...initial,
+      consent: { ...initial.consent },
+      startedAt: new Date().toISOString()
+    });
+  };
+
+  const decline = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setState({
+      ...initial,
+      phase: "declined",
+      consent: { ...initial.consent },
+      startedAt: new Date().toISOString()
+    });
   };
 
   return (
@@ -111,15 +141,15 @@ export function StudyApp() {
           </p>
           <div className="button-row">
             <AccessibleButton
-              onClick={() => updateState({ phase: "setup", testMode: false })}
+              onClick={() => updateState({ phase: "consent", testMode: false })}
             >
-              Start study
+              Review consent form
             </AccessibleButton>
             <AccessibleButton
               variant="secondary"
               onClick={() =>
                 updateState({
-                  phase: "setup",
+                  phase: "consent",
                   testMode: true,
                   participant: {
                     ...participant,
@@ -140,6 +170,10 @@ export function StudyApp() {
         </section>
       )}
 
+      {state.phase === "consent" && (
+        <Consent state={state} updateState={updateState} decline={decline} />
+      )}
+      {state.phase === "declined" && <Declined reset={reset} />}
       {state.phase === "setup" && (
         <Setup state={state} updateState={updateState} />
       )}
@@ -173,6 +207,128 @@ export function StudyApp() {
         <Complete state={state} reset={reset} />
       )}
     </main>
+  );
+}
+
+function Consent({
+  state,
+  updateState,
+  decline
+}: {
+  state: StudyState;
+  updateState: (patch: Partial<StudyState>) => void;
+  decline: () => void;
+}) {
+  const [confirmed, setConfirmed] = useState(false);
+
+  return (
+    <form
+      className="panel consent-panel"
+      aria-labelledby="consent-heading"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const acceptedAt = new Date().toISOString();
+        updateState({
+          phase: "setup",
+          consent: {
+            accepted: true,
+            acceptedAt,
+            version: CONSENT_VERSION
+          },
+          startedAt: acceptedAt
+        });
+      }}
+    >
+      <h2 id="consent-heading">Consent to Participate</h2>
+      <p>
+        Please read this information before deciding whether to participate. Ask the researcher
+        any questions you have before continuing.
+      </p>
+
+      <h3>Purpose and activities</h3>
+      <p>
+        This study examines how blind and low-vision users understand different forms of image
+        description. You will listen to descriptions, answer comprehension and workload
+        questions, compare descriptions, and take part in final interview questions.
+      </p>
+
+      <h3>Voluntary participation and withdrawal</h3>
+      <p>
+        Participation is voluntary. You may pause between sections or stop at any time, for any
+        reason, without penalty or loss of benefits. Closing the page stops the study. Selecting
+        “Decline and leave study” below clears this browser session and does not submit a study
+        record.
+      </p>
+
+      <h3>Potential risks or discomforts</h3>
+      <p>
+        Possible discomforts include fatigue, mental effort, frustration, or discomfort from
+        listening to repeated audio. Some descriptions may mention nudity, religious imagery,
+        death, skulls, or injury. You may stop immediately if you feel uncomfortable.
+      </p>
+
+      <h3>Potential benefits</h3>
+      <p>
+        There may be no direct personal benefit. Your responses may help researchers improve
+        accessible image descriptions.
+      </p>
+
+      <h3>Information collected and privacy</h3>
+      <p>
+        The study records a coded Participant ID, accessibility background, answers, ratings,
+        audio replay events, and response timing. Do not enter your name or contact information
+        in study fields. Until the researcher saves the completed record, progress is stored in
+        this browser so the session can recover after an accidental refresh.
+      </p>
+
+      <h3>Questions or concerns</h3>
+      <p>
+        For questions about the study, its data-retention practices, your rights, or withdrawing
+        submitted data, contact the researcher who provided your Participant ID before agreeing.
+      </p>
+
+      <div className="consent-confirmation">
+        <label>
+          <input
+            type="checkbox"
+            required
+            checked={confirmed}
+            onChange={(event) => setConfirmed(event.target.checked)}
+          />
+          <span>
+            I have read and understood the information above, had an opportunity to ask
+            questions, and voluntarily agree to participate.
+          </span>
+        </label>
+      </div>
+
+      <p className="help-text">Consent form version: {CONSENT_VERSION}</p>
+
+      <div className="button-row">
+        <AccessibleButton type="submit" disabled={!confirmed}>
+          I agree — continue
+        </AccessibleButton>
+        <AccessibleButton type="button" variant="danger" onClick={decline}>
+          Decline and leave study
+        </AccessibleButton>
+        {state.testMode && <span className="help-text">Test-mode consent record</span>}
+      </div>
+    </form>
+  );
+}
+
+function Declined({ reset }: { reset: () => void }) {
+  return (
+    <section className="panel" aria-labelledby="declined-heading">
+      <h2 id="declined-heading">Participation declined</h2>
+      <p>
+        You have chosen not to participate. No study response has been submitted. You may close
+        this page now.
+      </p>
+      <AccessibleButton variant="secondary" onClick={reset}>
+        Return to welcome page
+      </AccessibleButton>
+    </section>
   );
 }
 
