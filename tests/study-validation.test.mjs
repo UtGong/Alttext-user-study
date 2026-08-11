@@ -33,10 +33,82 @@ test("spatial question sets are either omitted or four scorable questions", () =
   }
 });
 
+test("replacement stimuli remain excluded from spatial questions", () => {
+  const replacementIds = [
+    "7583412c-fee6-496a-b316-467f8a495a40",
+    "b9c9e75c-e81b-4dab-aafe-12045660422f"
+  ];
+
+  for (const uuid of replacementIds) {
+    const item = comprehension.find((stimulus) => stimulus.uuid === uuid);
+    assert.ok(item, `${uuid} is missing`);
+    assert.deepEqual(item.spatialQuestions, [], `${uuid} should not have spatial questions yet`);
+  }
+});
+
 test("participant-facing Likert labels contain no numeric prefixes", async () => {
   const source = await readFile(new URL("../components/LikertScale.tsx", import.meta.url), "utf8");
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   assert.doesNotMatch(source, /\{score\}\s*\.|`\$\{score\}/);
   assert.match(source, /Neither agree nor disagree/);
+  assert.match(flow, /The description gave me enough information about where things were in the image\./);
+  assert.doesNotMatch(flow, /After listening to this description, I feel confident that I understand the artwork\./);
+  assert.doesNotMatch(flow, /This description gave me enough information to understand the image\./);
+});
+
+test("participant questions provide speech playback controls", async () => {
+  const button = await readFile(new URL("../components/QuestionAudioButton.tsx", import.meta.url), "utf8");
+  const radio = await readFile(new URL("../components/RadioGroup.tsx", import.meta.url), "utf8");
+  const likert = await readFile(new URL("../components/LikertScale.tsx", import.meta.url), "utf8");
+  const comprehensionFlow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+
+  assert.match(button, /speakText/);
+  assert.match(button, /Play question/);
+  assert.match(radio, /Answer choices:/);
+  assert.match(radio, /QuestionAudioButton/);
+  assert.match(likert, /Answer choices:/);
+  assert.match(likert, /QuestionAudioButton/);
+  assert.match(comprehensionFlow, /gistPrompt[\s\S]*QuestionAudioButton/);
+  assert.match(preferenceFlow, /Why did you choose this ranking\?[\s\S]*QuestionAudioButton/);
+});
+
+test("open-ended answers support editable live transcription", async () => {
+  const input = await readFile(new URL("../components/SpeechAnswerInput.tsx", import.meta.url), "utf8");
+  const comprehensionFlow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+
+  assert.match(input, /window\.SpeechRecognition \|\| window\.webkitSpeechRecognition/);
+  assert.match(input, /stopSpeech\(\)/);
+  assert.match(input, /SPEECH_INPUT_STARTING_EVENT/);
+  assert.match(input, /Start speaking/);
+  assert.match(input, /Stop transcription/);
+  assert.match(input, /Review and edit the transcript before continuing/);
+  assert.match(input, /not microphone audio/);
+  assert.match(input, /Live transcription is not supported in this browser/);
+  assert.match(comprehensionFlow, /<SpeechAnswerInput id="gist-answer"/);
+  assert.match(comprehensionFlow, /<SpeechAnswerInput id="free-recall"/);
+  assert.match(preferenceFlow, /<SpeechAnswerInput[\s\S]*id="ranking-explanation"/);
+  assert.match(app, /id="practice-response"[\s\S]*onChange=\{setPracticeResponse\}/);
+  assert.match(app, /interviewResponses: questions\.map/);
+});
+
+test("speech-input consent and schema include final interview transcripts", async () => {
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
+  const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
+  const route = await readFile(new URL("../app/api/save-result/route.ts", import.meta.url), "utf8");
+  const exportSource = await readFile(new URL("../lib/export.ts", import.meta.url), "utf8");
+
+  assert.match(app, /optional live speech-to-text/);
+  assert.match(app, /speech[\s\S]*service may process the audio/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 5/);
+  assert.match(types, /schemaVersion: 5/);
+  assert.match(types, /interviewResponses: InterviewResponse\[\]/);
+  assert.match(route, /interviewAnswerCount/);
+  assert.match(exportSource, /exportInterviewCsv/);
+  assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
 test("preference flow randomizes and records four conditions", async () => {

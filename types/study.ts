@@ -193,8 +193,15 @@ export type PreferenceResponse = {
   submittedAt: string;
 };
 
+export type InterviewResponse = {
+  questionId: string;
+  question: string;
+  answer: string;
+  submittedAt: string;
+};
+
 export type StudyState = {
-  schemaVersion: 4;
+  schemaVersion: 5;
   phase: StudyPhase;
   testMode: boolean;
   consent: ConsentRecord;
@@ -207,5 +214,6 @@ export type StudyState = {
   comprehensionResponses: TrialResponse[];
   workloadResponse: WorkloadResponse | null;
   preferenceResponses: PreferenceResponse[];
+  interviewResponses: InterviewResponse[];
   startedAt: string;
 };

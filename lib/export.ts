@@ -246,10 +246,38 @@ export function exportPreferenceCsv(state: StudyState) {
   );
 }
 
+export function exportInterviewCsv(state: StudyState) {
+  const timestamp = timestampForFilename();
+  const headers = [
+    "participantId",
+    "sequenceGroup",
+    "questionId",
+    "question",
+    "answer",
+    "submittedAt"
+  ];
+
+  const rows = state.interviewResponses.map((response) => ({
+    participantId: state.participant.participantId,
+    sequenceGroup: state.participant.sequenceGroup,
+    questionId: response.questionId,
+    question: response.question,
+    answer: response.answer,
+    submittedAt: response.submittedAt
+  }));
+
+  downloadFile(
+    `blv-study-interview-${timestamp}.csv`,
+    toCsv(headers, rows),
+    "text/csv"
+  );
+}
+
 export function exportAllCsv(state: StudyState) {
   exportComprehensionCsv(state);
   exportWorkloadCsv(state);
   exportPreferenceCsv(state);
+  exportInterviewCsv(state);
 }
 
 /**

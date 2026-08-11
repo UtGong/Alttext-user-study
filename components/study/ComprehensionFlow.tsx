@@ -5,7 +5,9 @@ import { AccessibleButton } from "@/components/AccessibleButton";
 import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { LikertScale } from "@/components/LikertScale";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
+import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
 import { comprehensionStimuli, getComprehensionStimulus, getConditionForStimulus, getDescriptionForStimulus, preferenceStimuli } from "@/lib/stimuli";
 import { AudioPlayEvent, LikertResponse, SpatialAnswer, StudyState } from "@/types/study";
 
@@ -72,6 +74,8 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   }
 
   const required = !state.testMode;
+  const gistPrompt = stimulus.gistQuestion?.question ?? "What kind of scene or main subject was described?";
+  const recallPrompt = "Please describe the scene in your own words.";
   return <form className="panel" onSubmit={submit}>
     <ProgressIndicator label="Comprehension trial" current={state.comprehensionIndex + 1} total={comprehensionStimuli.length} />
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
@@ -82,18 +86,18 @@ export function ComprehensionFlow({ state, updateState }: Props) {
 
     {step === "audio" && <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("gist")}>Continue</AccessibleButton>}
 
-    {step === "gist" && <section className="question-card"><h3>Main idea</h3><label className="field-label">{stimulus.gistQuestion?.question ?? "What kind of scene or main subject was described?"}<textarea required={required} rows={3} value={gistAnswer} onChange={(e) => setGistAnswer(e.target.value)} /></label><AccessibleButton type="button" disabled={required && !gistAnswer.trim()} onClick={() => advance("recall")}>Continue</AccessibleButton></section>}
+    {step === "gist" && <section className="question-card"><h3>Main idea</h3><div className="field-label"><label htmlFor="gist-answer">{gistPrompt}</label><QuestionAudioButton text={gistPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="gist-answer" required={required} rows={3} value={gistAnswer} onChange={setGistAnswer} /></div><AccessibleButton type="button" disabled={required && !gistAnswer.trim()} onClick={() => advance("recall")}>Continue</AccessibleButton></section>}
 
-    {step === "recall" && <section className="question-card"><h3>Free recall</h3><label className="field-label">Please describe the scene in your own words.<textarea required={required} rows={6} value={freeRecall} onChange={(e) => setFreeRecall(e.target.value)} /></label><AccessibleButton type="button" disabled={required && !freeRecall.trim()} onClick={() => advance(questions.length ? "spatial" : "ratings")}>Continue</AccessibleButton></section>}
+    {step === "recall" && <section className="question-card"><h3>Free recall</h3><div className="field-label"><label htmlFor="free-recall">{recallPrompt}</label><QuestionAudioButton text={recallPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="free-recall" required={required} rows={6} value={freeRecall} onChange={setFreeRecall} /></div><AccessibleButton type="button" disabled={required && !freeRecall.trim()} onClick={() => advance(questions.length ? "spatial" : "ratings")}>Continue</AccessibleButton></section>}
 
-    {step === "spatial" && questions.length > 0 && <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={q.options.map((x) => ({ value: x, label: x }))} required={required} />)}<AccessibleButton type="button" disabled={required && questions.some((q) => !spatialAnswers[q.id])} onClick={() => advance("ratings")}>Continue</AccessibleButton></section>}
+    {step === "spatial" && questions.length > 0 && <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={q.options.map((x) => ({ value: x, label: x }))} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}<AccessibleButton type="button" disabled={required && questions.some((q) => !spatialAnswers[q.id])} onClick={() => advance("ratings")}>Continue</AccessibleButton></section>}
 
     {step === "ratings" && <section className="question-card"><h3>Experience ratings</h3>
-      <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((v) => ({ ...v, overallSceneClarity: value }))} required={required} labels={agreementLabels} />
-      <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((v) => ({ ...v, spatialRelationsConfidence: value }))} required={required} labels={agreementLabels} />
-      <LikertScale legend="I understood the main subject and actions in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((v) => ({ ...v, contentComprehension: value }))} required={required} labels={agreementLabels} />
+      <LikertScale legend="I could picture the overall scene in my mind." name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((v) => ({ ...v, overallSceneClarity: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
+      <LikertScale legend="I could identify the spatial relationships among the described elements." name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((v) => ({ ...v, spatialRelationsConfidence: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
+      <LikertScale legend="The description gave me enough information about where things were in the image." name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((v) => ({ ...v, contentComprehension: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
       <AccessibleButton type="button" disabled={required && Object.values(ratings).some((value) => value === null)} onClick={() => advance("workload")}>Continue</AccessibleButton></section>}
 
-    {step === "workload" && <section className="question-card"><h3>Workload</h3>{([['mentalDemand','How mentally demanding was it to understand this image description?'],['effort','How much effort did you need to understand this image description?'],['frustration','How frustrated did you feel while understanding this image description?']] as const).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} />)}<AccessibleButton type="submit" disabled={required && Object.values(workload).some((value) => value === null)}>Save and continue</AccessibleButton></section>}
+    {step === "workload" && <section className="question-card"><h3>Workload</h3>{([['mentalDemand','How mentally demanding was it to understand this image description?'],['effort','How much effort did you need to understand this image description?'],['frustration','How frustrated did you feel while understanding this image description?']] as const).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}<AccessibleButton type="submit" disabled={required && Object.values(workload).some((value) => value === null)}>Save and continue</AccessibleButton></section>}
   </form>;
 }

@@ -4,7 +4,9 @@ import { FormEvent, useMemo, useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
 import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
+import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
 import { preferenceStimuli } from "@/lib/stimuli";
 import {
   Condition,
@@ -170,6 +172,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
             label: `Description ${label}`
           }))}
           required={!state.testMode}
+          audioSpeed={state.selectedAudioSpeed}
+          voiceURI={state.selectedVoiceURI}
         />
       </section>
 
@@ -179,9 +183,14 @@ export function PreferenceFlow({ state, updateState }: Props) {
           Replay descriptions A, B, C, and D as often as needed, then choose the ranking from
           best to worst. All four descriptions must be played before the ranking is saved.
         </p>
+        <QuestionAudioButton
+          text="Rank descriptions A, B, C, and D from best to worst. Choose each description only once."
+          speed={state.selectedAudioSpeed}
+          voiceURI={state.selectedVoiceURI}
+        />
         {!allDescriptionsPlayed && !state.testMode && (
           <p className="help-text" role="status">
-            Listen to all three descriptions before submitting your ranking.
+            Listen to all four descriptions before submitting your ranking.
           </p>
         )}
 
@@ -221,15 +230,21 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
       <section className="question-card">
         <h3>Question 3: Explanation</h3>
-        <label className="field-label">
-          Why did you choose this ranking?
-          <textarea
+        <div className="field-label">
+          <label htmlFor="ranking-explanation">Why did you choose this ranking?</label>
+          <QuestionAudioButton
+            text="Why did you choose this ranking?"
+            speed={state.selectedAudioSpeed}
+            voiceURI={state.selectedVoiceURI}
+          />
+          <SpeechAnswerInput
+            id="ranking-explanation"
             required={!state.testMode}
             rows={5}
             value={explanation}
-            onChange={(event) => setExplanation(event.target.value)}
+            onChange={setExplanation}
           />
-        </label>
+        </div>
       </section>
 
       <AccessibleButton

@@ -176,6 +176,27 @@ h2 {
   font-weight: 700;
 }
 
+.question-audio-control {
+  margin: 0.65rem 0;
+}
+
+.speech-answer-input {
+  font-weight: 400;
+}
+
+.speech-answer-input textarea {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #fff;
+  color: var(--text);
+}
+
+.speech-input-controls {
+  margin-top: 0.65rem;
+}
+
 .compact-fieldset {
   padding-bottom: 0.75rem;
 }
@@ -247,7 +268,13 @@ h2 {
 }
 
 .question-list li {
-  margin: 0.4rem 0;
+  margin: 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.question-list label {
+  font-weight: 700;
 }
 
 .consent-panel h3 {

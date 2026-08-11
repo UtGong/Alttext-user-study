@@ -20,6 +20,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - No pause or speed adjustment during real trials
 - Replay count logging
 - Free recall response collection
+- Optional live speech-to-text for open-ended responses, with editable transcripts
 - Spatial relation questions
 - Semantic gist answer
 - Verbal Likert ratings with stable 1–5 analysis values
@@ -92,6 +93,8 @@ Each stimulus includes:
 - gist question
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
+
+Open-ended answer fields also offer optional browser speech recognition. Starting speech input stops text-to-speech playback, requests microphone access, and inserts recognized text into the editable answer field. The website does not retain microphone audio. Browser speech-recognition support varies, so typing and operating-system dictation remain available fallbacks.
 
 ## Counterbalancing
 

@@ -66,10 +66,27 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
     };
   });
 
+  const interviewQuestions = [
+    "Which descriptions helped you understand the image best?",
+    "Did the order of information affect how you built the image in your mind?",
+    "Were spatial descriptions helpful, confusing, or unnecessary?",
+    "Were semantic groupings helpful, confusing, or unnecessary?",
+    "What spatial or orientation details were missing?",
+    "Did any description feel too long or hard to follow?",
+    "In real use, what kind of image description would you prefer?"
+  ];
+
+  const interviewResponses = interviewQuestions.map((question, index) => ({
+    questionId: `interview-${index + 1}`,
+    question,
+    answer: `Mock interview response ${index + 1}.`,
+    submittedAt: now
+  }));
+
   return {
     phase: "complete", testMode: true, participant,
     comprehensionOrder: comprehensionStimuli.map((stimulus) => stimulus.uuid),
     comprehensionIndex: comprehensionStimuli.length, comprehensionResponses,
-    preferenceIndex: preferenceStimuli.length, preferenceResponses
+    preferenceIndex: preferenceStimuli.length, preferenceResponses, interviewResponses
   };
 }
