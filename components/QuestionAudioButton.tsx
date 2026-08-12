@@ -8,12 +8,14 @@ type QuestionAudioButtonProps = {
   text: string;
   speed?: number;
   voiceURI?: string;
+  label?: string;
 };
 
 export function QuestionAudioButton({
   text,
   speed = 1,
-  voiceURI
+  voiceURI,
+  label = "Play question"
 }: QuestionAudioButtonProps) {
   const [status, setStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -38,7 +40,7 @@ export function QuestionAudioButton({
   return (
     <div className="question-audio-control">
       <AccessibleButton type="button" variant="secondary" onClick={play}>
-        Play question
+        {label}
       </AccessibleButton>
       <span className="sr-status" aria-live="polite">
         {status}

@@ -7,42 +7,7 @@ import {
   SPEECH_INPUT_STARTING_EVENT,
   stopSpeech
 } from "@/lib/audio";
-
-type RecognitionResultLike = {
-  isFinal: boolean;
-  0: { transcript: string };
-};
-
-type RecognitionEventLike = {
-  resultIndex: number;
-  results: ArrayLike<RecognitionResultLike>;
-};
-
-type RecognitionErrorEventLike = {
-  error: string;
-};
-
-type RecognitionLike = {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  maxAlternatives: number;
-  start: () => void;
-  stop: () => void;
-  abort: () => void;
-  onresult: ((event: RecognitionEventLike) => void) | null;
-  onerror: ((event: RecognitionErrorEventLike) => void) | null;
-  onend: (() => void) | null;
-};
-
-type RecognitionConstructor = new () => RecognitionLike;
-
-declare global {
-  interface Window {
-    SpeechRecognition?: RecognitionConstructor;
-    webkitSpeechRecognition?: RecognitionConstructor;
-  }
-}
+import type { RecognitionLike } from "@/types/speech-recognition";
 
 type SpeechAnswerInputProps = {
   id: string;

@@ -45,7 +45,7 @@
       {
         "id": "r57_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Were the nude woman and standing man centered on the left of the image?",
+        "question": "Is the nude woman and standing man centered on the left of the image?",
         "options": [
           "Yes",
           "No"
@@ -193,7 +193,7 @@
       {
         "id": "r5_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Did the central group of people take up the most space in the center and right side of the image?",
+        "question": "Does the central group of people take up the most space in the center and right side of the image?",
         "options": [
           "Yes",
           "No"
@@ -449,7 +449,7 @@
       {
         "id": "r66_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the sitting child positioned to the left of the sitting man?",
+        "question": "Is the sitting child positioned to the left of the sitting man?",
         "options": [
           "Yes",
           "No"
@@ -469,7 +469,7 @@
       {
         "id": "r66_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Were the clouds and blue sky positioned in the upper right corner of the image?",
+        "question": "Was the clouds and blue sky positioned in the upper right corner of the image?",
         "options": [
           "Yes",
           "No"
@@ -505,7 +505,7 @@
       {
         "id": "r48_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Were the two painted figures positioned in front of the grassy hill?",
+        "question": "Was the grassy hill positioned in front of the people?",
         "options": [
           "Yes",
           "No"
@@ -515,7 +515,7 @@
       {
         "id": "r48_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the stone wall positioned between the water and the grassy hill?",
+        "question": "Was the stone wall positioned at the bottom of the grassy hill?",
         "options": [
           "Yes",
           "No"
@@ -525,22 +525,22 @@
       {
         "id": "r48_q_absolute_1",
         "frameOfReference": "absolute",
-        "question": "Were the two painted figures positioned in the lower-left portion of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r48_q_absolute_2",
-        "frameOfReference": "absolute",
-        "question": "Were the white and gray clouds positioned in the lower half of the image?",
+        "question": "Was the grassy hill positioned on the right side of the image?",
         "options": [
           "Yes",
           "No"
         ],
         "correctAnswer": "No"
+      },
+      {
+        "id": "r48_q_absolute_2",
+        "frameOfReference": "absolute",
+        "question": "Were the two people positioned on the bottom left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
       }
     ],
     "role": "comprehension",
@@ -952,7 +952,7 @@
       {
         "id": "r52_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Was the plaza positioned on the left side of the image?",
+        "question": "Was the plaza positioned on your left?",
         "options": [
           "Yes",
           "No"
@@ -1056,7 +1056,48 @@
       "pine closer tree",
       "manor appears house"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r55_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the yellowed pine tree positioned to the left of the house?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r55_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the garden positioned behind the house?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r55_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the house positioned in the background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r55_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the pine tree positioned in the foreground of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1084,7 +1125,48 @@
       "visible house",
       "three drawn carriages"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r17_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the building positioned to the left side of the narrow alleyway?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r17_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Were the carriages positioned in front of the narrow alleyway?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r17_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Were the three carriages positioned on the bottom left of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r17_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the narrow alleyway positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1099,20 +1181,61 @@
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "On a stone plinth, two chubby sitting children are arranged toward the right side. An upright rectangular stretched canvas stands on the left, with a child’s hand near its upper edge. Near the upper center-right, the head of one child bends downward above a mallet held across the body. The second child sits to the lower right, with the head turned toward the center.",
-      "spatial": "At the center-right of the sculpture, two chubby seated children in pale stone are shown close together, one higher and more upright while the other sits lower at the right edge. Moving down toward the lower right, a small mallet is held near the younger child’s hands. Just below it, near the bottom-right area of the frame, a carved adult head rests beneath the child. To the left of the figures, an upright rectangular stretched canvas rises from the lower-left to mid-left portion of the sculpture. Along the entire bottom of the scene, a broad stone plinth supports the children, the canvas, and the head.",
-      "semantic": "Along the bottom of the frame, a long stone plinth supports the sculpture. Above it, two chubby seated children occupy the center and right side of the image, one taller child rising toward the upper center and another leaning in from the right. Near the lower right edge, the smaller child holds a mallet. Just below this area, in the lower right of the frame, a sculpted head looks upward. To the left of the children, an upright rectangular stretched canvas stands vertically, extending from the lower left toward the middle of the composition.",
-      "spatial2d": "Along the lower edge of the image, a long pale stone plinth supports the sculpture. Just above the plinth at the lower right, a carved adult head rests near the base. Moving upward and left from there, two chubby seated children occupy the center-right of the frame, one higher and standing over the other, both rendered in pale marble. To the left of the children, an upright rectangular stretched canvas rises from the plinth. Finally, near the right side of the seated child, a small mallet is held close to the lower-right edge of the composition."
+      "baseline": "A small mallet is held near the lower-right side of the sculpture. An upright rectangular stretched canvas rises along the left side, while a carved adult head rests near the lower right. A broad stone plinth runs along the bottom. Above the plinth, one standing child occupies the center-left and one seated child occupies the center-right.",
+      "spatial": "At the center of the sculpture, one standing child appears on the left and one seated child appears on the right. Moving down toward the lower right, the seated child holds a small mallet. Just below the child, near the bottom-right area of the frame, a carved adult head rests at the base. To the left of the figures, an upright rectangular stretched canvas rises from the lower-left to the middle-left portion of the sculpture. Along the bottom of the scene, a broad stone plinth supports the children, the canvas, and the head.",
+      "semantic": "Along the bottom of the frame, a long stone plinth supports the sculpture. Above it, one standing child occupies the center-left and one seated child occupies the center-right. Near the lower-right area, the seated child holds a small mallet. Just below the child, a carved adult head looks upward from the base of the sculpture. To the left of the children, an upright rectangular stretched canvas stands vertically, extending from the lower left toward the middle of the composition.",
+      "spatial2d": "Along the lower edge of the image, a long pale stone plinth supports the sculpture. Just above the plinth at the lower right, a carved adult head rests near the base. Moving upward and left from the head, one standing child occupies the center-left and one seated child occupies the center-right. To the left of the children, an upright rectangular stretched canvas rises from the plinth. Finally, near the right side of the seated child, a small mallet is held close to the lower-right area of the composition."
     },
     "audio": {},
     "targetElements": [
-      "head",
-      "Two chubby sitting two children",
+      "carved adult head",
+      "one standing child and one seated child",
       "stone plinth",
-      "upright rectangular stretched two canvas",
+      "upright rectangular stretched canvas",
       "mallet"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r3_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the standing child positioned to the left of the seated child?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r3_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the carved adult head positioned to the left of the seated child?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r3_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the upright rectangular stretched canvas positioned on the left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r3_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the stone plinth positioned in the upper half of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1140,7 +1263,48 @@
       "gray cliffs",
       "yellow expanse"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r45_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the gray cliffs positioned on the left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r45_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the yellow expanse positioned in front of the water?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r45_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the slender tree positioned in the center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r45_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the hills positioned in the background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1168,7 +1332,48 @@
       "canopies",
       "comes horizon"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r16_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the sunset positioned to the right of the tree?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r16_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the canopy most densely concentrated to the left of the water?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r16_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the closest tree positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r16_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the water positioned on the lower-right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."

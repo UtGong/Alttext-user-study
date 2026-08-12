@@ -1,8 +1,9 @@
 "use client";
 
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
+import { SpeechChoiceInput } from "@/components/SpeechChoiceInput";
 
-type Option = { value: string; label: string };
+type Option = { value: string; label: string; aliases?: string[] };
 
 type RadioGroupProps = {
   legend: string;
@@ -26,13 +27,14 @@ export function RadioGroup({
   voiceURI
 }: RadioGroupProps) {
   const spokenText = `${legend} Answer choices: ${options
-    .map((option) => option.label)
+    .map((option, index) => `${index + 1}, ${option.label}`)
     .join(". ")}.`;
 
   return (
     <fieldset className="fieldset">
       <legend>{legend}</legend>
       <QuestionAudioButton text={spokenText} speed={audioSpeed} voiceURI={voiceURI} />
+      <SpeechChoiceInput id={`${name}-choice`} options={options} onChange={onChange} />
       <div className="radio-stack">
         {options.map((option) => (
           <label key={option.value} className="radio-label">

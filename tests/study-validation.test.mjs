@@ -20,7 +20,6 @@ test("preference stimuli provide all four descriptions", () => {
 });
 
 test("spatial question sets are either omitted or four scorable questions", () => {
-  assert.ok(comprehension.some((item) => !item.spatialQuestions?.length));
   for (const item of comprehension) {
     const questions = item.spatialQuestions ?? [];
     if (!questions.length) continue;
@@ -33,24 +32,16 @@ test("spatial question sets are either omitted or four scorable questions", () =
   }
 });
 
-test("replacement stimuli remain excluded from spatial questions", () => {
-  const replacementIds = [
-    "7583412c-fee6-496a-b316-467f8a495a40",
-    "b9c9e75c-e81b-4dab-aafe-12045660422f"
-  ];
-
-  for (const uuid of replacementIds) {
-    const item = comprehension.find((stimulus) => stimulus.uuid === uuid);
-    assert.ok(item, `${uuid} is missing`);
-    assert.deepEqual(item.spatialQuestions, [], `${uuid} should not have spatial questions yet`);
-  }
+test("all stimuli have complete spatial question sets", () => {
+  for (const item of stimuli) assert.equal(item.spatialQuestions?.length, 4, item.uuid);
 });
 
-test("participant-facing Likert labels contain no numeric prefixes", async () => {
+test("participant-facing Likert labels include numeric scale points", async () => {
   const source = await readFile(new URL("../components/LikertScale.tsx", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
-  assert.doesNotMatch(source, /\{score\}\s*\.|`\$\{score\}/);
-  assert.match(source, /Neither agree nor disagree/);
+  assert.match(source, /\{score\}: \{labels\[score - 1\]\}/);
+  assert.match(flow, /\["Not at all", "Slightly", "Moderately", "Very", "Extremely well"\]/);
+  assert.match(source, /"Not at all"/);
   assert.match(flow, /The description gave me enough information about where things were in the image\./);
   assert.doesNotMatch(flow, /After listening to this description, I feel confident that I understand the artwork\./);
   assert.doesNotMatch(flow, /This description gave me enough information to understand the image\./);
@@ -71,6 +62,81 @@ test("participant questions provide speech playback controls", async () => {
   assert.match(likert, /QuestionAudioButton/);
   assert.match(comprehensionFlow, /gistPrompt[\s\S]*QuestionAudioButton/);
   assert.match(preferenceFlow, /Why did you choose this ranking\?[\s\S]*QuestionAudioButton/);
+});
+
+test("consent and every answer type support speech interaction", async () => {
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const choice = await readFile(new URL("../components/SpeechChoiceInput.tsx", import.meta.url), "utf8");
+  const radio = await readFile(new URL("../components/RadioGroup.tsx", import.meta.url), "utf8");
+  const likert = await readFile(new URL("../components/LikertScale.tsx", import.meta.url), "utf8");
+  const preference = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+
+  assert.match(app, /Play complete consent form/);
+  assert.match(app, /name="consentDecision"/);
+  assert.match(app, /Confirm consent decision/);
+  assert.match(app, /id="participant-id"[\s\S]*onChange=\{\(participantId\)/);
+  assert.match(choice, /window\.SpeechRecognition \|\| window\.webkitSpeechRecognition/);
+  assert.match(choice, /Speak a choice or its number/);
+  assert.match(choice, /Selected \$\{match\.label\}/);
+  assert.match(choice, /review it before continuing/i);
+  assert.match(radio, /<SpeechChoiceInput[\s\S]*options=\{options\}/);
+  assert.match(likert, /<SpeechChoiceInput[\s\S]*onChange=\{\(nextValue\) => onChange\(Number\(nextValue\)\)\}/);
+  assert.match(preference, /Rank by voice/);
+  assert.match(preference, /parseSpokenRanking/);
+});
+
+test("revised participant-facing study questions are present", async () => {
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const comprehensionFlow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+  const player = await readFile(new URL("../components/AudioDescriptionPlayer.tsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(app, /BLV Image Description Study|Accessible User Study Interface/);
+  assert.match(comprehensionFlow, /In 1-2 sentences, what was the main focus of the scene\?/);
+  assert.match(comprehensionFlow, /Mention what you remember, including the people or objects present/);
+  assert.match(comprehensionFlow, /\["Not sure"\]/);
+  assert.doesNotMatch(preferenceFlow, /Question 1: Best description|Which description helped you understand the image best/);
+  assert.match(preferenceFlow, /const bestChoice = ranking\.first/);
+  assert.doesNotMatch(player, /You may play and replay this description as many times as needed/);
+  assert.match(app, /<h2>Final Questions<\/h2>/);
+  assert.match(app, /clear mental map of a scene right away/);
+  assert.match(app, /mentally tiring or overwhelming/);
+  assert.match(app, /most important rule you would recommend/);
+});
+
+test("uncertain spatial answers are recorded but excluded from accuracy scoring", async () => {
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
+
+  assert.match(flow, /const isUncertain = answer === "Not sure"/);
+  assert.match(flow, /isCorrect: q\.correctAnswer && !isUncertain \? answer === q\.correctAnswer : null/);
+  assert.match(flow, /answer\.correctAnswer !== null && !answer\.isUncertain/);
+  assert.match(types, /isUncertain: boolean/);
+});
+
+test("all participant answers are retained in the Firestore payload and exports", async () => {
+  const route = await readFile(new URL("../app/api/save-result/route.ts", import.meta.url), "utf8");
+  const save = await readFile(new URL("../lib/saveResult.ts", import.meta.url), "utf8");
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const exportSource = await readFile(new URL("../lib/export.ts", import.meta.url), "utf8");
+
+  assert.match(save, /body: JSON\.stringify\(state\)/);
+  assert.match(route, /const resultToSave = \{[\s\S]*\.\.\.body/);
+  assert.match(route, /\.set\(resultToSave\)/);
+  assert.match(flow, /gistAnswer,[\s\S]*freeRecall,[\s\S]*spatialAnswers: answers/);
+  assert.match(flow, /ratings: \{ overallSceneClarity:[\s\S]*spatialRelationsConfidence:[\s\S]*contentComprehension:/);
+  assert.match(flow, /workload: \{ mentalDemand:[\s\S]*effort:[\s\S]*frustration:/);
+  assert.match(preferenceFlow, /ranking,[\s\S]*explanation/);
+  assert.match(app, /interviewResponses: questions\.map[\s\S]*questionId:[\s\S]*question:[\s\S]*answer:/);
+  assert.match(app, /practiceResponse: practiceResponse\.trim\(\)/);
+  assert.match(flow, /gistQuestion: gistPrompt[\s\S]*freeRecallQuestion: recallPrompt/);
+  assert.match(flow, /ratingQuestions[\s\S]*workloadQuestions/);
+  assert.match(preferenceFlow, /rankingQuestion,[\s\S]*explanationQuestion/);
+  assert.match(exportSource, /spatialAnswersJson: response\.spatialAnswers/);
+  assert.match(exportSource, /explanation: response\.explanation/);
+  assert.match(exportSource, /answer: response\.answer/);
 });
 
 test("open-ended answers support editable live transcription", async () => {
@@ -101,10 +167,10 @@ test("speech-input consent and schema include final interview transcripts", asyn
   const route = await readFile(new URL("../app/api/save-result/route.ts", import.meta.url), "utf8");
   const exportSource = await readFile(new URL("../lib/export.ts", import.meta.url), "utf8");
 
-  assert.match(app, /optional live speech-to-text/);
+  assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 5/);
-  assert.match(types, /schemaVersion: 5/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 6/);
+  assert.match(types, /schemaVersion: 6/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);

@@ -102,6 +102,7 @@ export type SpatialAnswer = {
   answer: string;
   correctAnswer: string | null;
   isCorrect: boolean | null;
+  isUncertain: boolean;
   requiresManualCoding: boolean;
 };
 
@@ -128,14 +129,18 @@ export type TrialResponse = {
   audioStartedAt?: string;
   audioEndedAt?: string;
   submittedAt: string;
+  gistQuestion: string;
   gistAnswer: string;
   gistScore: number | null;
+  freeRecallQuestion: string;
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
   spatialAccuracyScore: number;
   spatialEligibleQuestionCount: number;
   ratings: Ratings;
+  ratingQuestions: Record<keyof Ratings, string>;
   workload: Pick<WorkloadResponse, "mentalDemand" | "effort" | "frustration">;
+  workloadQuestions: Record<"mentalDemand" | "effort" | "frustration", string>;
   stepTimestamps: Record<string, { startedAt: string; completedAt: string; responseTimeMs: number }>;
 };
 
@@ -186,7 +191,9 @@ export type PreferenceResponse = {
   replayCounts: Record<DescriptionLabel, number>;
   bestChoice: DescriptionLabel | "";
   preferredCondition: Condition | "";
+  rankingQuestion: string;
   ranking: PreferenceRanking;
+  explanationQuestion: string;
   explanation: string;
   startedAt: string;
   responseTimeMs: number;
@@ -201,13 +208,15 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 5;
+  schemaVersion: 6;
   phase: StudyPhase;
   testMode: boolean;
   consent: ConsentRecord;
   participant: ParticipantProfile;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
+  practiceQuestion: string;
+  practiceResponse: string;
   comprehensionIndex: number;
   comprehensionOrder: string[];
   preferenceIndex: number;

@@ -5,8 +5,8 @@ import { AccessibleButton } from "@/components/AccessibleButton";
 import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
-import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
+import { SpeechChoiceInput } from "@/components/SpeechChoiceInput";
 import { preferenceStimuli } from "@/lib/stimuli";
 import {
   Condition,
@@ -33,6 +33,15 @@ function shuffle(conditions: Condition[]) {
   return copy;
 }
 
+const rankingQuestion = "Rank descriptions A, B, C, and D from best to worst. Choose each description only once.";
+const explanationQuestion = "Why did you choose this ranking?";
+
+function parseSpokenRanking(value: string): PreferenceRanking | null {
+  const labels = value.toUpperCase().match(/\b[A-D]\b/g) as DescriptionLabel[] | null;
+  if (!labels || labels.length !== 4 || new Set(labels).size !== 4) return null;
+  return { first: labels[0], second: labels[1], third: labels[2], fourth: labels[3] };
+}
+
 export function PreferenceFlow({ state, updateState }: Props) {
   const stimulus = preferenceStimuli[state.preferenceIndex];
 
@@ -54,7 +63,6 @@ export function PreferenceFlow({ state, updateState }: Props) {
     C: 0,
     D: 0
   });
-  const [bestChoice, setBestChoice] = useState<DescriptionLabel | "">("");
   const [ranking, setRanking] = useState<PreferenceRanking>({
     first: "",
     second: "",
@@ -78,6 +86,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
     if (!state.testMode && (!allDescriptionsPlayed || !complete || duplicate)) return;
 
     const submittedAt = new Date().toISOString();
+    const bestChoice = ranking.first;
     const response: PreferenceResponse = {
       participantId: state.participant.participantId,
       sequenceGroup: state.participant.sequenceGroup,
@@ -95,7 +104,9 @@ export function PreferenceFlow({ state, updateState }: Props) {
       replayCounts,
       bestChoice,
       preferredCondition: randomizedOrder.find((item) => item.label === bestChoice)?.condition ?? "",
+      rankingQuestion,
       ranking,
+      explanationQuestion,
       explanation,
       startedAt,
       responseTimeMs: Date.parse(submittedAt) - Date.parse(startedAt),
@@ -161,32 +172,35 @@ export function PreferenceFlow({ state, updateState }: Props) {
       ))}
 
       <section className="question-card">
-        <h3>Question 1: Best description</h3>
-        <RadioGroup
-          legend="Which description helped you understand the image best?"
-          name="bestChoice"
-          value={bestChoice}
-          onChange={(value) => setBestChoice(value as DescriptionLabel)}
-          options={["A", "B", "C", "D"].map((label) => ({
-            value: label,
-            label: `Description ${label}`
-          }))}
-          required={!state.testMode}
-          audioSpeed={state.selectedAudioSpeed}
-          voiceURI={state.selectedVoiceURI}
-        />
-      </section>
-
-      <section className="question-card">
-        <h3>Question 2: Ranking</h3>
+        <h3>Ranking</h3>
         <p>
           Replay descriptions A, B, C, and D as often as needed, then choose the ranking from
           best to worst. All four descriptions must be played before the ranking is saved.
         </p>
         <QuestionAudioButton
-          text="Rank descriptions A, B, C, and D from best to worst. Choose each description only once."
+          text={rankingQuestion}
           speed={state.selectedAudioSpeed}
           voiceURI={state.selectedVoiceURI}
+        />
+        <SpeechChoiceInput
+          id="preference-ranking-choice"
+          buttonLabel="Rank by voice"
+          listeningPrompt="Listening. Say the four description letters from best to worst, for example, A, C, D, B."
+          helpText="Say all four description letters from best to worst. The four ranking controls will be updated; review them before continuing."
+          options={[
+            "A B C D", "A B D C", "A C B D", "A C D B", "A D B C", "A D C B",
+            "B A C D", "B A D C", "B C A D", "B C D A", "B D A C", "B D C A",
+            "C A B D", "C A D B", "C B A D", "C B D A", "C D A B", "C D B A",
+            "D A B C", "D A C B", "D B A C", "D B C A", "D C A B", "D C B A"
+          ].map((value) => ({
+            value,
+            label: value.split(" ").join(", "),
+            aliases: [value, value.split(" ").map((label) => `description ${label}`).join(" ")]
+          }))}
+          onChange={(value) => {
+            const nextRanking = parseSpokenRanking(value);
+            if (nextRanking) setRanking(nextRanking);
+          }}
         />
         {!allDescriptionsPlayed && !state.testMode && (
           <p className="help-text" role="status">
@@ -229,11 +243,11 @@ export function PreferenceFlow({ state, updateState }: Props) {
       </section>
 
       <section className="question-card">
-        <h3>Question 3: Explanation</h3>
+        <h3>Reason for ranking</h3>
         <div className="field-label">
-          <label htmlFor="ranking-explanation">Why did you choose this ranking?</label>
+          <label htmlFor="ranking-explanation">{explanationQuestion}</label>
           <QuestionAudioButton
-            text="Why did you choose this ranking?"
+            text={explanationQuestion}
             speed={state.selectedAudioSpeed}
             voiceURI={state.selectedVoiceURI}
           />

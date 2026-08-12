@@ -42,6 +42,8 @@ const initial: StudyState = {
   participant,
   selectedAudioSpeed: 1,
   selectedVoiceURI: "",
+  practiceQuestion: "Please describe the scene in your own words.",
+  practiceResponse: "",
   comprehensionIndex: 0,
   comprehensionOrder: [],
   preferenceIndex: 0,
@@ -56,6 +58,19 @@ const sample =
   "A person stands near a table in the foreground. Behind the table, a window and several objects help define the room.";
 
 const workloadLabels = ["Very low", "Low", "Moderate", "High", "Very high"];
+
+const consentPlaybackText = [
+  "Consent to Participate.",
+  "Please read this information before deciding whether to participate. Ask the researcher any questions you have before continuing.",
+  "Purpose and activities. This study examines how blind and low-vision users understand different forms of image description. You will listen to descriptions, answer comprehension and workload questions, compare descriptions, and take part in final interview questions.",
+  "Voluntary participation and withdrawal. Participation is voluntary. You may pause between sections or stop at any time, for any reason, without penalty or loss of benefits. Closing the page stops the study. Selecting Decline and leave study clears this browser session and does not submit a study record.",
+  "Potential risks or discomforts. Possible discomforts include fatigue, mental effort, frustration, or discomfort from listening to repeated audio. Some descriptions may mention nudity, religious imagery, death, skulls, or injury. You may stop immediately if you feel uncomfortable.",
+  "Potential benefits. There may be no direct personal benefit. Your responses may help researchers improve accessible image descriptions.",
+  "Information collected and privacy. The study records a coded Participant ID, accessibility background, answers, ratings, audio replay events, and response timing. Do not enter your name or contact information in study fields. Until the researcher saves the completed record, progress is stored in this browser so the session can recover after an accidental refresh.",
+  "Open-ended and choice answers may be entered using optional live speech recognition. Microphone access starts only after you select an answer-by-voice or start-speaking button. This website stores selected answers and resulting text, not microphone audio, but your browser or operating system's speech service may process the audio. Review every recognized answer before continuing. Standard controls remain available.",
+  "Questions or concerns. For questions about the study, its data-retention practices, your rights, or withdrawing submitted data, contact the researcher who provided your Participant ID before agreeing.",
+  "Consent confirmation. I have read and understood the information above, had an opportunity to ask questions, and voluntarily agree to participate."
+].join(" ");
 
 export function StudyApp() {
   const [state, setState] = useState<StudyState>(initial);
@@ -124,11 +139,6 @@ export function StudyApp() {
 
   return (
     <main id="main-content" className="container">
-      <header className="site-header">
-        <p className="eyebrow">BLV Image Description Study</p>
-        <h1>Accessible User Study Interface</h1>
-      </header>
-
       {state.testMode && (
         <p className="warning" role="status">
           TEST MODE ACTIVE. Saved records are marked testMode: true.
@@ -223,7 +233,7 @@ function Consent({
   updateState: (patch: Partial<StudyState>) => void;
   decline: () => void;
 }) {
-  const [confirmed, setConfirmed] = useState(false);
+  const [consentDecision, setConsentDecision] = useState("");
 
   return (
     <form
@@ -231,6 +241,11 @@ function Consent({
       aria-labelledby="consent-heading"
       onSubmit={(event) => {
         event.preventDefault();
+        if (consentDecision === "decline") {
+          decline();
+          return;
+        }
+        if (consentDecision !== "agree") return;
         const acceptedAt = new Date().toISOString();
         updateState({
           phase: "setup",
@@ -244,6 +259,12 @@ function Consent({
       }}
     >
       <h2 id="consent-heading">Consent to Participate</h2>
+      <QuestionAudioButton
+        text={consentPlaybackText}
+        speed={state.selectedAudioSpeed}
+        voiceURI={state.selectedVoiceURI}
+        label="Play complete consent form"
+      />
       <p>
         Please read this information before deciding whether to participate. Ask the researcher
         any questions you have before continuing.
@@ -285,11 +306,11 @@ function Consent({
         this browser so the session can recover after an accidental refresh.
       </p>
       <p>
-        Open-ended answers may be entered by typing or optional live speech-to-text. Speech input
-        requests microphone access only after you select Start speaking. This website stores the
-        resulting text, not microphone audio, but your browser or operating system&apos;s speech
-        service may process the audio to create the transcript. You may type instead and can edit
-        every transcript before continuing.
+        Open-ended and choice answers may be entered using optional live speech recognition.
+        Microphone access starts only after you select an answer-by-voice or Start speaking
+        button. This website stores selected answers and resulting text, not microphone audio,
+        but your browser or operating system&apos;s speech service may process the audio. Review every
+        recognized answer before continuing. Standard controls remain available.
       </p>
 
       <h3>Questions or concerns</h3>
@@ -298,29 +319,29 @@ function Consent({
         submitted data, contact the researcher who provided your Participant ID before agreeing.
       </p>
 
-      <div className="consent-confirmation">
-        <label>
-          <input
-            type="checkbox"
-            required
-            checked={confirmed}
-            onChange={(event) => setConfirmed(event.target.checked)}
-          />
-          <span>
-            I have read and understood the information above, had an opportunity to ask
-            questions, and voluntarily agree to participate.
-          </span>
-        </label>
-      </div>
+      <RadioGroup
+        legend="After reviewing the information, do you voluntarily agree to participate?"
+        name="consentDecision"
+        value={consentDecision}
+        onChange={setConsentDecision}
+        options={[
+          { value: "agree", label: "I agree", aliases: ["agree", "yes", "consent"] },
+          { value: "decline", label: "I do not agree", aliases: ["decline", "no", "do not consent"] }
+        ]}
+        required
+        audioSpeed={state.selectedAudioSpeed}
+        voiceURI={state.selectedVoiceURI}
+      />
 
       <p className="help-text">Consent form version: {CONSENT_VERSION}</p>
 
       <div className="button-row">
-        <AccessibleButton type="submit" disabled={!confirmed}>
-          I agree — continue
-        </AccessibleButton>
-        <AccessibleButton type="button" variant="danger" onClick={decline}>
-          Decline and leave study
+        <AccessibleButton
+          type="submit"
+          variant={consentDecision === "decline" ? "danger" : "primary"}
+          disabled={!consentDecision}
+        >
+          Confirm consent decision
         </AccessibleButton>
         {state.testMode && <span className="help-text">Test-mode consent record</span>}
       </div>
@@ -371,14 +392,16 @@ function Setup({
     >
       <h2>Participant Setup</h2>
 
-      <label className="field-label">
-        Participant ID
-        <input
+      <div className="field-label">
+        <label htmlFor="participant-id">Participant ID</label>
+        <SpeechAnswerInput
+          id="participant-id"
+          rows={2}
           required
           value={currentParticipant.participantId}
-          onChange={(event) => change({ participantId: event.target.value })}
+          onChange={(participantId) => change({ participantId })}
         />
-      </label>
+      </div>
 
       <RadioGroup
         legend="Researcher sequence group"
@@ -433,7 +456,7 @@ function Setup({
         onChange={(value) => change({ imageDescriptionExperience: value })}
         options={["rarely", "sometimes", "often", "very-often"].map((value) => ({
           value,
-          label: value
+          label: value === "very-often" ? "Very often" : value
         }))}
         required
         audioSpeed={state.selectedAudioSpeed}
@@ -506,7 +529,7 @@ function Practice({
   state: StudyState;
   updateState: (patch: Partial<StudyState>) => void;
 }) {
-  const [practiceResponse, setPracticeResponse] = useState("");
+  const [practiceResponse, setPracticeResponse] = useState(state.practiceResponse);
 
   return (
     <section className="panel">
@@ -538,6 +561,7 @@ function Practice({
           onClick={() =>
             updateState({
               phase: "comprehension",
+              practiceResponse: practiceResponse.trim(),
               comprehensionIndex: 0,
               comprehensionOrder: createRandomizedComprehensionOrder(),
               comprehensionResponses: []
@@ -548,7 +572,7 @@ function Practice({
         </AccessibleButton>
         <AccessibleButton
           variant="secondary"
-          onClick={() => updateState({ phase: "audio-settings" })}
+          onClick={() => updateState({ phase: "audio-settings", practiceResponse })}
         >
           Change speed
         </AccessibleButton>
@@ -621,13 +645,11 @@ function Interview({
   updateState: (patch: Partial<StudyState>) => void;
 }) {
   const questions = [
-    { id: "interview-1", text: "Which descriptions helped you understand the image best?" },
-    { id: "interview-2", text: "Did the order of information affect how you built the image in your mind?" },
-    { id: "interview-3", text: "Were spatial descriptions helpful, confusing, or unnecessary?" },
-    { id: "interview-4", text: "Were semantic groupings helpful, confusing, or unnecessary?" },
-    { id: "interview-5", text: "What spatial or orientation details were missing?" },
-    { id: "interview-6", text: "Did any description feel too long or hard to follow?" },
-    { id: "interview-7", text: "In real use, what kind of image description would you prefer?" }
+    { id: "interview-1", text: "Take a moment to reflect about when a description helped you build a clear mental map of a scene right away. What made it work so well?" },
+    { id: "interview-2", text: "Did listening to these descriptions ever feel mentally tiring or overwhelming?" },
+    { id: "interview-3", text: "If yes, what was happening?" },
+    { id: "interview-4", text: "If not, what helped make the information easy to digest?" },
+    { id: "interview-5", text: "If you were designing descriptions for artworks, what is the most important rule you would recommend for how spatial layouts should be described?" }
   ];
   const [answers, setAnswers] = useState<Record<string, string>>(() =>
     Object.fromEntries(
@@ -652,7 +674,7 @@ function Interview({
         });
       }}
     >
-      <h2>Final Interview Questions</h2>
+      <h2>Final Questions</h2>
       <ol className="question-list">
         {questions.map((question) => (
           <li key={question.id}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
+import { SpeechChoiceInput } from "@/components/SpeechChoiceInput";
 
 type LikertScaleProps = {
   legend: string;
@@ -14,11 +15,11 @@ type LikertScaleProps = {
 };
 
 const defaultLabels = [
-  "Strongly disagree",
-  "Disagree",
-  "Neither agree nor disagree",
-  "Agree",
-  "Strongly agree"
+  "Not at all",
+  "Slightly",
+  "Moderately",
+  "Very",
+  "Extremely well"
 ];
 
 export function LikertScale({
@@ -39,6 +40,15 @@ export function LikertScale({
     <fieldset className="fieldset">
       <legend>{legend}</legend>
       <QuestionAudioButton text={spokenText} speed={audioSpeed} voiceURI={voiceURI} />
+      <SpeechChoiceInput
+        id={`${name}-choice`}
+        options={labels.map((label, index) => ({
+          value: String(index + 1),
+          label: `${index + 1}: ${label}`,
+          aliases: [label, String(index + 1)]
+        }))}
+        onChange={(nextValue) => onChange(Number(nextValue))}
+      />
 
       <div className="likert-row">
         {[1, 2, 3, 4, 5].map((score) => (
@@ -51,7 +61,7 @@ export function LikertScale({
               onChange={() => onChange(score)}
               required={required}
             />
-            <span>{labels[score - 1]}</span>
+            <span>{score}: {labels[score - 1]}</span>
           </label>
         ))}
       </div>

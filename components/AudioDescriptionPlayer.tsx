@@ -85,7 +85,7 @@ export function AudioDescriptionPlayer({
         ? "The one allowed replay has been used."
         : "You may replay this description once."
       : mode === "preference"
-        ? "You may play and replay this description as many times as needed."
+        ? null
         : "Use this audio to confirm that the voice and speed are comfortable.";
 
   return (
@@ -95,7 +95,7 @@ export function AudioDescriptionPlayer({
     >
       <h3 id={`${label.replaceAll(" ", "-")}-heading`}>Audio {label}</h3>
 
-      <p className="help-text">{replayHelp}</p>
+      {replayHelp && <p className="help-text">{replayHelp}</p>}
 
       <div className="button-row">
         <AccessibleButton type="button" onClick={() => play(false)} disabled={playedOnce}>
