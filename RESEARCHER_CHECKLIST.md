@@ -6,6 +6,7 @@
 - Confirm the participant ID format.
 - Assign sequence group A, B, C, or D.
 - Confirm audio output device and volume.
+- Confirm microphone input and speech-to-text support if the participant wants to speak answers.
 - Ask participant to select audio speed.
 - Run the practice trial.
 - Confirm whether the selected speed is comfortable.
@@ -21,6 +22,7 @@
 - After each ranking, ask the participant to explain the reasons for their ordering.
 - Do not help answer comprehension questions.
 - Record any accessibility issues or confusion.
+- Ask participants to review speech-to-text answers before continuing; use headphones to prevent question audio from reaching the microphone.
 - If the participant asks to stop, stop the session.
 
 ## After the study
@@ -38,6 +40,7 @@
 - Keyboard-only navigation.
 - NVDA + Chrome.
 - VoiceOver + Safari.
+- Live transcription in the supported study browser, including denied microphone permission and unsupported-browser fallbacks.
 - Browser zoom at 200%.
 - High contrast mode.
 - No mouse.

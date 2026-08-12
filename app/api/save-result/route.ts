@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
-      schemaVersion: 4,
+      schemaVersion: 6,
       comprehensionOrder: Array.isArray(body?.comprehensionOrder)
         ? body.comprehensionOrder
         : [],
@@ -98,6 +98,12 @@ export async function POST(request: NextRequest) {
         preferenceCount: Array.isArray(body?.preferenceResponses)
           ? body.preferenceResponses.length
           : 0,
+        interviewAnswerCount: Array.isArray(body?.interviewResponses)
+          ? body.interviewResponses.filter(
+              (response: { answer?: unknown }) =>
+                typeof response?.answer === "string" && response.answer.trim().length > 0
+            ).length
+          : 0,
         hasPerImageWorkload: Array.isArray(body?.comprehensionResponses)
           ? body.comprehensionResponses.every(
               (response: { workload?: { mentalDemand?: unknown; effort?: unknown; frustration?: unknown } }) =>
@@ -105,11 +111,23 @@ export async function POST(request: NextRequest) {
                 response?.workload?.effort !== undefined &&
                 response?.workload?.frustration !== undefined
             )
-          : false
+          : false,
+        practiceResponseRecorded:
+          typeof body?.practiceResponse === "string" && body.practiceResponse.trim().length > 0,
+        uncertainSpatialAnswerCount: Array.isArray(body?.comprehensionResponses)
+          ? body.comprehensionResponses.reduce(
+              (count: number, response: { spatialAnswers?: { isUncertain?: unknown }[] }) =>
+                count +
+                (Array.isArray(response?.spatialAnswers)
+                  ? response.spatialAnswers.filter((answer) => answer?.isUncertain === true).length
+                  : 0),
+              0
+            )
+          : 0
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v4"
+      appVersion: "blv-user-study-nextjs-v6"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);

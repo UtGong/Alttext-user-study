@@ -17,5 +17,5 @@ export const LATIN_SQUARE: Record<SequenceGroup, Record<Exclude<ImageSet, "prefe
 };
 
 export const STORAGE_KEY = "blv-user-study-state-v1";
-export const STUDY_SCHEMA_VERSION = 4 as const;
-export const CONSENT_VERSION = "2026-08-10";
+export const STUDY_SCHEMA_VERSION = 6 as const;
+export const CONSENT_VERSION = "2026-08-12";

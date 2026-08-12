@@ -5,6 +5,9 @@ export type SpeechVoiceOption = {
   label: string;
 };
 
+export const QUESTION_AUDIO_STARTING_EVENT = "question-audio-starting";
+export const SPEECH_INPUT_STARTING_EVENT = "speech-input-starting";
+
 export function isSpeechSupported() {
   return typeof window !== "undefined" && "speechSynthesis" in window;
 }

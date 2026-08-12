@@ -70,7 +70,9 @@ export function exportComprehensionCsv(state: StudyState) {
     "audioEndedAt",
     "submittedAt",
     "descriptionText",
+    "gistQuestion",
     "freeRecall",
+    "freeRecallQuestion",
     "gistAnswer",
     "gistScore",
     "spatialAccuracyScore",
@@ -81,12 +83,14 @@ export function exportComprehensionCsv(state: StudyState) {
     "spatialRelationsConfidenceLabel",
     "contentComprehension",
     "contentComprehensionLabel",
+    "ratingQuestionsJson",
     "workloadMentalDemand",
     "workloadMentalDemandLabel",
     "workloadEffort",
     "workloadEffortLabel",
     "workloadFrustration",
     "workloadFrustrationLabel",
+    "workloadQuestionsJson",
     "spatialAnswersJson",
     "audioPlayEventsJson",
     "stepTimestampsJson"
@@ -111,7 +115,9 @@ export function exportComprehensionCsv(state: StudyState) {
     audioEndedAt: response.audioEndedAt,
     submittedAt: response.submittedAt,
     descriptionText: response.descriptionText,
+    gistQuestion: response.gistQuestion,
     freeRecall: response.freeRecall,
+    freeRecallQuestion: response.freeRecallQuestion,
     gistAnswer: response.gistAnswer,
     gistScore: response.gistScore,
     spatialAccuracyScore: response.spatialAccuracyScore,
@@ -122,12 +128,14 @@ export function exportComprehensionCsv(state: StudyState) {
     spatialRelationsConfidenceLabel: response.ratings.spatialRelationsConfidence?.label,
     contentComprehension: response.ratings.contentComprehension?.value,
     contentComprehensionLabel: response.ratings.contentComprehension?.label,
+    ratingQuestionsJson: response.ratingQuestions,
     workloadMentalDemand: response.workload.mentalDemand?.value,
     workloadMentalDemandLabel: response.workload.mentalDemand?.label,
     workloadEffort: response.workload.effort?.value,
     workloadEffortLabel: response.workload.effort?.label,
     workloadFrustration: response.workload.frustration?.value,
     workloadFrustrationLabel: response.workload.frustration?.label,
+    workloadQuestionsJson: response.workloadQuestions,
     spatialAnswersJson: response.spatialAnswers,
     audioPlayEventsJson: response.audioPlayEvents,
     stepTimestampsJson: response.stepTimestamps
@@ -207,12 +215,14 @@ export function exportPreferenceCsv(state: StudyState) {
     "replayCountsJson",
     "bestChoice",
     "preferredCondition",
+    "rankingQuestion",
     "rankingFirst",
     "rankingSecond",
     "rankingThird",
     "rankingFourth",
     "startedAt",
     "responseTimeMs",
+    "explanationQuestion",
     "explanation"
   ];
 
@@ -230,12 +240,14 @@ export function exportPreferenceCsv(state: StudyState) {
     replayCountsJson: response.replayCounts,
     bestChoice: response.bestChoice,
     preferredCondition: response.preferredCondition,
+    rankingQuestion: response.rankingQuestion,
     rankingFirst: response.ranking.first,
     rankingSecond: response.ranking.second,
     rankingThird: response.ranking.third,
     rankingFourth: response.ranking.fourth,
     startedAt: response.startedAt,
     responseTimeMs: response.responseTimeMs,
+    explanationQuestion: response.explanationQuestion,
     explanation: response.explanation
   }));
 
@@ -246,10 +258,38 @@ export function exportPreferenceCsv(state: StudyState) {
   );
 }
 
+export function exportInterviewCsv(state: StudyState) {
+  const timestamp = timestampForFilename();
+  const headers = [
+    "participantId",
+    "sequenceGroup",
+    "questionId",
+    "question",
+    "answer",
+    "submittedAt"
+  ];
+
+  const rows = state.interviewResponses.map((response) => ({
+    participantId: state.participant.participantId,
+    sequenceGroup: state.participant.sequenceGroup,
+    questionId: response.questionId,
+    question: response.question,
+    answer: response.answer,
+    submittedAt: response.submittedAt
+  }));
+
+  downloadFile(
+    `blv-study-interview-${timestamp}.csv`,
+    toCsv(headers, rows),
+    "text/csv"
+  );
+}
+
 export function exportAllCsv(state: StudyState) {
   exportComprehensionCsv(state);
   exportWorkloadCsv(state);
   exportPreferenceCsv(state);
+  exportInterviewCsv(state);
 }
 
 /**

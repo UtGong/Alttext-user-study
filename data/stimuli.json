@@ -8,10 +8,10 @@
     "role": "comprehension",
     "imageSet": "set1",
     "descriptions": {
-      "baseline": "A long decorated banner hangs from the mast of a ship visible in the background on the left. In the foreground, a clean-shaven man in a cloak stands facing right, holding a staff with a cross-topped banner. To his right, a nude woman sits up in a hammock suspended between two trees. The hammock is strung taut between the trunks, with the woman’s body angled toward the man. The trees frame the central figures, with one tree on the left behind the man and another on the right supporting the hammock.",
-      "spatial": "A long, decorated banner stretches across the upper left of the painting, hanging from a tree branch. Below it, a clean-shaven man stands in profile, holding a staff and wearing a cloak, positioned just to the right of the banner’s lower edge. To his right and slightly behind him, a nude woman sits upright in a hammock that is suspended between two large trees. The hammock occupies the central foreground, with the woman’s body angled toward the viewer. The two trees, one on each side of the hammock, rise from the ground in the right half of the scene, framing the woman and extending upward into the upper right of the painting.",
-      "semantic": "In the upper left of the painting, a long decorated banner unfurls from a pole held by a figure. To its right, two trees rise in the background, their branches forming a canopy over the scene. Suspended between them is a hammock, in which a nude woman sits up, her body angled toward the viewer. Behind her, a clean-shaven man stands, holding a staff and gazing toward the left side of the composition.",
-      "spatial2d": "A long, elaborately decorated banner hangs prominently along the top edge of the painting, just beneath the upper left corner. Directly below it, two large, leafy trees rise from the ground, their branches spreading outward and upward to frame the scene. Nestled between these trees, a nude woman sits upright in a woven hammock, her body relaxed and her arms extended as if gesturing toward the viewer. The hammock itself is suspended between the tree trunks, positioned just below the woman’s torso. To the left of the hammock and slightly in front of it, a clean-shaven man stands, holding a staff and wearing a long robe, his gaze directed toward the right side of the frame."
+      "baseline": "At center, a clean-shaven man stands between two trees. A long decorated banner rises beside him and curves across the upper-left area. On the right, a hammock is tied near the trees, with a nude woman sitting up in it.",
+      "spatial": "A long decorated banner hangs near the upper center-left of the print, descending vertically with small motifs and a curved lower edge. Around and to the right of it, two large trees rise from the lower half of the canvas toward the top edge, their trunks and broad foliage framing the scene. Farther to the lower right, a nude woman sits upright, turned toward the center of the image. Just below and around her in the lower right quadrant, a woven hammock stretches diagonally across the scene. To the left of the hammock and near the central tree, a clean-shaven man stands in profile, holding a tall staff and facing toward the right side of the composition.",
+      "semantic": "In the lower right of the print, a woven hammock stretches diagonally across the foreground. Just above and to the right of it, a nude woman sits upright, partially framed by the scene’s right side. Moving upward and leftward, two tall trees rise through the middle and right side of the composition, their trunks and broad leaves filling much of the upper half. Near the center of the image, beside the trees, a clean-shaven man stands in profile holding a long pole. Extending above him toward the upper left, a long decorated banner hangs vertically, marked with stars and a cross-shaped finial at the top.",
+      "spatial2d": "A long decorated banner hangs in the upper center-left of the engraving, draping downward beside the trees and marked with small stars and a cross-like finial at the top. Below and slightly to the right, near the center of the frame, a clean-shaven man in a cap and long garment stands holding a vertical staff. Farther to the right, in the lower-right portion of the scene, a nude woman sits upright, turned toward the left with one arm raised. Above and around these figures, two large trees rise through the composition, their trunks and leafy branches spreading across the upper half of the image. Beneath the trees in the lower right, a hammock stretches diagonally across the foreground, supporting a reclining figure."
     },
     "audio": {},
     "targetElements": [
@@ -45,7 +45,7 @@
       {
         "id": "r57_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Were the nude woman and standing man centered on the left of the image?",
+        "question": "Is the nude woman and standing man centered on the left of the image?",
         "options": [
           "Yes",
           "No"
@@ -77,10 +77,10 @@
     "role": "comprehension",
     "imageSet": "set1",
     "descriptions": {
-      "baseline": "A woman sits on the right side of a long table, her hands resting on the table’s surface. To her left, a bearded man stands near the table’s center, his gaze directed toward the woman. Further left, a young cleanshaven man stands at the table’s edge, holding a bowl. Another man, also standing, is positioned near the center of the table, holding a bowl and looking down. The long table stretches horizontally across the scene, with several figures gathered around it.",
-      "spatial": "A long table stretches horizontally across the lower center of the painting, laden with plates and vessels, anchoring the composition. Seated at its head is a bearded man, his gaze directed downward in solemn contemplation. To his immediate left stands a woman, her hands clasped in prayer, her posture reverent. Continuing along the table’s length, a young cleanshaven man sits with a composed demeanor, his hands resting on the tablecloth. Further along, a man in a green robe leans forward, holding a bowl, his expression one of focused attention. The entire scene unfolds within a richly detailed interior, framed by architectural elements and ornate textiles.",
-      "semantic": "In the center of the composition, a bearded man stands with his hands raised in a gesture of blessing, positioned directly behind a long table that stretches horizontally across the middle of the scene. To his right, a man in a green tunic and blue cap leans forward, holding a bowl as if offering it. Further to the right, a young cleanshaven man in a red robe and white collar sits at the table, his gaze directed downward. To the left of the bearded man, a woman in a white head covering and dark green gown stands with her hands clasped in prayer. The entire scene unfolds within a richly decorated interior, with the figures arranged around the table and framed by architectural elements and tapestries in the background.",
-      "spatial2d": "In the center of the painting, a bearded man stands with his hands raised in gesture, positioned slightly left of the vertical center. To his right, a man in a green tunic holds a bowl, standing just behind him. Further to the right, a young cleanshaven man in a red robe and white collar sits at the table, his gaze directed downward. Behind him, a woman in an ornate gown with a white headdress sits at the table, her hands resting gently on her lap. The long table stretches horizontally across the lower half of the scene, laden with plates and goblets, and extends from the left edge of the frame toward the right, anchoring the composition beneath the figures."
+      "baseline": "A long table stretches across the lower part of the scene. Behind it, a bearded man sits near the center-left, with a woman immediately to his left. To the right of the bearded man, another man leans forward holding a bowl. Farther right, a young cleanshaven man in red sits beside a woman at the right end of the table. Additional men and women are grouped along the table, with some figures standing in front of it at the lower left and lower center.",
+      "spatial": "In the lower center-left of the painting, a bearded man with long hair sits facing forward, his head bowed and one hand raised in a gesture of blessing. Immediately to his right, near the lower center, a man in a blue cap and green robe leans forward while holding out a shallow bowl. Farther to the right, in the lower right-center, a young cleanshaven man in a red robe and white fur-trimmed collar looks downward with a composed expression. Moving leftward across the lower portion of the scene, a woman in a white head covering and dark cloak stands with her hands clasped in prayer. Along the bottom edge of the painting, a long white-covered table stretches across the scene, set with round loaves, plates, cups, and serving dishes.",
+      "semantic": "In the lower center-left of the painting, a bearded man with long hair and a lowered gaze raises one hand in a gesture of blessing. Immediately to the right, near the lower center, a man in a cap leans forward while holding out a shallow bowl. Across the bottom of the scene, a long white table stretches from the lower left toward the lower right, set with plates, cups, and serving dishes. Moving back to the left side of the table, a woman in a white head covering clasps her hands in prayer and looks downward. Farther to the right, along the lower right portion of the painting, a young cleanshaven man in a red robe and cap sits with his eyes lowered beside the richly patterned wall hanging.",
+      "spatial2d": "A long banquet table stretches across the lower portion of the painting, covered with a white cloth, small round loaves, plates, cups, and decorative fringe along its front edge. Just above the table near the lower center-left sits a bearded man with long hair and a calm, downcast face, one hand raised in a gesture. To the left of him, along the lower left side of the canvas, a woman in a white head covering bows her head with her hands clasped in prayer. Moving rightward past the bearded man, a young cleanshaven man appears in the lower right-center, wearing a red robe and a red-and-white cap, his eyes lowered. Slightly to the left of this young man, in the lower center-right, another man leans forward in a blue cap and green garment, holding a shallow bowl as he looks downward."
     },
     "audio": {},
     "targetElements": [
@@ -146,10 +146,10 @@
     "role": "comprehension",
     "imageSet": "set1",
     "descriptions": {
-      "baseline": "A nude baby boy is held by a woman in the lower-left foreground, while a group of people, including a light-skinned woman and a light-skinned man, gather around them. In the background, an arched bridge spans a body of water, positioned behind the central group and partially framed by trees.",
-      "spatial": "In the upper left of the painting, a group of six dressed light-skinned people are gathered near a large tree with golden leaves. To their right, an arched bridge stretches across a distant valley, visible along the top edge of the scene. Below the bridge and slightly to the center, a nude baby boy is cradled in the arms of a woman, positioned in the lower center of the composition. To the right of the baby, a woman in an ornate gown stands, her gaze directed downward toward the child. Further to her right, a sixth dressed light-skinned man kneels on the ground, his posture suggesting reverence or service, anchored in the lower right corner of the frame.",
-      "semantic": "An arched bridge spans across the left side of the painting, its structure receding into the background beneath a canopy of golden leaves. To its right, a group of six dressed light-skinned people are gathered, their forms clustered near the center of the composition. Among them stands a woman, elegantly attired in a patterned gown and adorned with a jeweled crown, positioned slightly to the right of the group’s center. Surrounding her, the six dressed light-skinned men are arranged in a semi-circle, their attention directed toward the woman and the central action. In the lower-left foreground, a nude baby boy is held aloft by a woman, his small body contrasting with the rich fabrics and ornate attire of the figures around him, anchoring the scene’s emotional focus near the bottom edge of the canvas.",
-      "spatial2d": "In the upper left of the painting, six dressed light-skinned men are gathered near a large tree, their figures clustered together. Moving downward and slightly to the right, a nude baby boy is held aloft by a woman, positioned directly beneath the men and just to the left of the center. Continuing rightward from the baby, an arched bridge stretches across the midground, visible in the background behind the central group. Further right, a woman in ornate dress stands near the bridge, her posture turned toward the group. Finally, in the lower right corner, six dressed light-skinned persons are grouped together, some kneeling and others standing, forming a cluster near the base of a tree on the far right edge of the scene."
+      "baseline": "At the lower center, a nude baby boy is held near a woman. To the right of them, the woman stands among six dressed light-skinned people, including six dressed light-skinned men clustered around her. In the lower left background, an arched bridge appears beneath the group.",
+      "spatial": "In the lower center of the painting, a group of six dressed light-skinned men gathers around a draped cloth, their bodies partly cropped by the bottom edge. Just below and slightly to the right, a nude baby boy lies on his back with bent legs near the center bottom of the scene. Farther left in the lower background, an arched bridge spans a pale blue landscape beneath the trees. Moving back toward the lower middle, a woman with bare shoulders sits near the baby, turned toward the figures around her. Finally, on the lower right of the painting, six dressed light-skinned people cluster closely together beside a richly dressed woman and beneath dark tree foliage.",
+      "semantic": "In the lower left of the painting, an arched bridge appears in the distant landscape. Moving rightward across the lower half of the canvas, a group of six dressed light-skinned people gathers near the center-right, clustered around richly colored garments. Just above and to the right within this group, a woman with ornate hair and jewelry leans inward. Slightly left of her, near the lower center, six dressed light-skinned men are grouped together, including a seated figure in dark clothing. Below them and a little to the left of center, a nude baby boy lies on his back with one arm raised.",
+      "spatial2d": "At the lower right of the painting, a cluster of six dressed light-skinned people gathers around the richly dressed central figures. Moving leftward toward the lower center, a nude baby boy lies on his back with his limbs raised. Just above and to the right, a woman with light skin, styled hair, and ornate clothing leans in among the group. Farther left in the lower middle, six dressed light-skinned men appear together, including a seated man in dark clothing holding a pale cloth. Continuing to the lower left background, an arched bridge spans a distant landscape beneath the trees and blue sky."
     },
     "audio": {},
     "targetElements": [
@@ -193,7 +193,7 @@
       {
         "id": "r5_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Did the central group of people take up the most space in the center and right side of the image?",
+        "question": "Does the central group of people take up the most space in the center and right side of the image?",
         "options": [
           "Yes",
           "No"
@@ -215,10 +215,10 @@
     "role": "comprehension",
     "imageSet": "set1",
     "descriptions": {
-      "baseline": "A pale-skinned, balding man with a long white beard sits in profile, holding a large open book. To his right, resting on a cloth-covered surface, is a human skull. Behind the skull and to the right, an hourglass stands upright. Further to the right, a gnarled tree with twisted branches and sparse leaves rises, partially obscuring a red lantern hanging from its limbs. The scene is framed by a dark stone archway to the left.",
-      "spatial": "In the upper right of the painting, a gnarled tree with dense foliage is partially covered in moss and vines. To its left and slightly lower, a large book rests open on a rough-hewn table, its pages illuminated by a soft light. Beside the book, a human skull lies as a stark reminder of mortality. Positioned just to the right of the skull, an hourglass stands upright, its sands slowly trickling to signify the passage of time. In the center of the composition, a pale-skinned, balding man with a long white beard is seated, his gaze directed upward and to the right, seemingly in contemplation of the symbols surrounding him.",
-      "semantic": "In the upper right of the painting, a gnarled tree with dense foliage arches overhead, its twisted branches casting shadows across the scene. To the left and slightly below, a pale-skinned, balding man with a long beard sits in contemplation, his hands clasped as he gazes toward the right. Resting on a cloth-covered surface before him is a large, open book, its pages illuminated by a soft light. Positioned directly beside the book lies a human skull, its hollow eye sockets staring upward. Just to the right of the skull, an hourglass stands upright, its sand slowly trickling from the upper bulb to the lower, symbolizing the passage of time.",
-      "spatial2d": "In the upper right of the painting, a gnarled tree with dense foliage arches overhead, its branches casting deep shadows across the scene. Directly beneath it, an hourglass rests on a woven basket, positioned just to the right of a human skull that lies on a cloth-covered surface. To the left of the skull, a large book is open, its pages illuminated by a soft light, and beside it sits the skull. In the lower left of the painting, a pale-skinned, balding man with a long white beard is seated, his hands clasped over the book as he gazes upward, his figure framed by the dark archway behind him."
+      "baseline": "A covered gnarled tree fills the upper right of the image. Below it, near the lower center, a pale-skinned balding man faces right toward a large open book. In front of the book, slightly to the lower right, rests a skull. To the right of the book and skull stands an hourglass.",
+      "spatial": "In the upper right of the painting, a dark, gnarled tree is partly covered with dense pale leaves and twisted branches. Moving downward toward the lower right, an hourglass stands upright near the edge of the scene. Just to its left, a skull rests low in the frame, facing outward. Slightly above and to the left of the skull, a large open book lies across the lower center, its pale pages catching the light. Continuing leftward and upward from the book, a pale-skinned balding man with a white beard leans over the pages, his head and shoulders emerging from the shadowed interior.",
+      "semantic": "At the lower center-left of the painting, a pale-skinned balding man with a white beard leans forward in a brown robe. Above him, stretching across the upper middle and toward the right edge, a dark gnarled tree is covered with dense leaves and twisted branches. Below the man’s gaze in the lower center-right, a large open book rests on a surface with pale pages visible. Just to the right of the book near the lower right, a skull sits facing forward. Further right, near the right edge of the painting, an hourglass stands upright beside the skull.",
+      "spatial2d": "In the lower right of the painting, a skull rests on the ground beside pale grasses. Just above and to the left of it, a large open book lies across the foreground with its pages spread outward. To the right of the book, near the lower-right edge of the canvas, a narrow hourglass stands upright. Rising above these objects along the right side and stretching across the upper center of the painting, a covered, gnarled tree with dark twisting branches and dense leaves looms over the scene. Below this canopy, toward the lower center-left, a pale-skinned balding man with a white beard bends forward, his face turned toward the open book."
     },
     "audio": {},
     "targetElements": [
@@ -284,10 +284,10 @@
     "role": "comprehension",
     "imageSet": "set1",
     "descriptions": {
-      "baseline": "A woman in a blue robe is suspended in mid-air above a rectangular stone coffin draped with white cloth, surrounded by ten nude, babyish putti. Billowing brown and white clouds fill the sky around her, with some putti floating above and others clustered around her body. Two large fluted columns frame the scene on either side, with the woman and putti appearing to rise from between them.",
+      "baseline": "Alt text: A woman appears in the upper center-right among billowing brown clouds, with ten nude, babyish putti arranged around her from the upper left across the center and down toward the lower left and lower right. A rectangular stone coffin spans the lower center of the scene, with white bunched cloth draped over its front edge and falling downward. More brown cloud forms fill the upper and side areas around the figures.",
       "spatial": "At the bottom center of the painting, a white bunched cloth drapes over the front of a rectangular stone coffin, which rests between two massive columns. Rising from the coffin and ascending into the sky above, a woman in a flowing blue robe is surrounded by ten nude, babyish putti who float around her in dynamic motion. Above her, in the upper portion of the scene, billowing brown-seeming clouds fill the heavens, framing the celestial figures and adding depth to the composition.",
       "semantic": "In the upper portion of the painting, billowing brown and gray clouds swirl across the sky, framing the celestial scene. Below them, a woman in a flowing blue robe is depicted ascending, her gaze directed upward. Surrounding her are ten nude, babyish putti, their small bodies tumbling and reaching in dynamic motion around her form. Beneath this heavenly group, a rectangular stone coffin rests in the lower center of the composition, draped with a white, bunched cloth that pools around its base and spills onto the ground.",
-      "spatial2d": "In the upper portion of the painting, billowing brown and gray clouds swirl across the sky, forming a dramatic backdrop. Emerging from within these clouds is a woman, her gaze lifted upward, surrounded by a host of cherubic figures. These ten nude, babyish putti cluster around her, some clinging to her robes while others float freely in the air. Below this celestial group, a rectangular stone coffin rests in the lower center of the frame, draped with a bunched white cloth that pools around its base, creating a stark contrast between the heavenly scene above and the earthly object below."
+      "spatial2d": "At the lower center of the painting, a white bunched cloth hangs over the front edge of a tomb-like structure and spills downward in heavy folds. Extending behind and to the right of it across the lower half of the canvas is a rectangular stone coffin, long and pale, set between tall architectural columns. Above this, slightly right of center, a woman in pink and deep blue robes rises upward, looking toward the sky with one hand lifted. Around her lower body and continuing downward through the center are ten nude, babyish putti, clustered in motion as they support or surround her among the clouds. Spreading above and around them across the upper half of the painting are billowing brown clouds, framing the heavenly scene and opening to patches of blue sky."
     },
     "audio": {},
     "targetElements": [
@@ -353,10 +353,10 @@
     "role": "comprehension",
     "imageSet": "set2",
     "descriptions": {
-      "baseline": "A standing wall made of rough, earth-toned blocks stretches across the foreground, partially enclosing a pile of rubble. Behind it, a grassy slope rises toward a stone building in ruins, its arched openings and broken walls visible against a yellow sky. To the left of the ruin, a cluster of dark green trees stands tall, while to the right, a few slender trees rise near the top edge of the frame. The entire scene is set beneath a vast, pale yellow sky.",
-      "spatial": "In the lower-left foreground of the painting, a cluster of rough, light-colored stone blocks rests on the ground, immediately adjacent to a taller, reddish-brown standing wall that rises behind them. Beyond this wall, a lush green hillside stretches upward, leading to a large, ruined stone building centered in the middle ground. This structure, with its arched openings and exposed wooden beams, stands against a vast, pale yellow sky that fills the upper portion of the canvas. To the far right, a few dark, slender trees rise from the hillside, their branches silhouetted against the sky and positioned near the upper-right edge of the painting.",
-      "semantic": "A vast yellow sky stretches across the upper portion of the painting, setting a warm, luminous tone for the scene. Below it, a standing wall of red brick runs horizontally across the mid-ground, anchoring the composition. Behind and slightly above this wall, a stone building with arched openings and fragmented walls rises, its silhouette framed against the sky. To the right, a cluster of tall, dark trees stands in the background, their branches reaching upward into the sky. In the foreground, a scattered pile of rough, light-colored blocks rests on uneven ground, completing the scene with a sense of rustic abandonment.",
-      "spatial2d": "A vast yellow sky stretches across the upper portion of the painting, setting a warm, luminous tone above the scene. Below it, a weathered stone building with arched openings and broken walls rises in the midground, its silhouette anchored against the sky. To the right of the building, a cluster of tall, dark trees stands in the upper right, their branches reaching into the yellow expanse. In the foreground, a low, reddish-brown standing wall runs horizontally across the lower left, its surface textured with brickwork. At the very bottom, scattered across the foreground, are numerous rough-hewn blocks of stone, piled and strewn in a chaotic heap, grounding the composition with earthy tones and tactile detail."
+      "baseline": "Alt text: A stone building with arched remains stands across the center and right of the scene beneath a yellow sky. A few dark trees rise on the left and far right, framing the building. Blocks of stone and rubble spread across the lower foreground, while a standing wall runs along the lower left and continues toward the lower center.",
+      "spatial": "A pale yellow sky stretches across the upper half of the painting and fills the open background. Below it, in the middle of the canvas, a gray stone building with broken arches and ruined walls spans from left of center toward the right. In the upper right, a few dark trees rise against the sky, with additional foliage gathered near the right edge. Moving down to the lower left foreground, a reddish standing wall cuts across the scene in front of the ruins. At the very bottom left and along the lower edge, pale stone blocks and rubble lie scattered in front of the wall.",
+      "semantic": "A pale yellow sky stretches across the upper half of the painting, forming a warm backdrop above the scene. Below it, along the lower left edge, a standing reddish brick wall rises in front of the landscape. Moving upward and across to the upper right, a few dark trees with thin trunks and sparse foliage frame the scene. In the middle of the canvas, a gray stone building with arched openings and broken structural lines spans horizontally beneath the sky. At the bottom left foreground, blocks and pale rubble lie scattered in front of the wall and across the lower edge of the painting.",
+      "spatial2d": "In the lower left foreground, pale and tan blocks lie scattered across the rubble. Just above them, a reddish standing wall rises along the left side of the painting. Moving upward and toward the center, a gray stone building stretches across the middle of the canvas with broken arches and dark exposed beams. Farther to the upper right, a few tall, dark trees stand against the open space, with smaller clumps of foliage nearby. Across the entire upper background, a broad yellow sky fills the scene behind the ruins and trees."
     },
     "audio": {},
     "targetElements": [
@@ -422,10 +422,10 @@
     "role": "comprehension",
     "imageSet": "set2",
     "descriptions": {
-      "baseline": "A woman sits centrally on stone steps, holding a nude child on her lap. To her left, a second nude child stands on the steps, reaching toward her. Above them, a vivid blue sky with scattered clouds fills the upper portion of the frame.",
-      "spatial": "In the lower left of the painting, a nude child with curly hair is captured mid-motion, reaching forward with an apple in hand. Just to the right and slightly behind this child, a woman is seated, her form draped in a red and blue garment, holding a second child who is also nude. This child, positioned on her lap, looks toward the viewer. Above and to the right of the seated woman, the sky stretches across the upper portion of the canvas, painted in a vivid blue with soft, billowing clouds. Further to the right, near the center-right of the composition, a third child is visible, sitting on the stone ledge, partially obscured by the seated woman’s form.",
-      "semantic": "A woman sits centrally in the composition, cradling a nude child on her lap, positioned directly beneath a vast, vivid blue sky that stretches across the upper portion of the painting. To the left of the woman, a second child stands on the stone steps, reaching upward toward the seated figure. Behind the woman and child, classical architecture rises into the background, framed by the expansive sky. To the right, a reclining figure rests on the steps, partially obscured by shadow, completing the scene’s balanced arrangement.",
-      "spatial2d": "Above the scene, a vast vivid blue sky stretches across the upper portion of the painting, dotted with soft, billowing clouds that frame the distant architectural elements. Below this sky, a woman sits gracefully on a stone ledge, her posture serene and composed. Resting on her lap is a nude child, its small body bare and tender, gazing upward with innocent curiosity. To the left of the seated woman, another child is positioned, reaching out toward her with a playful energy. This second child, also nude, stands slightly lower in the composition, its movement adding a sense of dynamic life to the tranquil setting. The entire scene is anchored in a classical architectural space, with columns and steps grounding the figures within a timeless, reverent atmosphere."
+      "baseline": "A seated woman is positioned on the right side, with one nude child held beside her and a second child lower in front of her. Above and behind them, a vivid blue sky fills the upper background.",
+      "spatial": "Across the upper right of the painting, a vivid blue sky opens behind pale clouds and classical architecture. Below it in the lower right half of the canvas sits a woman in red, blue, and dark drapery, facing forward with a calm expression. Just to the right of her, in the lower right area, a nude child leans against her lap with one arm extended across her body. Higher behind them, near the right-center of the painting, another child appears within the architectural setting. In the lower center, slightly left of the seated woman, a second child with curly hair looks upward toward her.",
+      "semantic": "In the lower right of the painting, a seated woman in red and blue robes cradles a child while facing slightly left. Above and behind her, across the upper right of the canvas, a vivid blue sky with pale clouds opens beyond the architecture. Just to the woman’s right, in the lower right quadrant, a nude child leans against her, his small body angled across her lap. Higher in the background, near the upper right center, one child is indicated near the architectural ledge and sky. Moving down and left from the woman’s lap, a second child appears in the lower center, nude and curly-haired, looking upward toward the seated woman.",
+      "spatial2d": "In the lower center of the painting, a second curly-haired child kneels close to the main group, looking upward. Just above and to the right, a seated woman in red and blue drapery holds the composition’s central position. To the right of her face and across her lap, a nude child leans outward with pale limbs and a soft, turned head. Farther upward in the right-center background, one small child appears as a tiny figure atop the pale architectural structure. Across the upper right and along the top edge, a vivid blue sky opens behind the architecture and clouds."
     },
     "audio": {},
     "targetElements": [
@@ -449,7 +449,7 @@
       {
         "id": "r66_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the sitting child positioned to the left of the sitting man?",
+        "question": "Is the sitting child positioned to the left of the sitting man?",
         "options": [
           "Yes",
           "No"
@@ -469,7 +469,7 @@
       {
         "id": "r66_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Were the clouds and blue sky positioned in the upper right corner of the image?",
+        "question": "Was the clouds and blue sky positioned in the upper right corner of the image?",
         "options": [
           "Yes",
           "No"
@@ -489,10 +489,10 @@
     "complexityLevel": "medium",
     "complexityScore": 0.6993,
     "descriptions": {
-      "baseline": "In the foreground, two painted figures stand on a rocky shoreline beside the water. Behind them, a grassy hill rises to the left, sloping upward toward the midground. A stone wall runs along the base of the hill, adjacent to the water’s edge. The water stretches across the lower half of the frame, meeting a distant horizon. Above, white and gray drift clouds fill the sky, drifting across the upper portion of the scene.",
-      "spatial": "In the lower foreground of the painting, two painted figures stand on a rocky shoreline, positioned near the water’s edge. Behind them, a stretch of calm water extends across the middle ground, reflecting the soft light of the sky. Rising from the far shore, a stone wall lines the edge of a grassy hill that slopes upward from the water’s edge. The hill continues upward into the background, its green slopes fading into the distance. Above the entire scene, the upper portion of the canvas is filled with a vast expanse of white and gray drift clouds, drifting across the sky in soft, billowing formations.",
-      "semantic": "In the lower left foreground of the painting, two painted figures stand on a rocky shoreline, positioned near the water’s edge. Behind them, the water stretches across the midground, its surface reflecting the sky’s muted tones. Further back, a stone wall runs along the waterfront, separating the water from a grassy hill that rises steeply from the left side of the scene. Above this hill and extending across the entire upper portion of the canvas, a vast expanse of white and gray drift clouds drifts through the sky, filling the upper half of the composition and creating a dramatic, atmospheric backdrop.",
-      "spatial2d": "Above the scene, a vast expanse of white and gray drift clouds fills the upper portion of the painting, drifting across the sky with soft, textured forms. Below them, a grassy hill rises from the left side of the canvas, sloping gently downward toward the water’s edge. Along the base of this hill, a stone wall runs horizontally, separating the land from the harbor. In front of the wall and extending across the middle ground, calm water stretches toward the horizon, reflecting the muted tones of the sky and distant ships. In the foreground, near the bottom edge of the painting, two painted figures stand on a rocky shoreline, positioned closest to the viewer."
+      "baseline": "White-gray drift clouds fill most of the upper frame. Below them, a grassy hill slopes down along the left side toward the center. A stone wall sits near the lower left edge, with water stretching across the lower and middle right. The closest two painted people stand near the bottom center beside the water.",
+      "spatial": "Across the upper expanse of the painting, white-gray drift clouds spread through a pale blue sky. Below them on the left side, a grassy hill slopes downward toward the harbor. Along the lower left edge, a stone wall sits at the base of the hill, leading the eye toward the waterfront. From there, calm water stretches across the lower half of the scene, reflecting the muted sky and harbor structures. In the lower center foreground, the closest two painted people stand on the shore among pale rocks beside the water.",
+      "semantic": "Near the lower center of the painting, two small painted people stand on a rocky shore in the foreground. Just beyond them, calm water stretches horizontally across the lower half of the canvas toward the distant harbor. Moving left along the shoreline, a blocky stone wall rises in the lower left, marking the edge of the built waterfront. Above it and across most of the upper canvas, broad white-gray drift clouds sweep through a pale blue sky. From the lower left edge, a dark grassy hill slopes upward and inward, framing the harbor scene below.",
+      "spatial2d": "Near the lower center of the painting, two small painted figures stand among pale rocks on the shore. Just above and around them, calm water stretches horizontally across the lower half of the scene, reflecting muted greens, grays, and browns. Farther back along the lower left edge, a low stone wall and blocky buildings sit at the water’s edge. Rising behind that wall, a dark grassy hill slopes upward from the lower left toward the middle of the canvas. Above the hillside and harbor, white-gray drift clouds spread across most of the upper frame, broken by patches of pale blue sky."
     },
     "targetElements": [
       "Closest two painted people",
@@ -505,7 +505,7 @@
       {
         "id": "r48_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Were the two painted figures positioned in front of the grassy hill?",
+        "question": "Was the grassy hill positioned in front of the people?",
         "options": [
           "Yes",
           "No"
@@ -515,7 +515,7 @@
       {
         "id": "r48_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the stone wall positioned between the water and the grassy hill?",
+        "question": "Was the stone wall positioned at the bottom of the grassy hill?",
         "options": [
           "Yes",
           "No"
@@ -525,22 +525,22 @@
       {
         "id": "r48_q_absolute_1",
         "frameOfReference": "absolute",
-        "question": "Were the two painted figures positioned in the lower-left portion of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r48_q_absolute_2",
-        "frameOfReference": "absolute",
-        "question": "Were the white and gray clouds positioned in the lower half of the image?",
+        "question": "Was the grassy hill positioned on the right side of the image?",
         "options": [
           "Yes",
           "No"
         ],
         "correctAnswer": "No"
+      },
+      {
+        "id": "r48_q_absolute_2",
+        "frameOfReference": "absolute",
+        "question": "Were the two people positioned on the bottom left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
       }
     ],
     "role": "comprehension",
@@ -560,10 +560,10 @@
     "role": "comprehension",
     "imageSet": "set2",
     "descriptions": {
-      "baseline": "A clean-shaven young man leans forward, holding a fish in his right hand, positioned to the right of a winged angel. The angel, with large, feathered wings and a halo, stands to the left, holding a gold vessel in her left hand. A small, shaggy white dog is on the ground near the angel’s feet, to the lower left of the angel’s body.",
-      "spatial": "In the upper left of the painting, a fish is held in the hand of a clean-shaven young man who leans forward, positioned slightly to the right of the center. To his left and slightly behind him stands a winged angel, whose large, translucent wings extend upward and outward, partially obscuring the sky behind them. The angel holds a small gold vessel in their left hand, positioned near their waist. At the bottom left of the painting, near the angel’s feet, a small shaggy white dog rests on the ground, its body oriented toward the lower left corner of the frame.",
-      "semantic": "In the upper left of the painting, a fish is held in the hand of a clean-shaven young man who leans forward, positioned slightly to the right of the center. To his left and slightly behind him stands a winged angel, draped in a flowing blue robe with golden trim, holding a gold vessel in her left hand. At the angel’s feet, near the bottom left corner of the canvas, a small shaggy white dog rests on the ground.",
-      "spatial2d": "In the upper left of the painting, a winged angel with curly hair and large, translucent wings stands, draped in a flowing blue robe with gold trim. In their left hand, they hold a small gold vessel. To their right and slightly lower, a clean-shaven young man leans forward, wearing a blue tunic and a draped red cloak, his gaze directed toward the angel. He holds a fish in his right hand, positioned near his waist. At the bottom left of the scene, near the angel’s feet, a small shaggy white dog walks along the ground, its body low to the earth."
+      "baseline": "A winged angel stands just left of center, holding a gold vessel low at the lower left. To the right, a clean-shaven young man leans forward. A small shaggy white dog is at the lower left, near the angel’s feet, while a fish hangs along the man’s lower right side.",
+      "spatial": "In the upper left-center of the painting, a winged angel with curly hair and a pale blue robe stands against the sky and trees. Moving downward to the lower left of the angel, a small gold vessel is held near the edge of the robe. To the right, in the middle-right of the canvas, a clean-shaven young man with a halo leans forward, wearing blue and pink garments. Farther down and to the right, near the lower right portion of his drapery, a fish stretches diagonally across the scene. Finally, across the lower left of the painting, a small shaggy white dog walks along the ground beneath the angel.",
+      "semantic": "In the lower right of the painting, a fish appears along the edge of a pink drapery; moving up and left from it, a clean-shaven young man in blue and rose garments leans forward with his head tilted toward the center. Farther left, near the middle of the canvas, a winged angel in a pale blue robe sits with golden-tinted wings rising against the sky. Below the angel’s left side, near the lower left-center, a small gold vessel rests close to the ground. Continuing further left along the bottom edge, a small shaggy white dog walks with its head lowered.",
+      "spatial2d": "In the lower right of the painting, a fish lies near the pink drapery of a clean-shaven young man who leans forward from the right side of the canvas. Moving leftward, the man’s bowed head and halo sit beside a winged angel in the center-left, whose pale wings and blue robe rise against the sky. Below the angel’s left side, near the lower left of the central figure, a small gold vessel rests close to the ground. Farther left along the bottom edge, a small shaggy white dog walks across the foreground."
     },
     "audio": {},
     "targetElements": [
@@ -629,10 +629,10 @@
     "role": "comprehension",
     "imageSet": "set2",
     "descriptions": {
-      "baseline": "A young girl in a pink and gold robe stands on a set of red steps, positioned in front of an ornate doorway. To her left, an older man with a beard stands beside her, and behind him, another older woman in blue and white robes. On the other side of the doorway, an older bearded man in a red and white robe with a crown stands on a raised platform, gesturing toward the girl. Behind him, three young girls in yellow and red robes stand in profile, and to their right, two older men in red and green robes are seated on a bench. The entire scene is set against a shimmering gold background.",
-      "spatial": "In the lower left of the painting, a set of red-tiled steps ascends toward the center. Standing on these steps is a young girl in a pink robe adorned with gold patterns, holding a small red book. Just behind her and slightly to the left, an older man with a beard and a halo stands beside a woman in a blue and green robe, both gazing toward the central figure. In the center of the composition, a bearded man in regal attire, including a crown and red cloak, stands within an ornate arched doorway, gesturing outward. Behind him, the doorway opens into a vaulted space with a blue ceiling decorated with golden stars. The entire scene is set against a shimmering gold background that fills the upper and side portions of the canvas, creating a luminous, heavenly atmosphere.",
-      "semantic": "In the lower left of the painting, a set of reddish-brown steps ascends toward the center. Just above them, a young girl in a pink robe with gold embroidery stands, holding a small red book. Behind her, an older man with a beard and a halo, dressed in blue and red robes, stands beside a woman in a blue veil and green dress, also haloed. To their right, a bearded man in a white robe and red cloak, crowned and holding a staff, stands within an ornate architectural archway, gesturing toward the visitors. Above and behind the entire scene, a shimmering gold background fills the upper portion of the canvas, creating a luminous, celestial atmosphere.",
-      "spatial2d": "The painting opens against a shimmering gold background that fills the entire upper portion of the canvas, creating a radiant celestial backdrop. In the lower-left area, an older man with a beard and halo stands beside a young girl, both positioned on a set of steps that rise from the bottom edge of the scene. The young girl, also haloed and dressed in a pink gown adorned with gold embroidery, stands slightly ahead of the older man, holding a small red book. Just to the right of them, a bearded man in regal attire stands on a raised platform, gesturing toward the visitors; he is framed by an ornate architectural archway with blue starry vaults and intricate tracery. At the base of this archway, the steps continue upward, leading the viewer’s eye toward the central figure, while additional figures are visible in the right foreground, completing the narrative composition."
+      "baseline": "Against a shimmering gold background, broad steps rise from the lower center toward the right. A young girl stands near the middle of the steps. To her left stands a bearded man, while an older bearded man stands higher and to the right near the steps.",
+      "spatial": "A shimmering gold background fills the upper and left portions of the painting, mottled with reddish wear and age marks. In the lower left, an older bearded man with a halo appears beside a veiled woman. Moving slightly right and downward from him, a young girl with a halo wears a pink patterned robe and holds a small book. Farther to the right, near the center-right of the scene, a bearded standing man in a crown and red mantle faces left beneath an ornate architectural canopy. Below him and extending across the lower center of the painting, broad reddish steps lead upward toward the figures and the building.",
+      "semantic": "At the lower center of the painting, broad reddish steps lead upward toward a pale architectural platform. Just above and slightly to the right of these steps stands a bearded man in ornate robes, wearing a crown-like headdress and a red mantle over a white garment. Moving leftward across the lower part of the scene, an older bearded man with a halo appears among the gathered figures. Near the lower middle, slightly to his right, a young girl with a gold halo wears a pink patterned dress and holds a small book. Behind and around all of these figures, a shimmering gold background fills much of the upper and left portions of the painting, mottled with reddish wear and texture.",
+      "spatial2d": "At the lower center of the painting, broad reddish steps lead upward into an architectural setting. Just above and slightly left of these steps stands a young girl in a pinkish-red patterned dress, holding a small book and framed by a gold halo. To her left, near the lower-left portion of the canvas, an older man with gray hair and a beard appears beside another haloed figure. Moving rightward from him, a bearded standing man in a crown and red cloak occupies the middle-right of the painting beneath tall arches. Behind all of these figures and extending across the upper and left areas of the canvas is a shimmering gold background, worn and mottled with reddish patches."
     },
     "audio": {},
     "targetElements": [
@@ -698,10 +698,10 @@
     "role": "comprehension",
     "imageSet": "set3",
     "descriptions": {
-      "baseline": "From the viewer’s perspective, the shoreline stretches horizontally across the foreground, where waves crash against two large boulders positioned side by side near the water’s edge. Behind the boulders, the green water extends toward the horizon, bordered on the left by a cluster of muted green hills rising from the land. A mound is visible in the distance, situated to the right of the central water expanse, nestled between the shoreline and the sky.",
-      "spatial": "Beginning at the bottom edge of the painting, a sandy shoreline stretches horizontally across the foreground, where waves crash with white foam. Just beyond the shore, two large boulders emerge from the water, their dark, textured surfaces partially submerged as waves break around them. Moving further into the scene, the water transitions to a calm, green expanse that stretches across the middle ground, dotted with a solitary sailboat and a few distant birds. In the far distance, a small mound rises from the water, positioned near the center-right of the composition. Finally, along the upper right of the painting, muted green hills rise gently against the hazy sky, completing the tranquil coastal vista.",
-      "semantic": "In the lower left foreground, two large boulders emerge from the crashing waves, their rugged surfaces partially submerged as white foam surges around them. Beyond these rocks, the expansive green water stretches across the center of the painting, its surface calm and reflective, with a sailboat gliding gently in the middle distance. Further back, the shoreline curves along the bottom edge of the scene, where the waves meet the sandy beach and recede into the shallow water. Rising above the water and extending toward the horizon are muted green hills, occupying the upper right portion of the composition and fading softly into the hazy sky. Nestled within the water, near the right edge, is a small mound, its rounded silhouette rising gently from the sea and framed by the distant hills.",
-      "spatial2d": "In the upper right of the painting, muted green hills rise gently against the sky, their soft contours fading into the hazy horizon. Moving leftward, a small mound emerges in the mid-ground, nestled just above the water’s surface. The expansive green water stretches across the center of the scene, its calm surface broken only by the silhouette of a sailboat drifting near the mound. Further down, in the foreground, two large boulders jut from the water, their dark, textured surfaces crashing with white foam as waves surge around them. Finally, the shoreline runs along the bottom edge of the painting, a narrow band of wet sand where the waves meet the land, completing the coastal vista."
+      "baseline": "Green water spans the lower half of the scene, meeting a shoreline along the bottom edge. Two large boulders sit in the lower right within the water, while a mound rises on the lower left. Muted green hills stretch across the middle distance behind the water and shoreline.",
+      "spatial": "Muted green hills stretch across the lower left and middle distance of the painting, rising from dark vegetation and fading toward the center. Farther to the right along the horizon, a low mound sits near the edge of the water. Below this, green water spans the lower half of the canvas, reflecting the pale sky and holding small sailboats in the distance. In the lower center and lower right, two large boulders interrupt the surf as waves break around them. Along the very bottom edge, the shoreline forms a narrow sandy band with foamy water washing up onto it.",
+      "semantic": "At the lower center and lower right, two large dark boulders sit among foaming waves; above and beyond them, green water stretches across the middle of the painting toward the horizon. Farther back, muted green hills run low across the left and center background under a hazy sky. Along the bottom edge, the shoreline forms a narrow sandy band where surf breaks in white streaks. Near the far right horizon, a small mound rises subtly from the flat coastal distance.",
+      "spatial2d": "Along the bottom edge of the painting, a sandy shoreline meets foaming surf. Just above it in the lower right and lower center, two large dark boulders sit amid crashing waves. Beyond them, green water spreads across the lower half of the canvas, carrying small sailboats in the distance. Farther back, muted green hills stretch from the lower left toward the middle and right horizon under a pale yellow-green sky. Near the far right horizon, a small mound rises subtly from the waterline."
     },
     "audio": {},
     "targetElements": [
@@ -767,10 +767,10 @@
     "role": "comprehension",
     "imageSet": "set3",
     "descriptions": {
-      "baseline": "A woman in a white classical gown sits in a chariot pulled by two white horses, positioned in the center-left of the frame. To her right, a man on horseback, identified as Abraham Lincoln, rides alongside the chariot, holding a scroll. Behind them, a soldier on horseback carries a large American flag. In the background, a large white marble building with columns and a dome, the U.S. Capitol, stands prominently. An eagle flies above the chariot.",
-      "spatial": "In the lower-left foreground of the painting, two white horses are harnessed to a chariot, their powerful forms galloping forward. Behind them, a woman in a flowing white gown sits atop the chariot, holding a horn aloft. Immediately to her right, a soldier on horseback follows, and beside him, a man on a dark horse is identified as Abraham Lincoln. Further in the background, rising majestically above the scene, is a columned, domed white marble US building.",
-      "semantic": "In the upper right of the painting, Abraham Lincoln rides a dark brown horse, positioned prominently near the right edge of the scene, leading a procession of Union soldiers. Just to his left, a man in a dark military uniform rides a chestnut horse, positioned slightly behind Lincoln and to his left. Centered in the middle ground, a woman in a flowing white gown sits in a chariot, holding a trumpet aloft; she is seated directly behind the horses and slightly to the left of the soldier. The horses, two powerful white steeds harnessed together, are positioned in the lower left quadrant of the painting, pulling the chariot forward with dynamic motion. In the background, rising majestically above the central action, is a large columned domed white marble US building, occupying the upper center of the canvas and anchoring the composition behind the chariot.",
-      "spatial2d": "In the upper center of the painting, a grand columned domed white marble US building rises in the background, its classical architecture dominating the scene. In front of it, a powerful white horse gallops forward, harnessed to a chariot that carries a woman dressed in flowing white robes, who holds a trumpet aloft. To her right, a soldier in uniform rides beside the chariot, holding an American flag, while further to the right, Abraham Lincoln is depicted mounted on a dark horse, leading a procession of Union cavalrymen."
+      "baseline": "A columned, domed white marble U.S. building fills the upper right background. Along the lower foreground, several horses move across the scene, with a woman positioned on the right beside the horses. Abraham Lincoln appears near the lower center-left among the figures, with another man next to him.",
+      "spatial": "In the upper right and stretching across the middle background, a white marble U.S. Capitol-like building rises with a tall columned façade and a large domed roof against a cloudy blue sky. Below it, near the lower center of the painting, a team of horses surges forward, with a prominent white horse in harness leading the motion across the foreground. To the right of the horses, in the mid-right foreground, a woman in a white classical robe holds a large American flag beside the procession. Just to her right, near the right edge of the scene, a uniformed man on horseback appears next in the group. Moving left from him toward the center-right foreground, Abraham Lincoln is shown standing in dark clothing, set slightly behind the woman and near the moving horses.",
+      "semantic": "In the right-center foreground, Abraham Lincoln appears as a bearded man in a black suit standing amid the procession. Just to the right of him, a robed woman with long dark hair rides forward, raising one arm while seated among the horses and flags. Moving leftward across the lower middle of the painting, a white horse in harness charges through the crowd, its head and body prominent among other horses. Above this action, deep in the background across the upper middle and right side of the canvas, a vast white marble U.S. building with columns, pediments, and a tall domed roof rises against a cloudy blue sky. Farther to the right edge of the foreground, the next man stands near an American flag, wearing a dark uniform and hat beside the mounted figures.",
+      "spatial2d": "In the lower center of the painting, a white horse charges forward with raised legs and a flowing mane amid harnesses and other horses. Moving to the right side of the canvas, Abraham Lincoln appears standing in a dark suit and tall black hat among the figures and horses. Farther right, near the American flag, another man in a dark uniform and hat stands upright beside the procession. Just to his left and slightly lower, a woman in a white classical robe rides prominently, holding a banner and framed by sweeping fabric and reins. Rising behind all of these figures across the upper half of the painting is a large white marble U.S. building with rows of columns, triangular pediments, and a tall domed roof set against a cloudy blue sky."
     },
     "audio": {},
     "targetElements": [
@@ -836,10 +836,10 @@
     "role": "comprehension",
     "imageSet": "set3",
     "descriptions": {
-      "baseline": "A brown, boxy, long rectangular building with a flat top sits on the riverbank, its structure oriented horizontally across the midground. Below it, the river’s surface glimmers with reflections, and several small boats float at various distances from the shore. The horizon line stretches across the upper portion of the scene, separating the water from the overcast sky. Green grass is visible along the riverbank in the foreground and on the right bank, anchoring the composition at the bottom and right edges.",
-      "spatial": "In the lower portion of the painting, a strip of green grass runs along the bottom edge, forming the foreground. Just above it, the river glimmers with shimmering reflections, stretching across the canvas. Nestled within the water are several small boats, moored and bobbing gently. Behind them, a long, brown, boxy building with a flat roof stands prominently, its silhouette anchored against the water’s edge. Above all, the horizon line stretches across the upper portion of the scene, separating the water from the muted, cloudy sky.",
-      "semantic": "In the upper portion of the painting, small boats are moored near the water’s edge, their masts rising vertically against the sky. Directly beneath them, the river glimmers with shimmering reflections, its surface rippling with light and color. Situated along the riverbank, a brown, boxy, long rectangular building with a flat roof stands prominently, its structure grounded in the scene. Above this entire composition, the horizon line stretches across the upper edge of the canvas, separating the sky from the land and water. In the lower right corner, a patch of green grass adds a touch of earthy color to the foreground.",
-      "spatial2d": "A serene river scene unfolds across the canvas, beginning with a soft, muted horizon line stretching along the top edge. Just below it, a cluster of small boats rests near the water’s edge, their masts rising slightly toward the center. Beneath the boats, the river glimmers with subtle reflections, its surface shimmering with light as it flows beneath a long, brown, boxy, flat-topped building that stands prominently in the middle ground. This structure, with its rectangular form and earthy tones, anchors the composition. Finally, along the bottom edge of the painting, a patch of vibrant green grass frames the scene, grounding the tranquil waterscape."
+      "baseline": "A glimmering river fills the lower half of the scene, with small boats spread across it. Along the bottom edge, green grass borders the water. A brown, boxy, long rectangular flat-topped building sits on the right side beside the river. The horizon line runs across the middle distance above the river.",
+      "spatial": "Across the upper half of the painting, a hazy horizon line stretches horizontally beneath a pale, clouded sky. Below it, small boats cluster across the lower half of the river, scattered from the left side toward the center and right. To the lower right, a brown, boxy, long rectangular building with a flat top sits along the waterfront. Beneath and around it, the river glimmers with soft blue, gray, and white reflections across the lower middle of the canvas. Along the bottom edge, especially toward the right, patches of green grass frame the water’s edge.",
+      "semantic": "Small boats cluster across the lower half of the painting, with several dark and reddish hulls floating near the bottom center and lower right. Just above and around them, the river glimmers with pale blue, gray, and silvery reflections spreading across the middle and lower portions of the canvas. To the right of this reflective water, a brown, boxy, long rectangular building with a flat top occupies the lower-right area, its warm ocher walls mirrored faintly in the river below. Far above the boats, water, and building, a broad horizon line runs across the upper third of the painting beneath a cloudy, gray-blue sky. Along the bottom edge and especially toward the lower center and lower right, patches of green grass frame the riverbank in the foreground.",
+      "spatial2d": "Along the lower center of the painting, a patch of green grass curves across the riverbank, leading upward into the glimmering river below it, where pale blue, gray, and white brushstrokes suggest shimmering water. Across this water in the lower half of the canvas, several small boats sit scattered from left to right. Just above and to the right of the boats, a brown, boxy, long rectangular building with a flat top occupies the middle-right area near the waterfront. Beyond it, the scene opens upward to a broad, hazy horizon line stretching across the upper portion of the painting beneath a cloudy sky."
     },
     "audio": {},
     "targetElements": [
@@ -905,10 +905,10 @@
     "role": "comprehension",
     "imageSet": "set3",
     "descriptions": {
-      "baseline": "A long, narrow boat is positioned in the foreground canal, angled toward the right side of the frame. To its right, a stepped bridge extends diagonally from the canal’s edge, leading toward the center of the scene. The bridge’s steps rise upward and to the right, connecting to a plaza area. In the background, across the canal and behind the bridge, a large, ornate building with a detailed facade stands prominently, its architectural features oriented toward the viewer. To the right of the bridge and plaza, another large, story building with arched windows and a tall, stepped tower rises, its structure angled slightly away from the viewer. The horizon is visible above the buildings, stretching across the top of the frame.",
-      "spatial": "In the lower right foreground of the painting, people appear to be walking along a sunlit stone plaza, their figures rendered in period attire. To their left, a canal curves into the scene, its dark waters reflecting the surrounding architecture and bordered by a stepped bridge that arches gracefully over it. The bridge, positioned slightly left of center, connects the canal to the plaza and leads the eye toward a grand, ornate building rising in the midground. This building, with its intricate facade and prominent towers, is flanked by other story buildings that extend upward along the left side of the canvas. Above all these structures, the horizon stretches across the top of the painting, a clear, expansive blue sky with a single soft cloud drifting near the center, anchoring the entire scene in a sense of open, serene space.",
-      "semantic": "Towering story buildings rise along the left side of the canvas, their weathered facades and arched windows anchoring the scene’s foreground. Spanning the canal just beyond them is a stepped bridge, its stone arches connecting the walkways and leading the eye toward the central plaza. On the right, people appear in motion along the walkway, their figures clustered near the canal’s edge and beneath the shadow of a grand architectural structure. The canal itself angles sharply to the right, its dark waters reflecting the sky and flanked by gondolas and pilings. Above it all, the horizon stretches across the upper portion of the painting, a soft blue line where the sky meets the distant cityscape.",
-      "spatial2d": "A vast blue sky stretches across the upper portion of the painting, forming a serene horizon that anchors the scene. Below it, a cluster of story buildings rises along the left side, their facades detailed with arched windows and balconies, receding into the background. The eye then follows the canal, which angles toward the right, its dark waters reflecting the surrounding architecture and leading to a stepped bridge that arches gracefully over the water. Beyond the bridge, the canal continues, flanked by more buildings and figures, before opening into a sunlit plaza where people appear to be walking and gathering, bringing life to the foreground."
+      "baseline": "Tall story buildings line the left, center, and right sides of the scene, forming a corridor around a canal that runs from the lower foreground toward the distant horizon. A stepped bridge crosses the canal in the middle-right area. People appear along the walkways on both sides of the canal and near the bridge, with some figures farther back near the horizon. The canal angles to the right as it recedes, while the surrounding buildings create strong perspective lines toward the center distance.",
+      "spatial": "A broad pale blue sky fills the upper half of the painting, setting a high, open horizon above the city. Below it, multi-story Venetian buildings rise along the left, center, and right sides of the canvas, with arcaded windows, tiled roofs, church facades, and tall towers framing the scene. Moving down toward the lower right center, the canal angles diagonally through the composition, its dark water lined with gondolas, mooring posts, and reflections. Just above this canal area, near the lower middle-right, a small stepped bridge crosses over the water, connecting the clustered buildings on the left with the open square to the right. Finally, in the lower right foreground and across the nearby plaza, groups of people appear walking and standing, their small figures scattered along the sunlit pavement beside the canal.",
+      "semantic": "On the left side of the painting, tall story buildings rise along the canal, their arched windows and pale façades leading the eye downward into the city scene. Moving rightward toward the lower middle, a stepped bridge crosses the water, connecting the clustered buildings on the left with the open paved area on the right. Farther to the lower right, small people appear walking and standing on the sunlit pavement, scattered near the edge of the square. Just to their left and across the bottom center, the canal angles to the right, filled with dark gondolas and reflections beneath the bridge. Above all of this, the horizon stretches across the upper portion of the painting, where the buildings and church towers meet a broad blue sky with soft clouds.",
+      "spatial2d": "In the lower right of the painting, small groups of people walk and gather on a sunlit paved square, their figures scattered near the canal’s edge. Moving leftward from them, the canal cuts diagonally through the lower center of the scene, with gondolas and boats clustered along its right-angled bend. Above and to the left, tall multi-story buildings line the canal, their arched windows, pale façades, and brick walls rising along both sides of the waterway. Farther back near the middle-right, a stepped bridge crosses over the canal, leading the eye deeper into the city. Above all of this, the horizon opens into a broad expanse of pale blue sky across the upper part of the canvas, with low clouds and distant rooftops marking the background."
     },
     "audio": {},
     "targetElements": [
@@ -952,7 +952,7 @@
       {
         "id": "r52_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Was the plaza positioned on the left side of the image?",
+        "question": "Was the plaza positioned on your left?",
         "options": [
           "Yes",
           "No"
@@ -974,10 +974,10 @@
     "role": "comprehension",
     "imageSet": "set3",
     "descriptions": {
-      "baseline": "A young woman reaches out toward a man standing to her left, while a small, furry brown dog sits on the ground near the lower right corner of the scene. Another dog is visible near the lower left, beside the man and woman. A high wall runs horizontally across the background, separating the foreground crowd from a treed area in the distance.",
-      "spatial": "In the lower right corner of the painting, a small, furry brown dog sits attentively on the ground. Just above and to the left of the dog, a man in dark clothing stands near a group of people. To the left of this man, a young person reaches out toward a woman in a light-colored dress, positioned slightly further back in the scene. Behind this group, a high wall stretches across the upper right portion of the canvas, separating the foreground figures from the background foliage. Near the bottom left of the frame, two dogs are visible, resting on the ground beside a tree trunk.",
-      "semantic": "In the upper right of the painting, a young woman in a light-colored gown reaches out toward another woman, her gesture forming the focal point of the central group. Just below and to the right of her, a small, furry brown dog sits attentively on the ground. Further right, a man in a dark coat and tricorn hat stands near the edge of the scene, positioned beside a high wall that stretches across the upper right background. Behind the wall, lush green trees rise into the sky, framing the scene’s far edge. In the lower left, two dogs are visible near the base of a tree, adding a quiet presence to the bustling street scene.",
-      "spatial2d": "A high wall stretches across the upper right of the painting, forming a backdrop behind a group of figures. Just below and to the left of the wall, a young woman in a light-colored dress reaches out toward another woman, her gesture creating a focal point in the center of the scene. To the right of this interaction, a man in a dark coat and tricorn hat stands near the wall, his posture suggesting he is part of the gathering. At the lower right corner, a small, furry brown dog sits attentively on the ground, positioned near the man’s feet. In the lower left foreground, two dogs are visible, one lying down and the other standing, adding a sense of life and movement to the scene’s edge."
+      "baseline": "A high wall fills the upper background. Along the lower part of the scene, a woman near the left-center stands beside a man, while another woman on the right reaches out toward a young person. Near the bottom center, two dogs are shown together: a small furry brown dog sits in front, with another dog just behind it.",
+      "spatial": "A high wall stretches horizontally across the middle of the painting, forming a raised boundary behind the crowd. To the lower right of this wall, a young woman in a pale dress reaches outward amid the gathered figures. Just to her right, along the right side of the canvas, a dark-clothed man stands upright in profile. Near the bottom right, below him, a small furry brown dog sits on the ground facing forward. Farther left along the lower edge of the painting, two dogs stand together near the center-bottom area.",
+      "semantic": "In the lower right of the painting, a young woman in a pale dress and white head covering reaches outward through the surrounding crowd. Just below and slightly to the right of her, near the bottom edge, a small furry brown dog sits facing forward. Moving leftward along the lower center of the canvas, two dogs stand close together in the open street. Farther back toward the right side, a man in dark clothing stands among the figures. Behind him, stretching across the middle and upper right of the scene, a high wall forms the background boundary of the crowded street.",
+      "spatial2d": "At the lower right of the painting, a small furry brown dog sits on the ground beside the crowd. Just above and slightly to the right, a man in dark clothing stands among the figures. Moving leftward from him, a young woman in a pale dress reaches out through the busy gathering. Farther left along the bottom center, two dogs stand close together near people’s legs. Behind them, stretching across the middle of the scene from the center toward the right, a high wall forms the backdrop to the crowded street."
     },
     "audio": {},
     "targetElements": [
@@ -1043,10 +1043,10 @@
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A yellowed pine tree stands prominently in the foreground, its branches extending upward and outward. Above it, the sky is a vivid blue, partially obscured by large, billowing clouds. To the right of the pine tree, a manor house is visible in the distance, nestled among trees. The scene is set in a garden, with the pine tree positioned closer to the viewer than the manor house.",
-      "spatial": "A yellowed pine tree stands prominently in the lower-left foreground of the painting, its roots anchoring it in the earth. Just beyond it, a garden stretches across the mid-ground, populated with figures strolling along a path and a fountain at its center. Further back and slightly to the right, a manor house emerges from behind a cluster of trees, its classical facade visible through the foliage. Rising above the scene, a pine tree closer to the viewer towers in the center, its branches reaching upward into the sky. Above all, a patch of vivid blue sky peeks through the clouds, occupying the upper portion of the canvas.",
-      "semantic": "In the upper portion of the painting, a patch of vivid blue sky peeks through the clouds, positioned above the scene. Directly below this sky, a grand manor house appears, nestled in the distance and framed by surrounding trees. In front of the house, a formal garden stretches across the midground, where figures in period attire stroll along a path. Dominating the foreground is a large, yellowed pine tree, its branches reaching upward. Rising behind it, a taller pine tree stands closer to the viewer, its dark silhouette contrasting with the sky above.",
-      "spatial2d": "Above the canvas, a vast expanse of vivid blue sky stretches across the upper portion, broken only by drifting clouds. Directly beneath it, a tall, dense pine tree rises prominently, its dark green needles and textured branches dominating the central vertical space. Further back and to the right, a grand manor house emerges from the treeline, its classical architecture and green roof visible against the cloudy backdrop. In front of the house, a manicured garden unfolds, featuring a gravel path, ornamental fountains, and figures strolling among the trees. At the very bottom of the scene, near the base of the central pine, a second pine tree stands with yellowed foliage, its branches reaching upward into the earthy foreground."
+      "baseline": "A closer pine tree rises near the center foreground, with a yellowed pine tree nearby in the garden below. Above them, vivid blue sky fills the upper frame. To the lower right, a manor-like house appears beyond the garden.",
+      "spatial": "A vivid blue sky stretches across the upper part of the painting, broken by large gray and white clouds. Below it near the center of the canvas, a tall dark pine rises prominently upward. Farther to the right in the background, a manor house appears among the trees, its pale facade and roof partly framed by the surrounding greenery. Moving downward and across the lower right, a garden area opens with paths, figures, and dark shrubs. Along the lower center-left foreground, a yellowed pine or fallen conifer lies close to the ground, spreading horizontally across the earthy terrain.",
+      "semantic": "In the lower right of the painting, a pale manor house appears among dark trees, set back in the landscape. Moving downward and slightly right across the bottom portion of the canvas, the scene opens into a shadowy garden area with small figures and paths. Above this, filling the upper left and stretching across much of the top of the painting, vivid blue sky shows through large gray and white clouds. Returning to the lower center, a yellowed pine tree or brushy fallen bough lies across the foreground. Rising from just behind it near the center of the canvas, a closer tall pine tree dominates the scene, its dark trunk and layered branches extending upward into the cloudy sky.",
+      "spatial2d": "In the lower center foreground, a yellowed pine tree or fallen piney brush lies across the dark earth. Moving to the lower right of the painting, the garden opens into a shadowed path with small figures and patches of grass. Rising just left of center, a tall pine tree stands close in the foreground, its dark trunk and layered branches reaching upward. Farther back in the upper-right middle distance, a manor house appears among the trees, with a pale facade and green roof. Above it all, across the upper half of the canvas, a vivid blue sky is broken by broad gray and white clouds."
     },
     "audio": {},
     "targetElements": [
@@ -1056,7 +1056,48 @@
       "pine closer tree",
       "manor appears house"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r55_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the yellowed pine tree positioned to the left of the house?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r55_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the garden positioned behind the house?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r55_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the house positioned in the background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r55_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the pine tree positioned in the foreground of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1071,10 +1112,10 @@
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A pitched roof crowns the top of a story-appearing building, which dominates the left and center of the frame. To the right of this building, a narrow alleyway recedes into the background, flanked by another visible house. In the foreground, three drawn carriages are parked side-by-side along the street, positioned in front of the main building and to the right of a lamppost.",
-      "spatial": "In the lower right of the painting, three drawn carriages are parked along a street, their wheels and harnesses visible. Just beyond them, a narrow alleyway extends upward and to the left, flanked by buildings and partially obscured by foliage. Further up and to the left, a visible house rises, its facade and chimney standing out against the sky. Continuing upward from there, a story appears building emerges, its windows and architectural details becoming clearer as the view ascends. At the very top, a pitched roof crowns the structure, its angled surface and dormer windows completing the composition.",
-      "semantic": "At the top of the painting, a pitched roof slopes downward, its surface textured with shingles and punctuated by dormer windows. Directly beneath it, the full facade of a grand, multi-story building rises, its classical columns and shuttered windows dominating the central portion of the frame. To the right, a second, more slender house is visible, its silhouette rising vertically along the right edge of the composition. Between these two structures, a narrow alleyway winds its way into the background, its depth emphasized by the receding walls and a solitary tree. In the foreground, near the bottom right corner, three drawn carriages are parked side by side, their wheels and harnesses clearly defined against the street.",
-      "spatial2d": "At the top of the painting, a story appears building rises with a pitched roof, its gabled structure and dormer windows visible against the sky. Directly beneath this, the building’s facade stretches across the canvas, featuring tall columns and shuttered windows. To the right, a visible house stands in the background, its chimney and upper stories receding into the scene. Between this house and the main building, a narrow alleyway winds through the urban landscape, its depth emphasized by the perspective. At the bottom right of the frame, three drawn carriages are parked, their wheels and harnesses clearly defined, adding a sense of activity to the street-level foreground."
+      "baseline": "A multi-story house fills the center of the image, with a pitched roof along the top. Three drawn carriages are positioned across the lower foreground in front of the building. A narrow alleyway runs along the right side of the house, beside the visible building edge.",
+      "spatial": "A multi-story building fills the center of the image, with rows of shuttered windows and a formal façade extending from the left side toward the right. Along the upper portion of the building, a pitched roof runs across the top of the scene, broken by dormer windows and chimneys. At the far right edge of the frame, beyond the main façade, a separate visible house rises in a narrow vertical slice of the street. Below and slightly left of that house, a narrow alleyway opens in the lower right portion of the image, receding between the buildings. Along the bottom right foreground, three drawn carriages stand in front of the buildings, their wheels and carriage bodies clustered near the street level.",
+      "semantic": "Along the upper portion of the image, a steep pitched roof with small dormer-like projections stretches across the main building. Beneath it, occupying most of the frame, a multi-story building facade appears with rows of tall shuttered windows, columns, and masonry details. Farther to the right edge of the canvas, a separate visible house stands partly cropped, rising beside the main facade. Between the main building and that right-side house, a narrow alleyway runs vertically from the lower right upward into the background. Along the bottom right of the image, in front of the buildings, three drawn carriages are clustered, their wheels and dark bodies overlapping the street area.",
+      "spatial2d": "At the lower right of the image, three horse-drawn carriages line the street in front of the buildings. Moving upward and leftward from them, a large multi-story building fills the center of the frame, its façade marked by rows of shuttered windows and tall columns. Along the upper portion of this building, a pitched roof stretches across the top center, with dormer windows and chimneys breaking its sloping line. Farther to the right edge of the canvas, a separate visible house appears as a narrow vertical structure beside the main façade. Between that right-side house and the larger building, a narrow alleyway descends through the lower right of the scene, forming a dark, tight passage into the background."
     },
     "audio": {},
     "targetElements": [
@@ -1084,35 +1125,117 @@
       "visible house",
       "three drawn carriages"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r17_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the building positioned to the left side of the narrow alleyway?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r17_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Were the carriages positioned in front of the narrow alleyway?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r17_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Were the three carriages positioned on the bottom left of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r17_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the narrow alleyway positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     }
   },
   {
-    "rowIndex": 62,
-    "uuid": "046abaf4-34ce-435d-baa3-a064e826ea63",
-    "imageFilename": "sample_046abaf4-34ce-435d-baa3-a064e826ea63.png",
-    "complexityLevel": "medium",
-    "complexityScore": 0.711,
+    "rowIndex": 3,
+    "uuid": "7583412c-fee6-496a-b316-467f8a495a40",
+    "imageFilename": "sample_7583412c-fee6-496a-b316-467f8a495a40.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7329,
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A pale peach marble relief depicts a kneeling man with clasped hands facing a crucifix. A skull rests near the base of the crucifix, and a smaller cross is carved into the lower-left part of the scene.",
-      "spatial": "In the foreground of the pale peach marble relief, a kneeling man clasps his hands in prayer. Slightly behind and to his left, a skull rests at the base of a crucifix. Farther left, a smaller cross is carved near the lower edge of the scene.",
-      "semantic": "A kneeling man prays before a crucifix in this pale peach marble relief. The religious scene also includes a smaller cross, while a skull at the base of the crucifix introduces a symbol of mortality.",
-      "spatial2d": "A crucifix rises in the upper-left area of the pale peach marble relief. A smaller cross appears near the lower-left corner, and a skull rests below the crucifix near the lower center. To their right, a kneeling man faces left with his hands clasped in prayer."
+      "baseline": "A small mallet is held near the lower-right side of the sculpture. An upright rectangular stretched canvas rises along the left side, while a carved adult head rests near the lower right. A broad stone plinth runs along the bottom. Above the plinth, one standing child occupies the center-left and one seated child occupies the center-right.",
+      "spatial": "At the center of the sculpture, one standing child appears on the left and one seated child appears on the right. Moving down toward the lower right, the seated child holds a small mallet. Just below the child, near the bottom-right area of the frame, a carved adult head rests at the base. To the left of the figures, an upright rectangular stretched canvas rises from the lower-left to the middle-left portion of the sculpture. Along the bottom of the scene, a broad stone plinth supports the children, the canvas, and the head.",
+      "semantic": "Along the bottom of the frame, a long stone plinth supports the sculpture. Above it, one standing child occupies the center-left and one seated child occupies the center-right. Near the lower-right area, the seated child holds a small mallet. Just below the child, a carved adult head looks upward from the base of the sculpture. To the left of the children, an upright rectangular stretched canvas stands vertically, extending from the lower left toward the middle of the composition.",
+      "spatial2d": "Along the lower edge of the image, a long pale stone plinth supports the sculpture. Just above the plinth at the lower right, a carved adult head rests near the base. Moving upward and left from the head, one standing child occupies the center-left and one seated child occupies the center-right. To the left of the children, an upright rectangular stretched canvas rises from the plinth. Finally, near the right side of the seated child, a small mallet is held close to the lower-right area of the composition."
     },
     "audio": {},
     "targetElements": [
-      "pale peach marble",
-      "crucifix",
-      "kneeling man",
-      "skull",
-      "smaller cross"
+      "carved adult head",
+      "one standing child and one seated child",
+      "stone plinth",
+      "upright rectangular stretched canvas",
+      "mallet"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r3_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the standing child positioned to the left of the seated child?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r3_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the carved adult head positioned to the left of the seated child?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r3_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the upright rectangular stretched canvas positioned on the left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r3_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the stone plinth positioned in the upper half of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1127,10 +1250,10 @@
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A single slender tree divides a stylized landscape painted in cool tones. A yellow expanse fills the foreground, with pale water beyond it. Gray cliffs rise on the right, while low hills form the horizon in the distance.",
-      "spatial": "A yellow expanse stretches across the foreground beneath a single slender tree. Beyond it lies a band of pale water, followed by gray cliffs on the right. Low hills recede along the horizon in the background.",
-      "semantic": "A single slender tree is the main natural feature of this landscape. Around it, a yellow expanse suggests a field, pale water forms a calm horizontal band, gray cliffs define the right edge, and distant hills mark the horizon.",
-      "spatial2d": "A yellow expanse fills the lower third of the image. A single slender tree rises vertically through the center. Pale water crosses the lower middle, gray cliffs occupy the right side, and a line of distant hills forms the horizon across the image."
+      "baseline": "A single slender tree stands slightly right of center, rising through a toned yellow expanse. Behind it, a horizontal band of water stretches across the middle, with gray cliffs along the horizon behind the water.",
+      "spatial": "A pale horizon stretches across the upper background of the painting, leading downward to gray cliffs along the lower left and lower right edges. Just below and between these cliffs, a soft blue band of water runs horizontally across the lower middle of the canvas. Beneath the water, a broad toned yellow expanse fills most of the bottom half of the painting. Rising through the center of the frame from this yellow ground is a single slender tree, with a dark narrow trunk and branching gray-green foliage spreading across the upper portion of the canvas.",
+      "semantic": "A broad toned yellow expanse fills the lower portion of the painting, stretching across the foreground. Just above it, a pale band of water runs horizontally through the lower middle of the canvas. On the far right edge, gray cliffs rise beside the water. Farther back, the horizon spans the upper background beneath the pale sky. From the lower center upward, a single slender tree with a dark trunk and branching gray-green leaves reaches toward the top of the painting.",
+      "spatial2d": "A single slender tree rises near the center of the canvas, its dark trunk extending upward into branching gray foliage across the upper half. Around and below it, a broad toned yellow expanse fills much of the painting, especially across the lower left and lower right. Above this expanse, a pale horizontal band marks the horizon across the middle of the frame. Just below the horizon, a light blue strip of water stretches from the left side toward the right side. At the far lower right edge, gray cliffs press against the water, forming a darker rocky boundary."
     },
     "audio": {},
     "targetElements": [
@@ -1140,35 +1263,117 @@
       "gray cliffs",
       "yellow expanse"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r45_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the gray cliffs positioned on the left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r45_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the yellow expanse positioned in front of the water?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r45_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the slender tree positioned in the center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r45_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the hills positioned in the background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     }
   },
   {
-    "rowIndex": 71,
-    "uuid": "0dde1c3c-6c08-431d-85e2-7288c2c93f26",
-    "imageFilename": "sample_0dde1c3c-6c08-431d-85e2-7288c2c93f26.png",
+    "rowIndex": 16,
+    "uuid": "b9c9e75c-e81b-4dab-aafe-12045660422f",
+    "imageFilename": "sample_b9c9e75c-e81b-4dab-aafe-12045660422f.png",
     "complexityLevel": "high",
-    "complexityScore": 0.7924,
+    "complexityScore": 0.7334,
     "role": "comprehension",
     "imageSet": "set4",
     "descriptions": {
-      "baseline": "A pink orchid dominates a misty forest scene. To its right, a perched hummingbird and a flying hummingbird gather around a nest resting on a mossy branch.",
-      "spatial": "A pink orchid rises in the left foreground. On the right, a perched hummingbird rests below a flying hummingbird. Both face a nest suspended from a mossy branch.",
-      "semantic": "A pink orchid provides nectar and shelter in this tropical scene. A perched hummingbird and a flying hummingbird attend a nest woven into a mossy branch.",
-      "spatial2d": "A pink orchid fills the left-center of the image. A perched hummingbird appears at the lower right, with a flying hummingbird above it. A nest sits between the birds on a mossy branch."
+      "baseline": "Closest tree canopies fill the left foreground, rising above still water below and to the right. The water stretches toward a distant horizon across the middle-right, where a low sunset glows just above it.",
+      "spatial": "A pale low sunset spreads across the upper part of the painting, casting warm cream and gold light over the sky. Beneath it, near the middle distance, the horizon emerges with a hazy line of distant buildings and land stretching from the center toward the right side of the canvas. In front of this, occupying much of the left side, the closest tree rises dark and dense, its trunk and foliage forming a tall vertical mass against the light. Farther down and to the lower right, additional canopies appear as darker rounded foliage in the foreground. Beyond them, along the lower right edge of the painting, a band of still water reflects the dim sky in smooth, silvery tones.",
+      "semantic": "A tall, dark tree fills the left side of the painting, rising from the lower edge toward the upper left with dense, shadowed foliage. Above and across the upper half of the canvas, a low, warm sunset sky spreads in pale gold and cream tones. Moving downward to the lower right, a band of still water reflects the fading light in smooth, horizontal strokes. Near the bottom right corner, darker rounded canopies cluster in the foreground. From there, the view reaches back toward the middle distance, where a hazy horizon line with low hills and a silhouetted building stretches across the center-right of the scene.",
+      "spatial2d": "In the lower right of the painting, dense dark canopies fill the foreground, then the view moves leftward to the closest tree, a tall mass of shadowy foliage rising along the left side of the canvas. From there, the scene opens toward the lower right and center, where still water lies pale and reflective beneath the hills. Above it, a low sunset spreads warm cream and gold light across the upper half of the sky. Along the middle distance near the left and center, the horizon emerges with dark clustered trees and a silhouetted hilltop settlement stretching across the frame."
     },
     "audio": {},
     "targetElements": [
-      "pink orchid",
-      "perched hummingbird",
-      "flying hummingbird",
-      "nest",
-      "mossy branch"
+      "closest tree",
+      "low sunset",
+      "still water",
+      "canopies",
+      "comes horizon"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r16_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the sunset positioned to the right of the tree?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r16_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the canopy most densely concentrated to the left of the water?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r16_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the closest tree positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r16_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the water positioned on the lower-right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -1183,10 +1388,10 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A smaller younger boy stands on the left side of the frame, near a wall. To his right, a seated man is positioned on a blue couch, which is located centrally in the composition. Behind the seated man, a woman is seated on the same couch, holding a baby. To the right of the seated man, another woman sits on the couch holding a baby, with a standing man positioned behind her. Further to the right, several women stand in a row, each wearing white dresses with red sashes.",
-      "spatial": "In the lower-left corner of the painting, a smaller younger boy in a blue suit stands beside a slightly taller boy, both positioned near the foreground. To their right, a woman in a white dress and bonnet sits on a blue couch, holding a baby. Behind her, a turns seated man in a dark coat is positioned slightly further back, his body angled toward the viewer. The entire group is set against a plain wall that stretches across the upper portion of the canvas, forming the backdrop for the scene.",
-      "semantic": "In the lower-left of the painting, a smaller younger boy in a blue suit stands beside a taller boy, both positioned near the left edge of the scene. To their right, a blue couch is situated, extending horizontally across the mid-ground. Seated upon this couch is a turns seated man, positioned centrally in the composition, with a woman seated beside him, holding a baby. Behind them, a plain wall forms the backdrop, stretching across the upper portion of the painting.",
-      "spatial2d": "Along the lower edge of the painting, a smaller younger boy stands at the far left beside another boy. A blue couch begins just to their right and extends across the center of the image. A seated man occupies the middle of the couch, while a woman holding a baby sits immediately to his right. The plain wall fills the upper half of the image behind the figures."
+      "baseline": "A wall fills the background. Along the lower right, a blue couch holds a seated man turned toward a woman beside him. To the left of them, a smaller younger boy stands lower in the scene near the couch area.",
+      "spatial": "A broad, mottled wall fills the upper half of the painting, stretching across the canvas in dark brown, green, and gray tones. Below it and slightly right of center, a dark blue couch runs horizontally behind the figures. Just left of the couch’s middle, a seated man in a dark suit turns his face outward toward the viewer. To his right, near the center-right of the painting, a woman in a white dress and bonnet sits on the couch holding a child. Farther down and to the left, near the lower-left edge of the scene, a smaller younger boy stands in front of the group, dressed in blue and looking forward.",
+      "semantic": "At the lower left of the painting, a smaller younger boy in a blue outfit stands near the edge of the group, looking outward. Moving rightward across the lower middle of the scene, a dark blue couch stretches behind and beneath several family members. Above them, filling much of the upper half of the canvas, a broad mottled wall in muted browns, greens, and grays forms the background. In front of this wall near the center, a seated man in dark clothing turns slightly toward the viewer, his body angled across the couch. To his right, in the lower center-right of the painting, a woman in a white dress and bonnet sits upright on the couch among the children.",
+      "spatial2d": "In the lower left of the painting, a smaller young boy in a blue suit stands near the edge of the group. Moving rightward toward the center, a woman in a white bonnet and pale dress sits among children. Just to her left, a seated man in dark clothing turns his head toward the viewer. Beneath and around these central figures, a deep blue couch stretches across the lower middle and right side of the scene. Behind them all, a broad, muted wall fills the upper background of the painting."
     },
     "audio": {},
     "targetElements": [
@@ -1252,10 +1457,10 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A young woman in a white dress sits on a stone quay in the foreground, holding a pale pink umbrella. Behind her, a wide, shimmering blue waterway stretches across the scene, dotted with moored boats. Across the water, a town with cream-white buildings lines the far shore, with a church spire visible on the left. The sky above is a pale blue with soft clouds.",
-      "spatial": "In the lower right of the painting, a young woman sits on a stone ledge, twisting slightly as she wears a light-colored dress and holds a pale pink umbrella. Behind her, a wide, shimmering blue waterway stretches across the middle ground, reflecting the soft sky and dotted with moored boats. Beyond the water, a row of cream-white buildings lines the far shore, nestled within the town that occupies the upper left of the scene. The entire composition is framed by a pale, hazy sky that stretches across the top of the painting.",
-      "semantic": "In the upper right of the painting, a young woman sits, twisting slightly as she wears a white dress, holding a pale pink umbrella. Directly in front of her stretches a wide, shimmering blue waterway that flows across the center of the canvas, reflecting the soft sky. Beyond the waterway, in the middle ground, a town unfolds along the far shore, its architecture rendered in cream and white buildings. These structures are nestled deep in the background, forming a soft, hazy horizon line beneath the pale sky.",
-      "spatial2d": "A wide blue waterway runs horizontally across the center of the image. Cream-white buildings form the town along the far shore in the upper-left and upper-center background. In the lower-right foreground, a young woman in a white dress sits twisting on the stone quay. Her pale pink umbrella rises beside her toward the right edge of the image."
+      "baseline": "A wide shimmering blue waterway fills the lower half of the scene, with a town of cream white buildings stretching across the middle. In the foreground near the lower center, a young woman in white sits twisting, with a pale pink umbrella positioned above and to her left.",
+      "spatial": "Along the lower half of the painting, a hazy waterside town stretches across the canvas, with clustered rooftops, masts, and muted shapes fading into the pale sky. Moving toward the center-right, a pale pink umbrella opens above the waterfront scene. To the left of it, near the lower-left center, cream-white buildings stand out among darker roofs and greenery. Below and across the lower middle of the painting, a wide shimmering blue waterway runs horizontally, reflecting soft tan and blue brushstrokes. In the lower center-right foreground, a young woman sits twisting slightly, wearing a light dress and dark hat, her figure extending downward toward the bottom edge.",
+      "semantic": "A pale pink umbrella appears just right of center in the lower half of the painting, above a wide shimmering blue waterway that stretches horizontally across the lower foreground. Rising from the water near the center is a young seated woman, turned slightly as if twisting, wearing a pale dress with dark hair. Behind her, along the middle of the canvas, a hazy town spreads across the shoreline, and toward the left of this town are cream-white buildings clustered beneath the open, pale sky.",
+      "spatial2d": "At the lower right of the painting, a young woman sits in a twisting pose and wears a light dress; above and slightly to the left of her is a pale pink umbrella. Across the lower half of the canvas, a wide shimmering blue waterway stretches horizontally beneath her and the distant shore. Along the left side of that shore, cream-white buildings cluster near the water’s edge, and above and around them the town extends across the middle of the painting."
     },
     "audio": {},
     "targetElements": [
@@ -1321,10 +1526,10 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A nude, thin man is depicted crucified on a wooden cross, his arms outstretched and blood dripping from his hands and feet. At the top of the cross, the inscription “INRI” is visible. At the base of the cross, a skull rests on the ground. To the left of the cross, a figure in dark robes stands with hands clasped. To the right, another figure in red and black robes stands with one hand extended. Blood is visible on the man’s body and dripping from the cross.",
-      "spatial": "At the bottom center of the painting, a human skull rests at the base of the cross, positioned directly beneath the feet of the crucified figure. Rising from the skull, a dark wooden cross extends upward, its vertical beam marked by a trail of blood dripping from the feet of the crucified man. The crucified figure, a nude thin man, is centered in the composition, his body stretched across the cross with arms outstretched toward the upper edges of the circular frame. Above his head, the inscription \"INRI\" is displayed prominently against the golden background, positioned just above the horizontal beam of the cross.",
-      "semantic": "At the base of the cross, a pool of blood drips from the feet of the crucified figure, pooling at the foot of the cross where a skull rests upon the stone platform. Rising from this point, the wooden cross extends upward, its vertical beam anchoring the body of the nude, thin man who is crucified. His arms are outstretched along the horizontal beam, and above his head, the inscription “INRI” is displayed.",
-      "spatial2d": "A wooden cross rises vertically through the center of the image. A nude thin man is fixed to it, with his outstretched arms spanning the upper half of the frame and blood visible at his hands and feet. The inscription INRI appears directly above his head near the top center. A skull rests at the foot of the cross along the lower edge."
+      "baseline": "A nude thin man is centered on a wooden cross, with his arms stretched horizontally along the crossbeam. At the top of the cross, directly above his head, a sign reads “INRI.” Blood runs from both hands, down the right side of his torso, and from his feet near the lower center. A skull sits below the crossed feet at the base of the vertical beam.",
+      "spatial": "A dark wooden cross spans the upper center of the painting, with its vertical beam descending toward the lower middle. Fastened across it is a nude, thin man, his arms stretched wide near the top of the canvas and his pale body hanging down the center. Blood appears below, especially around the feet in the lower center, running down the cross. Above the man’s head, near the top center edge, a small plaque bears the inscription “INRI.” Far below, at the base of the cross near the bottom center of the painting, a skull rests on the ground.",
+      "semantic": "At the lower center of the painting, blood trickles from the nailed feet of a nude, thin man whose body rises vertically through the center of the canvas with arms stretched wide. Above his bowed head near the top center, the inscription “INRI” appears on a small plaque. Behind and around him, a dark wooden cross spans horizontally across the upper portion and continues downward through the center. At the base of the cross near the bottom center, directly below the feet, a skull rests on the ground.",
+      "spatial2d": "At the lower center of the painting, a skull sits at the base of the crucifix near the bottom edge. Just above it, blood runs down from the nailed feet of the crucified figure. Rising upward through the center of the canvas is the nude, thin man, shown with an emaciated torso, outstretched arms, and a bowed head under a crown of thorns. Behind him, a dark wooden cross spans horizontally across the upper middle and continues vertically down the center. At the very top center, above the crossbeam, a small inscription reads “INRI.”"
     },
     "audio": {},
     "targetElements": [
