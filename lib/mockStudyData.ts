@@ -1,8 +1,9 @@
+import { STUDY_CONDITIONS } from "@/lib/config";
 import { getConditionForStimulus, comprehensionStimuli, preferenceStimuli } from "@/lib/stimuli";
 import { Condition, DescriptionLabel, LikertResponse, StudyState } from "@/types/study";
 
-const conditions: Condition[] = ["baseline", "spatial", "semantic", "spatial2d"];
-const labels: DescriptionLabel[] = ["A", "B", "C", "D"];
+const conditions: Condition[] = STUDY_CONDITIONS;
+const labels: DescriptionLabel[] = ["A", "B"];
 const agreement: LikertResponse = { value: 4, label: "Very" };
 const workload: LikertResponse = { value: 2, label: "Low" };
 
@@ -40,13 +41,12 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
       rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel, imageSet: stimulus.imageSet,
       condition, descriptionText: stimulus.descriptions[condition], replayCount: 0, replayed: false,
       audioPlayEvents: [], startedAt: now, submittedAt: now,
-      gistQuestion: "In 1-2 sentences, what was the main focus of the scene?", gistAnswer: "Mock gist response", gistScore: null,
       freeRecallQuestion: "Describe the scene in your own words. Mention what you remember, including the people or objects present, and how they were arranged in relation to each other.", freeRecall: "Mock free-recall response.",
       spatialAnswers, spatialAccuracyScore: eligible.length, spatialEligibleQuestionCount: eligible.length,
       ratings: { overallSceneClarity: agreement, spatialRelationsConfidence: agreement, contentComprehension: agreement },
       ratingQuestions: { overallSceneClarity: "I could picture the overall scene in my mind.", spatialRelationsConfidence: "I could identify the spatial relationships among the described elements.", contentComprehension: "The description gave me enough information about where things were in the image." },
-      workload: { mentalDemand: workload, effort: workload, frustration: workload },
-      workloadQuestions: { mentalDemand: "How mentally demanding was it to understand this image description?", effort: "How much effort did you need to understand this image description?", frustration: "How frustrated did you feel while understanding this image description?" },
+      workload: { mentalDemand: workload, frustration: workload },
+      workloadQuestions: { mentalDemand: "How mentally demanding was it to understand this image description?", frustration: "How frustrated did you feel while understanding this image description?" },
       stepTimestamps: { mock: { startedAt: now, completedAt: now, responseTimeMs: 0 } }
     };
   });
@@ -63,11 +63,11 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
       selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI,
       trialIndex: index + 1, imageId: stimulus.uuid, imageFilename: stimulus.imageFilename,
       uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel,
-      randomizedOrder, playbackEvents: [], replayCounts: { A: 0, B: 0, C: 0, D: 0 },
+      randomizedOrder, playbackEvents: [], replayCounts: { A: 0, B: 0 },
       bestChoice: "A" as const, preferredCondition: rotated[0],
-      rankingQuestion: "Rank descriptions A, B, C, and D from best to worst. Choose each description only once.",
-      ranking: { first: "A" as const, second: "B" as const, third: "C" as const, fourth: "D" as const },
-      explanationQuestion: "Why did you choose this ranking?", explanation: "Mock preference explanation.", startedAt: now, responseTimeMs: 0, submittedAt: now
+      rankingQuestion: "Which description did you prefer, A or B?",
+      ranking: { first: "A" as const, second: "B" as const },
+      explanationQuestion: "Why did you prefer that description?", explanation: "Mock preference explanation.", startedAt: now, responseTimeMs: 0, submittedAt: now
     };
   });
 

@@ -5,8 +5,11 @@ import { Condition, SequenceGroup, Stimulus } from "@/types/study";
 export const stimuli = rawStimuli as Stimulus[];
 
 export const comprehensionStimuli = stimuli
-  .filter((stimulus) => stimulus.role === "comprehension")
-  .slice(0, 20);
+  .filter(
+    (stimulus) =>
+      stimulus.role === "comprehension" &&
+      (stimulus.imageSet === "set2" || stimulus.imageSet === "set3")
+  );
 
 export const preferenceStimuli = stimuli
   .filter((stimulus) => stimulus.role === "preference" || stimulus.role === "reserve")

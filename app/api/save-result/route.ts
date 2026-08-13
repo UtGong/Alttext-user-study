@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
-      schemaVersion: 6,
+      schemaVersion: 7,
       comprehensionOrder: Array.isArray(body?.comprehensionOrder)
         ? body.comprehensionOrder
         : [],
@@ -106,9 +106,8 @@ export async function POST(request: NextRequest) {
           : 0,
         hasPerImageWorkload: Array.isArray(body?.comprehensionResponses)
           ? body.comprehensionResponses.every(
-              (response: { workload?: { mentalDemand?: unknown; effort?: unknown; frustration?: unknown } }) =>
+              (response: { workload?: { mentalDemand?: unknown; frustration?: unknown } }) =>
                 response?.workload?.mentalDemand !== undefined &&
-                response?.workload?.effort !== undefined &&
                 response?.workload?.frustration !== undefined
             )
           : false,
@@ -127,7 +126,7 @@ export async function POST(request: NextRequest) {
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v6"
+      appVersion: "blv-user-study-nextjs-v7"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);
