@@ -5,18 +5,36 @@ import test from "node:test";
 const stimuli = JSON.parse(await readFile(new URL("../data/stimuli.json", import.meta.url), "utf8"));
 const comprehension = stimuli.filter((item) => item.role === "comprehension");
 const preference = stimuli.filter((item) => item.role === "preference");
-const conditions = ["baseline", "spatial", "semantic", "spatial2d"];
+const activeConditions = ["baseline", "spatial"];
 
-test("all 20 comprehension stimuli provide four non-empty descriptions", () => {
+test("all comprehension stimuli provide the two active descriptions", () => {
   assert.equal(comprehension.length, 20);
   for (const item of comprehension) {
-    for (const condition of conditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
+    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
   }
 });
 
-test("preference stimuli provide all four descriptions", () => {
+test("preference stimuli provide the two active descriptions", () => {
   assert.ok(preference.length > 0);
-  for (const item of preference) assert.deepEqual(Object.keys(item.descriptions).sort(), [...conditions].sort());
+  for (const item of preference) {
+    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
+  }
+});
+
+test("the active comprehension set contains 10 images and both edited-question images", async () => {
+  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+  assert.match(source, /stimulus\.imageSet === "set2" \|\| stimulus\.imageSet === "set3"/);
+  const active = comprehension.filter((item) => item.imageSet === "set2" || item.imageSet === "set3");
+  assert.equal(active.length, 10);
+  assert.ok(active.some((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08"));
+  assert.ok(active.some((item) => item.uuid === "c9c0f26e-a559-43ab-b517-0384e347ade8"));
+});
+
+test("bolded spatial-question edits are used", () => {
+  const lincoln = stimuli.find((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08");
+  const goldSteps = stimuli.find((item) => item.uuid === "c9c0f26e-a559-43ab-b517-0384e347ade8");
+  assert.ok(lincoln.spatialQuestions.some((q) => q.question === "Were the horses positioned on the right side of Abraham Lincoln?" && q.correctAnswer === "No"));
+  assert.ok(goldSteps.spatialQuestions.some((q) => q.question === "Was the young girl positioned in front of the older bearded man?" && q.correctAnswer === "Yes"));
 });
 
 test("spatial question sets are either omitted or four scorable questions", () => {
@@ -60,8 +78,8 @@ test("participant questions provide speech playback controls", async () => {
   assert.match(radio, /QuestionAudioButton/);
   assert.match(likert, /Answer choices:/);
   assert.match(likert, /QuestionAudioButton/);
-  assert.match(comprehensionFlow, /gistPrompt[\s\S]*QuestionAudioButton/);
-  assert.match(preferenceFlow, /Why did you choose this ranking\?[\s\S]*QuestionAudioButton/);
+  assert.match(comprehensionFlow, /recallPrompt[\s\S]*QuestionAudioButton/);
+  assert.match(preferenceFlow, /Why did you prefer that description\?[\s\S]*QuestionAudioButton/);
 });
 
 test("consent and every answer type support speech interaction", async () => {
@@ -81,8 +99,8 @@ test("consent and every answer type support speech interaction", async () => {
   assert.match(choice, /review it before continuing/i);
   assert.match(radio, /<SpeechChoiceInput[\s\S]*options=\{options\}/);
   assert.match(likert, /<SpeechChoiceInput[\s\S]*onChange=\{\(nextValue\) => onChange\(Number\(nextValue\)\)\}/);
-  assert.match(preference, /Rank by voice/);
-  assert.match(preference, /parseSpokenRanking/);
+  assert.match(preference, /name="preferred-description"/);
+  assert.match(preference, /<RadioGroup/);
 });
 
 test("revised participant-facing study questions are present", async () => {
@@ -92,7 +110,7 @@ test("revised participant-facing study questions are present", async () => {
   const player = await readFile(new URL("../components/AudioDescriptionPlayer.tsx", import.meta.url), "utf8");
 
   assert.doesNotMatch(app, /BLV Image Description Study|Accessible User Study Interface/);
-  assert.match(comprehensionFlow, /In 1-2 sentences, what was the main focus of the scene\?/);
+  assert.doesNotMatch(comprehensionFlow, /In 1-2 sentences, what was the main focus of the scene\?/);
   assert.match(comprehensionFlow, /Mention what you remember, including the people or objects present/);
   assert.match(comprehensionFlow, /\["Not sure"\]/);
   assert.doesNotMatch(preferenceFlow, /Question 1: Best description|Which description helped you understand the image best/);
@@ -125,13 +143,14 @@ test("all participant answers are retained in the Firestore payload and exports"
   assert.match(save, /body: JSON\.stringify\(state\)/);
   assert.match(route, /const resultToSave = \{[\s\S]*\.\.\.body/);
   assert.match(route, /\.set\(resultToSave\)/);
-  assert.match(flow, /gistAnswer,[\s\S]*freeRecall,[\s\S]*spatialAnswers: answers/);
+  assert.match(flow, /freeRecall,[\s\S]*spatialAnswers: answers/);
   assert.match(flow, /ratings: \{ overallSceneClarity:[\s\S]*spatialRelationsConfidence:[\s\S]*contentComprehension:/);
-  assert.match(flow, /workload: \{ mentalDemand:[\s\S]*effort:[\s\S]*frustration:/);
+  assert.match(flow, /workload: \{ mentalDemand:[\s\S]*frustration:/);
+  assert.doesNotMatch(flow, /effort:/);
   assert.match(preferenceFlow, /ranking,[\s\S]*explanation/);
   assert.match(app, /interviewResponses: questions\.map[\s\S]*questionId:[\s\S]*question:[\s\S]*answer:/);
   assert.match(app, /practiceResponse: practiceResponse\.trim\(\)/);
-  assert.match(flow, /gistQuestion: gistPrompt[\s\S]*freeRecallQuestion: recallPrompt/);
+  assert.match(flow, /freeRecallQuestion: recallPrompt/);
   assert.match(flow, /ratingQuestions[\s\S]*workloadQuestions/);
   assert.match(preferenceFlow, /rankingQuestion,[\s\S]*explanationQuestion/);
   assert.match(exportSource, /spatialAnswersJson: response\.spatialAnswers/);
@@ -153,7 +172,7 @@ test("open-ended answers support editable live transcription", async () => {
   assert.match(input, /Review and edit the transcript before continuing/);
   assert.match(input, /not microphone audio/);
   assert.match(input, /Live transcription is not supported in this browser/);
-  assert.match(comprehensionFlow, /<SpeechAnswerInput id="gist-answer"/);
+  assert.doesNotMatch(comprehensionFlow, /id="gist-answer"/);
   assert.match(comprehensionFlow, /<SpeechAnswerInput id="free-recall"/);
   assert.match(preferenceFlow, /<SpeechAnswerInput[\s\S]*id="ranking-explanation"/);
   assert.match(app, /id="practice-response"[\s\S]*onChange=\{setPracticeResponse\}/);
@@ -169,20 +188,23 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 6/);
-  assert.match(types, /schemaVersion: 6/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 7/);
+  assert.match(types, /schemaVersion: 7/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
   assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
-test("preference flow randomizes and records four conditions", async () => {
+test("preference flow randomizes and records two conditions", async () => {
   const source = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
-  assert.match(source, /shuffle\(\["baseline", "spatial", "semantic", "spatial2d"\]\)/);
+  const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
+  assert.match(source, /shuffle\(STUDY_CONDITIONS\)/);
+  assert.match(config, /STUDY_CONDITIONS: Condition\[\] = \["baseline", "spatial"\]/);
   assert.match(source, /randomizedOrder,/);
   assert.match(source, /preferredCondition:/);
-  assert.match(source, /\["A", "B", "C", "D"\]/);
+  assert.match(source, /\["A", "B"\]/);
+  assert.doesNotMatch(source, /"C"|"D"/);
   assert.doesNotMatch(source, /Text of Description|description-text-block/);
 });
 

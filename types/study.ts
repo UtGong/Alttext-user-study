@@ -6,17 +6,16 @@ export type StudyPhase =
   | "audio-settings"
   | "practice"
   | "comprehension"
-  | "workload"
   | "preference"
   | "interview"
   | "complete";
 
-export type SequenceGroup = "A" | "B" | "C" | "D";
-export type Condition = "baseline" | "spatial" | "semantic" | "spatial2d";
+export type SequenceGroup = "A" | "B";
+export type Condition = "baseline" | "spatial";
 export type ComplexityLevel = "low" | "medium" | "high";
 export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference";
 export type StimulusRole = "comprehension" | "preference" | "reserve";
-export type DescriptionLabel = "A" | "B" | "C" | "D";
+export type DescriptionLabel = "A" | "B";
 export type SpatialObjectFocus = "main" | "secondary";
 
 export type ParticipantProfile = {
@@ -129,9 +128,6 @@ export type TrialResponse = {
   audioStartedAt?: string;
   audioEndedAt?: string;
   submittedAt: string;
-  gistQuestion: string;
-  gistAnswer: string;
-  gistScore: number | null;
   freeRecallQuestion: string;
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
@@ -139,8 +135,8 @@ export type TrialResponse = {
   spatialEligibleQuestionCount: number;
   ratings: Ratings;
   ratingQuestions: Record<keyof Ratings, string>;
-  workload: Pick<WorkloadResponse, "mentalDemand" | "effort" | "frustration">;
-  workloadQuestions: Record<"mentalDemand" | "effort" | "frustration", string>;
+  workload: Pick<WorkloadResponse, "mentalDemand" | "frustration">;
+  workloadQuestions: Record<"mentalDemand" | "frustration", string>;
   stepTimestamps: Record<string, { startedAt: string; completedAt: string; responseTimeMs: number }>;
 };
 
@@ -152,15 +148,12 @@ export type WorkloadResponse = {
   selectedVoiceURI: string;
   submittedAt: string;
   mentalDemand: LikertResponse | null;
-  effort: LikertResponse | null;
   frustration: LikertResponse | null;
 };
 
 export type PreferenceRanking = {
   first: DescriptionLabel | "";
   second: DescriptionLabel | "";
-  third: DescriptionLabel | "";
-  fourth: DescriptionLabel | "";
 };
 
 export type PreferencePlaybackEvent = AudioPlayEvent & {
@@ -208,7 +201,7 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 6;
+  schemaVersion: 7;
   phase: StudyPhase;
   testMode: boolean;
   consent: ConsentRecord;
@@ -221,7 +214,6 @@ export type StudyState = {
   comprehensionOrder: string[];
   preferenceIndex: number;
   comprehensionResponses: TrialResponse[];
-  workloadResponse: WorkloadResponse | null;
   preferenceResponses: PreferenceResponse[];
   interviewResponses: InterviewResponse[];
   startedAt: string;

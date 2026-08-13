@@ -1,30 +1,27 @@
 # BLV User Study Interface
 
-This is a Next.js + TypeScript prototype for a blind and low vision user study comparing four image-description ordering conditions:
+This is a Next.js + TypeScript prototype for a blind and low vision user study comparing two image-description ordering conditions:
 
-1. Baseline: no explicit ordering constraint
-2. Spatial ordering: front-to-background ordering
-3. Semantic ordering: ordering based on semantic relationships
-4. Spatial 2D ordering: explicit two-dimensional image-frame organization
+1. No order: no explicit ordering constraint
+2. Spatial (Depth): front-to-background ordering
 
 The interface is designed to be screen-reader accessible, keyboard-first, audio-first, and easy for researchers to run locally.
 
 ## Features
 
 - Participant setup
-- Researcher sequence group selection: A, B, or C
+- Researcher sequence group selection: A or B
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 20 comprehension trials
+- 10 comprehension trials
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
 - Replay count logging
 - Free recall response collection
 - Optional live speech-to-text for open-ended responses, with editable transcripts
 - Spatial relation questions
-- Semantic gist answer
 - Verbal Likert ratings with stable 1–5 analysis values
-- Mental demand, effort, and frustration ratings after each image
+- Mental demand and frustration ratings after each image
 - Optional preference trials
 - Final interview notes
 - JSON export
@@ -87,10 +84,9 @@ Each stimulus includes:
 - image UUID
 - complexity level
 - image set
-- baseline, spatial, semantic, and spatial 2D descriptions
+- no-order and spatial-depth descriptions used by the interface
 - target elements
 - spatial questions
-- gist question
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
 
@@ -98,13 +94,13 @@ Open-ended answer fields also offer optional browser speech recognition. Startin
 
 ## Counterbalancing
 
-The study uses three sequence groups:
+The study uses two sequence groups. The 10 active images comprise five images from each
+set, so each participant receives five trials in each condition:
 
-| Group | Set 1 | Set 2 | Set 3 |
-|---|---|---|---|
-| A | Baseline | Spatial | Semantic |
-| B | Spatial | Semantic | Baseline |
-| C | Semantic | Baseline | Spatial |
+| Group | Set 2 | Set 3 |
+|---|---|---|
+| A | Spatial (Depth) | No order |
+| B | No order | Spatial (Depth) |
 
 Researchers select the sequence group on the participant setup page.
 
@@ -131,16 +127,15 @@ During real trials:
 ## Updated study procedure
 
 - Comprehension image order is randomized once per participant and persisted so a resumed session keeps the same order.
-- Spatial questions 1 to 3 include Yes, No, and Not sure.
-- Spatial questions 4 to 6 use Yes and No responses.
+- Every spatial question includes Yes, No, and Not sure. Not sure is stored as uncertain and is excluded from accuracy scoring.
 - Experience ratings separately measure overall scene clarity, spatial-relationship confidence, and content comprehension.
-- Mental demand, effort, and frustration are collected after each image for condition-by-condition comparison.
-- In preference trials, descriptions A, B, and C can be replayed without a limit. All three must be played before a ranking is saved.
-- The ranking explanation is required and stored with playback events and replay counts.
+- Mental demand and frustration are collected after each image for condition-by-condition comparison.
+- In preference trials, descriptions A and B can be replayed without a limit. Both must be played before a preference is saved.
+- The preference explanation is required and stored with playback events and replay counts.
 
 ## Data storage
 
-The full study state is autosaved in the browser and submitted to Firestore at completion. Version 2 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, revised experience-rating fields, three per-image workload responses, preference playback events, replay counts, ranking, and ranking explanation. CSV exports include one workload row per image for condition-by-condition comparison.
+The full study state is autosaved in the browser and submitted to Firestore at completion. Version 7 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, experience-rating fields, two per-image workload responses, preference playback events, replay counts, preference, and preference explanation. CSV exports include one workload row per image for condition-by-condition comparison.
 
 ## Accessibility design notes
 
@@ -160,7 +155,7 @@ The UI avoids drag-and-drop, hover-only interaction, hidden custom widgets, and 
 Before running a real study, manually verify:
 
 1. Spatial questions are correct for each image.
-2. The selected 15 comprehension stimuli are final.
+2. The selected 10 comprehension stimuli are final.
 3. The 3 preference stimuli are final.
 4. The text-to-speech voice is acceptable, or replace TTS with recorded audio files.
 5. Exported JSON/CSV contains the fields needed for analysis.

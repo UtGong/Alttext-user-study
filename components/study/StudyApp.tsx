@@ -1,9 +1,8 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
 import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
-import { LikertScale } from "@/components/LikertScale";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
@@ -18,7 +17,7 @@ import {
 import { createRandomizedComprehensionOrder, preferenceStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { createMockStudyData } from "@/lib/mockStudyData";
-import { LikertResponse, ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
+import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
 
 const participant: ParticipantProfile = {
   participantId: "",
@@ -48,7 +47,6 @@ const initial: StudyState = {
   comprehensionOrder: [],
   preferenceIndex: 0,
   comprehensionResponses: [],
-  workloadResponse: null,
   preferenceResponses: [],
   interviewResponses: [],
   startedAt: new Date().toISOString()
@@ -56,8 +54,6 @@ const initial: StudyState = {
 
 const sample =
   "A person stands near a table in the foreground. Behind the table, a window and several objects help define the room.";
-
-const workloadLabels = ["Very low", "Low", "Moderate", "High", "Very high"];
 
 const consentPlaybackText = [
   "Consent to Participate.",
@@ -150,7 +146,7 @@ export function StudyApp() {
           <h2>Welcome</h2>
           <p>
             Listen to image descriptions and answer questions about what you understood. Later,
-            compare four descriptions of the same image.
+            compare two descriptions of the same image.
           </p>
           <div className="button-row">
             <AccessibleButton
@@ -173,7 +169,6 @@ export function StudyApp() {
                   preferenceIndex: 0,
                   comprehensionResponses: [],
                   preferenceResponses: [],
-                  workloadResponse: null,
                   interviewResponses: []
                 })
               }
@@ -203,9 +198,6 @@ export function StudyApp() {
           state={state}
           updateState={updateState}
         />
-      )}
-      {state.phase === "workload" && (
-        <Workload state={state} updateState={updateState} />
       )}
       {state.phase === "preference" && (
         <PreferenceFlow
@@ -410,7 +402,7 @@ function Setup({
         onChange={(value) =>
           change({ sequenceGroup: value as SequenceGroup })
         }
-        options={["A", "B", "C", "D"].map((value) => ({
+        options={["A", "B"].map((value) => ({
           value,
           label: `Group ${value}`
         }))}
@@ -578,62 +570,6 @@ function Practice({
         </AccessibleButton>
       </div>
     </section>
-  );
-}
-
-function Workload({
-  state,
-  updateState
-}: {
-  state: StudyState;
-  updateState: (patch: Partial<StudyState>) => void;
-}) {
-  const [mentalDemand, setMentalDemand] = useState<number | null>(null);
-  const [effort, setEffort] = useState<number | null>(null);
-  const [frustration, setFrustration] = useState<number | null>(null);
-  const response = (value: number | null): LikertResponse | null =>
-    value === null ? null : { value, label: workloadLabels[value - 1] };
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
-    updateState({
-      workloadResponse: {
-        participantId: state.participant.participantId,
-        sequenceGroup: state.participant.sequenceGroup,
-        testMode: state.testMode,
-        selectedAudioSpeed: state.selectedAudioSpeed,
-        selectedVoiceURI: state.selectedVoiceURI,
-        submittedAt: new Date().toISOString(),
-        mentalDemand: response(mentalDemand),
-        effort: response(effort),
-        frustration: response(frustration)
-      },
-      phase: preferenceStimuli.length ? "preference" : "interview"
-    });
-  };
-
-  return (
-    <form className="panel" onSubmit={submit}>
-      <h2>Overall Workload Questions</h2>
-      {[
-        ["How mentally demanding was this task?", mentalDemand, setMentalDemand, "mental"],
-        ["How much effort did you need?", effort, setEffort, "effort"],
-        ["How frustrated did you feel?", frustration, setFrustration, "frustration"]
-      ].map(([question, value, setter, name]) => (
-        <LikertScale
-          key={name as string}
-          legend={question as string}
-          name={name as string}
-          value={value as number | null}
-          onChange={setter as (nextValue: number) => void}
-          labels={workloadLabels}
-          required={!state.testMode}
-          audioSpeed={state.selectedAudioSpeed}
-          voiceURI={state.selectedVoiceURI}
-        />
-      ))}
-      <AccessibleButton type="submit">Continue</AccessibleButton>
-    </form>
   );
 }
 
