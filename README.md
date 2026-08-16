@@ -137,6 +137,11 @@ During real trials:
 
 The full study state is autosaved in the browser and submitted to Firestore at completion. Version 7 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, experience-rating fields, two per-image workload responses, preference playback events, replay counts, preference, and preference explanation. CSV exports include one workload row per image for condition-by-condition comparison.
 
+The home page also contains a researcher-only data viewer. Set a strong, private
+`RESEARCHER_ACCESS_KEY` environment variable on the server and enter that same key in the
+researcher panel to fetch all Firestore records. Do not expose this value through a
+`NEXT_PUBLIC_` environment variable.
+
 ## Accessibility design notes
 
 The interface intentionally uses native controls:
