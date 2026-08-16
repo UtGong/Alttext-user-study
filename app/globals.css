@@ -132,6 +132,18 @@ h2 {
   font-weight: 700;
 }
 
+.description-transcript {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 5px solid var(--focus);
+  border-radius: 8px;
+  background: var(--secondary);
+}
+
+.description-transcript p {
+  margin: 0;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;

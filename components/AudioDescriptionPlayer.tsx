@@ -97,6 +97,10 @@ export function AudioDescriptionPlayer({
 
       {replayHelp && <p className="help-text">{replayHelp}</p>}
 
+      <div className="description-transcript" aria-label={`${label} text`}>
+        <p>{description}</p>
+      </div>
+
       <div className="button-row">
         <AccessibleButton type="button" onClick={() => play(false)} disabled={playedOnce}>
           Play {label}

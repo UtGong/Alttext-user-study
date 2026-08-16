@@ -89,9 +89,13 @@ export function StudyApp() {
         return;
       }
 
+      const restoredPhase =
+        saved.phase === "consent" || saved.phase === "declined" ? "welcome" : saved.phase;
+
       setState({
         ...initial,
         ...saved,
+        phase: restoredPhase ?? "welcome",
         schemaVersion: STUDY_SCHEMA_VERSION,
         comprehensionOrder:
           saved.comprehensionOrder?.length
@@ -150,18 +154,38 @@ export function StudyApp() {
               Listen to image descriptions and answer questions about what you understood. Later,
               compare two descriptions of the same image.
             </p>
+            <p className="help-text">
+              Consent and participant background questions are completed before the study session.
+            </p>
             <div className="button-row">
               <AccessibleButton
-                onClick={() => updateState({ phase: "consent", testMode: false })}
+                onClick={() => {
+                  const startedAt = new Date().toISOString();
+                  updateState({
+                    phase: "setup",
+                    testMode: false,
+                    consent: {
+                      accepted: true,
+                      acceptedAt: startedAt,
+                      version: `${CONSENT_VERSION}-external`
+                    },
+                    startedAt
+                  });
+                }}
               >
-                Review consent form
+                Start study setup
               </AccessibleButton>
               <AccessibleButton
                 variant="secondary"
                 onClick={() =>
                   updateState({
-                    phase: "consent",
+                    phase: "setup",
                     testMode: true,
+                    consent: {
+                      accepted: true,
+                      acceptedAt: new Date().toISOString(),
+                      version: `${CONSENT_VERSION}-external-test`
+                    },
                     participant: {
                       ...participant,
                       participantId: `TEST_${Date.now()}`
@@ -183,10 +207,6 @@ export function StudyApp() {
         </>
       )}
 
-      {state.phase === "consent" && (
-        <Consent state={state} updateState={updateState} decline={decline} />
-      )}
-      {state.phase === "declined" && <Declined reset={reset} />}
       {state.phase === "setup" && (
         <Setup state={state} updateState={updateState} />
       )}
@@ -386,7 +406,7 @@ function Setup({
         updateState({ phase: "audio-settings" });
       }}
     >
-      <h2>Participant Setup</h2>
+      <h2>Study Setup</h2>
 
       <div className="field-label">
         <label htmlFor="participant-id">Participant ID</label>
@@ -409,50 +429,6 @@ function Setup({
         options={["A", "B"].map((value) => ({
           value,
           label: `Group ${value}`
-        }))}
-        required
-        audioSpeed={state.selectedAudioSpeed}
-        voiceURI={state.selectedVoiceURI}
-      />
-
-      <RadioGroup
-        legend="Vision background"
-        name="visionBackground"
-        value={currentParticipant.visionBackground}
-        onChange={(value) => change({ visionBackground: value })}
-        options={[
-          { value: "blind", label: "Blind" },
-          { value: "low-vision", label: "Low vision" },
-          { value: "legally-blind", label: "Legally blind" },
-          { value: "self-describe", label: "Prefer to self-describe" },
-          { value: "prefer-not", label: "Prefer not to say" }
-        ]}
-        required
-        audioSpeed={state.selectedAudioSpeed}
-        voiceURI={state.selectedVoiceURI}
-      />
-
-      <RadioGroup
-        legend="Screen reader use"
-        name="screenReader"
-        value={currentParticipant.screenReader}
-        onChange={(value) => change({ screenReader: value })}
-        options={["NVDA", "JAWS", "VoiceOver", "TalkBack", "Other", "None"].map(
-          (value) => ({ value, label: value })
-        )}
-        required
-        audioSpeed={state.selectedAudioSpeed}
-        voiceURI={state.selectedVoiceURI}
-      />
-
-      <RadioGroup
-        legend="Image-description experience"
-        name="experience"
-        value={currentParticipant.imageDescriptionExperience}
-        onChange={(value) => change({ imageDescriptionExperience: value })}
-        options={["rarely", "sometimes", "often", "very-often"].map((value) => ({
-          value,
-          label: value === "very-often" ? "Very often" : value
         }))}
         required
         audioSpeed={state.selectedAudioSpeed}
