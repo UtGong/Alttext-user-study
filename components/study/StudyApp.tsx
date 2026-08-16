@@ -6,6 +6,7 @@ import { AudioDescriptionPlayer } from "@/components/AudioDescriptionPlayer";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
+import { ResultsFetcher } from "@/components/ResultsFetcher";
 import { ComprehensionFlow } from "@/components/study/ComprehensionFlow";
 import { PreferenceFlow } from "@/components/study/PreferenceFlow";
 import {
@@ -142,41 +143,44 @@ export function StudyApp() {
       )}
 
       {state.phase === "welcome" && (
-        <section className="panel">
-          <h2>Welcome</h2>
-          <p>
-            Listen to image descriptions and answer questions about what you understood. Later,
-            compare two descriptions of the same image.
-          </p>
-          <div className="button-row">
-            <AccessibleButton
-              onClick={() => updateState({ phase: "consent", testMode: false })}
-            >
-              Review consent form
-            </AccessibleButton>
-            <AccessibleButton
-              variant="secondary"
-              onClick={() =>
-                updateState({
-                  phase: "consent",
-                  testMode: true,
-                  participant: {
-                    ...participant,
-                    participantId: `TEST_${Date.now()}`
-                  },
-                  comprehensionIndex: 0,
-                  comprehensionOrder: [],
-                  preferenceIndex: 0,
-                  comprehensionResponses: [],
-                  preferenceResponses: [],
-                  interviewResponses: []
-                })
-              }
-            >
-              Start test mode
-            </AccessibleButton>
-          </div>
-        </section>
+        <>
+          <section className="panel">
+            <h2>Welcome</h2>
+            <p>
+              Listen to image descriptions and answer questions about what you understood. Later,
+              compare two descriptions of the same image.
+            </p>
+            <div className="button-row">
+              <AccessibleButton
+                onClick={() => updateState({ phase: "consent", testMode: false })}
+              >
+                Review consent form
+              </AccessibleButton>
+              <AccessibleButton
+                variant="secondary"
+                onClick={() =>
+                  updateState({
+                    phase: "consent",
+                    testMode: true,
+                    participant: {
+                      ...participant,
+                      participantId: `TEST_${Date.now()}`
+                    },
+                    comprehensionIndex: 0,
+                    comprehensionOrder: [],
+                    preferenceIndex: 0,
+                    comprehensionResponses: [],
+                    preferenceResponses: [],
+                    interviewResponses: []
+                  })
+                }
+              >
+                Start test mode
+              </AccessibleButton>
+            </div>
+          </section>
+          <ResultsFetcher />
+        </>
       )}
 
       {state.phase === "consent" && (

@@ -110,6 +110,28 @@ h2 {
   box-shadow: none;
 }
 
+.researcher-data pre {
+  max-height: 32rem;
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 10px;
+  background: #101827;
+  color: #f8fafc;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.researcher-data summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.error-message {
+  color: var(--danger);
+  font-weight: 700;
+}
+
 .button-row {
   display: flex;
   flex-wrap: wrap;

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { FieldValue, getFirestore, initializeFirestore } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
+import { getFirebaseDatabase, getStudyResultsCollectionName } from "@/lib/firebaseAdmin";
 
 export const runtime = "nodejs";
 
@@ -9,49 +9,6 @@ function sanitizeId(value: string) {
     .trim()
     .replace(/[^a-zA-Z0-9_-]/g, "_")
     .slice(0, 80);
-}
-
-function getFirebasePrivateKey() {
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
-
-  if (!privateKey) {
-    throw new Error("Missing FIREBASE_PRIVATE_KEY.");
-  }
-
-  return privateKey.replace(/\\n/g, "\n");
-}
-
-function getFirebaseApp() {
-  if (getApps().length > 0) {
-    return getApps()[0];
-  }
-
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-
-  if (!projectId) {
-    throw new Error("Missing FIREBASE_PROJECT_ID.");
-  }
-
-  if (!clientEmail) {
-    throw new Error("Missing FIREBASE_CLIENT_EMAIL.");
-  }
-
-  const app = initializeApp({
-    credential: cert({
-      projectId,
-      clientEmail,
-      privateKey: getFirebasePrivateKey()
-    })
-  });
-
-  // Important: prefer REST transport instead of gRPC.
-  // This avoids DEADLINE_EXCEEDED / Waiting for LB pick issues on some local and Vercel environments.
-  initializeFirestore(app, {
-    preferRest: true
-  });
-
-  return app;
 }
 
 export async function POST(request: NextRequest) {
@@ -76,10 +33,9 @@ export async function POST(request: NextRequest) {
         ? sanitizeId(rawParticipantId)
         : "unknown_participant";
 
-    const app = getFirebaseApp();
-    const db = getFirestore(app);
+    const db = getFirebaseDatabase();
 
-    const collectionName = process.env.FIRESTORE_COLLECTION || "studyResults";
+    const collectionName = getStudyResultsCollectionName();
     const submittedAt = new Date().toISOString();
     const documentId = `${participantId}_${submittedAt.replace(/[:.]/g, "-")}`;
 
