@@ -1,21 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AccessibleButton } from "@/components/AccessibleButton";
 import {
   analyzeStudyRecords,
+  ANALYSIS_SESSION_KEY,
   GroupSummary,
   NumericSummary,
   StudyAnalysis,
   StudyRecord
 } from "@/lib/analysis";
-
-type ResultsResponse = {
-  ok: boolean;
-  collection?: string;
-  results?: StudyRecord[];
-  error?: string;
-};
 
 const format = (value: number | null, suffix = "") =>
   value === null ? "—" : `${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}${suffix}`;
@@ -119,31 +113,49 @@ function SpatialBreakdownTable({ title, rows }: { title: string; rows: GroupSumm
 }
 
 export function AnalysisDashboard() {
-  const [accessKey, setAccessKey] = useState("");
   const [records, setRecords] = useState<StudyRecord[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
-  const analysis = useMemo(() => analyzeStudyRecords(records), [records]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError("");
+  useEffect(() => {
     try {
-      const response = await fetch("/api/results", {
-        cache: "no-store",
-        headers: { Authorization: `Bearer ${accessKey}` }
-      });
-      const body = (await response.json()) as ResultsResponse;
-      if (!response.ok || !body.ok) throw new Error(body.error || "Unable to fetch study data.");
-      setRecords(body.results ?? []);
+      const stored = sessionStorage.getItem(ANALYSIS_SESSION_KEY);
+      if (!stored) {
+        setError("No fetched data is available. Return home and use Fetch data and continue.");
+        setLoaded(true);
+        return;
+      }
+      const parsed = JSON.parse(stored) as StudyRecord[];
+      if (!Array.isArray(parsed)) throw new Error("The fetched data could not be read.");
+      setRecords(parsed);
+      setSelectedIndexes(parsed.map((_, index) => index));
       setLoaded(true);
-    } catch (fetchError) {
-      setLoaded(false);
-      setError(fetchError instanceof Error ? fetchError.message : "Unable to fetch study data.");
-    } finally {
-      setLoading(false);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : "The fetched data could not be read.");
+      setLoaded(true);
     }
+  }, []);
+
+  const selectedRecords = useMemo(
+    () => records.filter((_, index) => selectedIndexes.includes(index)),
+    [records, selectedIndexes]
+  );
+  const analysis = useMemo(() => analyzeStudyRecords(selectedRecords), [selectedRecords]);
+
+  const toggleRecord = (index: number) => {
+    setSelectedIndexes((current) =>
+      current.includes(index) ? current.filter((value) => value !== index) : [...current, index]
+    );
+  };
+
+  const recordLabel = (record: StudyRecord, index: number) => {
+    const participant = record.participant as Record<string, unknown> | undefined;
+    const participantId =
+      (typeof record.participantId === "string" && record.participantId) ||
+      (typeof participant?.participantId === "string" && participant.participantId) ||
+      `Record ${index + 1}`;
+    return `${participantId}${record.testMode === true ? " (test mode)" : ""}`;
   };
 
   return (
@@ -155,32 +167,56 @@ export function AnalysisDashboard() {
         <p><a href="/">Return to study home</a></p>
       </header>
 
-      <section className="panel" aria-labelledby="load-data-heading">
-        <h2 id="load-data-heading">Load protected study data</h2>
-        <div className="field-label">
-          <label htmlFor="analysis-access-key">Researcher access key</label>
-          <input
-            id="analysis-access-key"
-            type="password"
-            autoComplete="current-password"
-            value={accessKey}
-            onChange={(event) => setAccessKey(event.target.value)}
-          />
-        </div>
+      <section className="panel" aria-labelledby="select-data-heading">
+        <h2 id="select-data-heading">Select data to analyze</h2>
+        <p>
+          Choose the participant records to include. Results update automatically when the
+          selection changes.
+        </p>
+        {records.length > 0 && (
+          <fieldset className="fieldset">
+            <legend>Fetched participant records</legend>
+            <div className="button-row">
+              <AccessibleButton
+                type="button"
+                variant="secondary"
+                onClick={() => setSelectedIndexes(records.map((_, index) => index))}
+              >
+                Select all
+              </AccessibleButton>
+              <AccessibleButton
+                type="button"
+                variant="secondary"
+                onClick={() => setSelectedIndexes([])}
+              >
+                Clear selection
+              </AccessibleButton>
+            </div>
+            <div className="record-selection-list">
+              {records.map((record, index) => (
+                <label className="checkbox-label" key={`${record.id ?? "record"}-${index}`}>
+                  <input
+                    type="checkbox"
+                    checked={selectedIndexes.includes(index)}
+                    onChange={() => toggleRecord(index)}
+                  />
+                  <span>{recordLabel(record, index)}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
         <div className="button-row">
-          <AccessibleButton onClick={fetchData} disabled={loading || accessKey.length === 0}>
-            {loading ? "Fetching and analyzing…" : "Fetch and analyze all data"}
-          </AccessibleButton>
           <AccessibleButton
             variant="secondary"
-            disabled={!loaded}
-            onClick={() => downloadJson("study-results-raw.json", records)}
+            disabled={selectedRecords.length === 0}
+            onClick={() => downloadJson("study-results-selected.json", selectedRecords)}
           >
-            Save raw data as JSON
+            Save selected data as JSON
           </AccessibleButton>
           <AccessibleButton
             variant="secondary"
-            disabled={!loaded}
+            disabled={selectedRecords.length === 0}
             onClick={() => downloadJson("study-analysis.json", analysis)}
           >
             Save analysis as JSON
@@ -189,7 +225,7 @@ export function AnalysisDashboard() {
         {error && <p className="error-message" role="alert">{error}</p>}
       </section>
 
-      {loaded && (
+      {loaded && selectedRecords.length > 0 && (
         <div aria-live="polite">
           <section className="card">
             <h2>Overall performance</h2>
@@ -241,11 +277,11 @@ export function AnalysisDashboard() {
                 {participant.dataQualityFlags.length > 0 && (
                   <div><h3>Data-quality flags</h3><ul>{participant.dataQualityFlags.map((flag) => <li key={flag}>{flag}</li>)}</ul></div>
                 )}
-                <h3>Preference explanations (manual coding required)</h3>
+                <h3>Preference explanations (TODO)</h3>
                 {participant.preferenceExplanations.map((response, index) => (
                   <div className="qualitative-response" key={`${response.preferredCondition}-${index}`}><strong>Preferred condition: {response.preferredCondition || "Unknown"}</strong><p>{response.explanation || "No response"}</p></div>
                 ))}
-                <h3>Free recall responses (manual coding required)</h3>
+                <h3>Free recall responses (TODO)</h3>
                 {participant.freeRecallResponses.map((response, index) => (
                   <div className="qualitative-response" key={`${response.imageId}-${index}`}>
                     <strong>{response.condition || "Unknown condition"}, image {response.imageId || index + 1}</strong>

@@ -10,6 +10,8 @@ export type StudyRecord = Record<string, unknown> & {
   interviewResponses?: Record<string, unknown>[];
 };
 
+export const ANALYSIS_SESSION_KEY = "blv-study-analysis-records";
+
 export type NumericSummary = {
   n: number;
   mean: number | null;

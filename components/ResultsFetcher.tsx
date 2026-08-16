@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { AccessibleButton } from "@/components/AccessibleButton";
+import { ANALYSIS_SESSION_KEY } from "@/lib/analysis";
 
 type ResultsResponse = {
   ok: boolean;
@@ -12,8 +14,8 @@ type ResultsResponse = {
 };
 
 export function ResultsFetcher() {
+  const router = useRouter();
   const [accessKey, setAccessKey] = useState("");
-  const [data, setData] = useState<ResultsResponse | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -34,9 +36,9 @@ export function ResultsFetcher() {
         throw new Error(body.error || "Failed to fetch user data.");
       }
 
-      setData(body);
+      sessionStorage.setItem(ANALYSIS_SESSION_KEY, JSON.stringify(body.results ?? []));
+      router.push("/analysis");
     } catch (fetchError) {
-      setData(null);
       setError(fetchError instanceof Error ? fetchError.message : "Failed to fetch user data.");
     } finally {
       setLoading(false);
@@ -46,8 +48,10 @@ export function ResultsFetcher() {
   return (
     <section className="card researcher-data" aria-labelledby="researcher-data-heading">
       <h3 id="researcher-data-heading">Researcher data</h3>
-      <p>Enter the researcher access key to fetch completed study records from Firestore.</p>
-      <p><a href="/analysis">Open the full study analysis dashboard</a></p>
+      <p>
+        Enter the researcher access key to fetch completed Firestore records. You will then
+        choose which records to analyze on the next page.
+      </p>
       <div className="field-label">
         <label htmlFor="researcher-access-key">Researcher access key</label>
         <input
@@ -64,22 +68,11 @@ export function ResultsFetcher() {
         onClick={fetchResults}
         disabled={loading || accessKey.length === 0}
       >
-        {loading ? "Fetching user data…" : "Fetch all user data"}
+        {loading ? "Fetching user data…" : "Fetch data and continue"}
       </AccessibleButton>
 
       {error && <p className="error-message" role="alert">{error}</p>}
 
-      {data?.results && (
-        <div className="results-output" aria-live="polite">
-          <p>
-            Fetched {data.count} {data.count === 1 ? "record" : "records"} from {data.collection}.
-          </p>
-          <details>
-            <summary>View fetched user data</summary>
-            <pre>{JSON.stringify(data.results, null, 2)}</pre>
-          </details>
-        </div>
-      )}
     </section>
   );
 }
