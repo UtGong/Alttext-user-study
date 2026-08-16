@@ -142,6 +142,12 @@ The home page also contains a researcher-only data viewer. Set a strong, private
 researcher panel to fetch all Firestore records. Do not expose this value through a
 `NEXT_PUBLIC_` environment variable.
 
+Researchers can open `/analysis` to fetch the protected records and view descriptive results
+for each participant and the full sample. The dashboard summarizes spatial accuracy,
+uncertainty, experience ratings, workload, timing, replays, preferences, complexity, frame of
+reference, and object focus. It also provides downloads for the raw records and computed
+analysis as JSON. Free-recall and interview text remains available for manual qualitative coding.
+
 ## Accessibility design notes
 
 The interface intentionally uses native controls:

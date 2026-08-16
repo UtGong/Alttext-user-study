@@ -47,6 +47,7 @@ export function ResultsFetcher() {
     <section className="card researcher-data" aria-labelledby="researcher-data-heading">
       <h3 id="researcher-data-heading">Researcher data</h3>
       <p>Enter the researcher access key to fetch completed study records from Firestore.</p>
+      <p><a href="/analysis">Open the full study analysis dashboard</a></p>
       <div className="field-label">
         <label htmlFor="researcher-access-key">Researcher access key</label>
         <input
