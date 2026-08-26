@@ -57,6 +57,35 @@ test("the pilot set contains 2 low, 4 medium, and 4 high complexity images", () 
   assert.ok(reserve.every((item) => item.pilotIndex === undefined));
 });
 
+test("fixed pilot conditions each contain 1 low, 2 medium, and 2 high complexity images", () => {
+  const expectedUuids = {
+    baseline: [
+      "03da43fa-743f-49d5-92ad-d521accc5759",
+      "bf9843af-1922-483f-8b6b-ccfa852de356",
+      "c50ee8c2-db92-4e58-a6b8-0243dfe829d8",
+      "c77f8b64-98a2-4b3c-b270-1863ece147c5",
+      "d25ae4f0-6e09-4ae3-9229-5d45ca3dec56"
+    ],
+    spatial: [
+      "25c98bc8-af28-4194-a056-daeae1f0a001",
+      "7ef08b06-e4ff-49e5-8c13-f79dd0b1a872",
+      "823405e0-599f-4fd8-ae71-4d901edc36b0",
+      "c9c0f26e-a559-43ab-b517-0384e347ade8",
+      "d37bc3dc-c3e0-4019-9725-f33404d7d5bc"
+    ]
+  };
+
+  for (const condition of activeConditions) {
+    const group = pilot.filter((item) => item.pilotCondition === condition);
+    assert.equal(group.length, 5);
+    assert.deepEqual(
+      Object.fromEntries(["low", "medium", "high"].map((level) => [level, group.filter((item) => item.complexityLevel === level).length])),
+      { low: 1, medium: 2, high: 2 }
+    );
+    assert.deepEqual(group.map((item) => item.uuid).sort(), expectedUuids[condition]);
+  }
+});
+
 test("pilot copies use the updated pilot questions", () => {
   const river = pilot.find((item) => item.uuid === "823405e0-599f-4fd8-ae71-4d901edc36b0");
   assert.ok(river);
@@ -256,23 +285,22 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 10/);
-  assert.match(types, /schemaVersion: 10/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 11/);
+  assert.match(types, /schemaVersion: 11/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
   assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
-test("pilot counterbalancing reverses odd and even assignments across sequence groups", async () => {
+test("pilot condition assignments are fixed across sequence groups", async () => {
   const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
 
-  assert.match(config, /A: \{ odd: "spatial", even: "baseline" \}/);
-  assert.match(config, /B: \{ odd: "baseline", even: "spatial" \}/);
-  assert.match(source, /stimulus\.pilotIndex! % 2 === 1 \? "odd" : "even"/);
-  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 1).length, 5);
-  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 0).length, 5);
+  assert.doesNotMatch(config, /PILOT_LATIN_SQUARE/);
+  assert.match(source, /return stimulus\.pilotCondition/);
+  assert.doesNotMatch(source, /stimulus\.pilotIndex! % 2/);
+  assert.ok(pilot.every((item) => activeConditions.includes(item.pilotCondition)));
 });
 
 test("preference flow uses record conditions, ignores spatial questions, and logs randomized mappings", async () => {

@@ -1,5 +1,5 @@
 import rawStimuli from "@/data/stimuli.json";
-import { LATIN_SQUARE, PILOT_LATIN_SQUARE } from "@/lib/config";
+import { LATIN_SQUARE } from "@/lib/config";
 import { Condition, SequenceGroup, Stimulus } from "@/types/study";
 
 export const stimuli = rawStimuli as Stimulus[];
@@ -69,12 +69,10 @@ export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: 
   }
 
   if (stimulus.imageSet === "pilot") {
-    if (!Number.isInteger(stimulus.pilotIndex)) {
-      throw new Error(`Pilot stimulus ${stimulus.uuid} is missing a valid pilotIndex.`);
+    if (stimulus.pilotCondition !== "baseline" && stimulus.pilotCondition !== "spatial") {
+      throw new Error(`Pilot stimulus ${stimulus.uuid} is missing a valid fixed condition.`);
     }
-
-    const parity = stimulus.pilotIndex! % 2 === 1 ? "odd" : "even";
-    return PILOT_LATIN_SQUARE[sequenceGroup][parity];
+    return stimulus.pilotCondition;
   }
 
   return LATIN_SQUARE[sequenceGroup][stimulus.imageSet];

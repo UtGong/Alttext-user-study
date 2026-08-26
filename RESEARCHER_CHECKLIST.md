@@ -5,7 +5,7 @@
 - Open the study interface in a supported browser.
 - Confirm the participant ID format.
 - Confirm the combined pilot-comprehension and preference workflow is active.
-- Assign sequence group A or B.
+- Record sequence group A or B as participant metadata; it does not change the fixed pilot conditions.
 - Confirm audio output device and volume.
 - Confirm every selected image loads from its Show image button.
 - Confirm microphone input and speech-to-text support if the participant wants to speak answers.

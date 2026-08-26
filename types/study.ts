@@ -62,6 +62,7 @@ export type DescriptionMetrics = Partial<Record<Condition, DescriptionMetric>>;
 export type Stimulus = {
   role: StimulusRole;
   pilotIndex?: number;
+  pilotCondition?: Condition;
   rowIndex: number;
   uuid: string;
   imageFilename: string;
@@ -249,7 +250,7 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 10;
+  schemaVersion: 11;
   phase: StudyPhase;
   testMode: boolean;
   studyMode: StudyMode;

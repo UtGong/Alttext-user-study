@@ -14,16 +14,8 @@ export const LATIN_SQUARE: Record<SequenceGroup, Record<LegacyComprehensionSet, 
   B: { set1: "spatial", set2: "baseline", set3: "spatial", set4: "baseline" }
 };
 
-export const PILOT_LATIN_SQUARE: Record<
-  SequenceGroup,
-  Record<"odd" | "even", Condition>
-> = {
-  A: { odd: "spatial", even: "baseline" },
-  B: { odd: "baseline", even: "spatial" }
-};
-
 export const STUDY_CONDITIONS: Condition[] = ["baseline", "spatial"];
 
 export const STORAGE_KEY = "blv-user-study-state-v1";
-export const STUDY_SCHEMA_VERSION = 10 as const;
+export const STUDY_SCHEMA_VERSION = 11 as const;
 export const CONSENT_VERSION = "2026-08-12";

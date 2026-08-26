@@ -11,7 +11,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 
 - Participant setup
 - One combined pilot-comprehension and preference workflow
-- Researcher sequence group selection: A or B
+- Researcher sequence group metadata: A or B; it does not alter the fixed pilot conditions
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
 - 10 pilot comprehension trials followed by 3 preference trials
@@ -106,17 +106,13 @@ local path. Images are hidden by default, and missing files produce a participan
 
 Open-ended answer fields also offer optional browser speech recognition. Starting speech input stops text-to-speech playback, requests microphone access, and inserts recognized text into the editable answer field. The website does not retain microphone audio. Browser speech-recognition support varies, so typing and operating-system dictation remain available fallbacks.
 
-## Counterbalancing
+## Fixed pilot condition groups
 
-The active comprehension task uses all 13 records labeled `pilot`. Odd and even `pilotIndex`
-values form counterbalance groups whose assignments reverse between sequence groups:
-
-| Group | Odd pilot indices | Even pilot indices |
-|---|---|---|
-| A | Spatial (Depth) | No order |
-| B | No order | Spatial (Depth) |
-
-Researchers select the sequence group on the participant setup page.
+The active comprehension task uses 10 records labeled `pilot`, divided into two fixed groups.
+Each group contains one low-, two medium-, and two high-complexity images. Five records use the
+`baseline` description (No order), and five use the `spatial` description (Spatial (Depth)). The
+assignment is stored in each record's `pilotCondition` and does not reverse between researcher
+sequence groups A and B.
 
 The three preference trials follow the pilot comprehension trials automatically. Each record
 supplies its two active conditions through `preferenceConditions`; their A/B labels are randomized
