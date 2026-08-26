@@ -318,6 +318,18 @@ test("preference flow uses record conditions, ignores spatial questions, and log
   assert.doesNotMatch(source, /Text of Description|description-text-block/);
 });
 
+test("preference descriptions use one heading and a flat audio layout", async () => {
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+  const player = await readFile(new URL("../components/AudioDescriptionPlayer.tsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+
+  assert.match(preferenceFlow, /className="preference-description-card"/);
+  assert.match(preferenceFlow, /<AudioDescriptionPlayer[\s\S]*embedded/);
+  assert.match(player, /!embedded &&/);
+  assert.equal((css.match(/\.question-card\s*\{/g) ?? []).length, 1);
+  assert.equal((css.match(/\.audio-card\s*\{/g) ?? []).length, 1);
+});
+
 test("the only study flow combines pilot comprehension followed by preference", async () => {
   const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
@@ -347,8 +359,27 @@ test("exports include randomized order and verbal and internal Likert values", a
   assert.match(source, /spatialKendallTau/);
   assert.match(source, /"spatialExpressionCount"/);
   assert.match(source, /spatialExpressionCount: response\.spatialExpressionCount/);
+  assert.match(source, /"complexityScore"/);
+  assert.match(source, /complexityScore: response\.complexityScore/);
   assert.match(source, /descriptionACondition/);
   assert.match(source, /playbackEventsJson/);
+});
+
+test("analysis surfaces description metrics at aggregate and participant levels", async () => {
+  const analysis = await readFile(new URL("../lib/analysis.ts", import.meta.url), "utf8");
+  const dashboard = await readFile(new URL("../components/AnalysisDashboard.tsx", import.meta.url), "utf8");
+
+  assert.match(analysis, /baselineSpatialExpressionCount: NumericSummary/);
+  assert.match(analysis, /presentedSpatialExpressionCount: NumericSummary/);
+  assert.match(analysis, /spatialKendallTau: NumericSummary/);
+  assert.match(analysis, /presentedKendallTau: NumericSummary/);
+  assert.match(analysis, /trialMetrics: TrialMetricSummary\[\]/);
+  assert.match(analysis, /current-schema-v11-description-metrics/);
+  assert.match(dashboard, /Description metrics by condition/);
+  assert.match(dashboard, /Baseline spatial expressions/);
+  assert.match(dashboard, /Spatial-order Kendall’s τ/);
+  assert.match(dashboard, /Trial-level description metrics/);
+  assert.match(dashboard, /Mean spatial expressions/);
 });
 
 test("expected speech interruptions do not display playback errors", async () => {

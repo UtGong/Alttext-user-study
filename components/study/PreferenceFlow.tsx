@@ -99,6 +99,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
       imageSet: "preference",
       rowIndex: stimulus.rowIndex,
       complexityLevel: stimulus.complexityLevel,
+      complexityScore: stimulus.complexityScore ?? null,
       randomizedOrder,
       baselineSpatialExpressionCount: stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null,
       spatialSpatialExpressionCount: stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null,
@@ -150,8 +151,12 @@ export function PreferenceFlow({ state, updateState }: Props) {
       )}
 
       {randomizedOrder.map((item) => (
-        <section key={item.label} className="question-card">
-          <h3>Description {item.label}</h3>
+        <section
+          key={item.label}
+          className="preference-description-card"
+          aria-labelledby={`preference-description-${item.label}`}
+        >
+          <h3 id={`preference-description-${item.label}`}>Description {item.label}</h3>
 
           <AudioDescriptionPlayer
             description={item.descriptionText}
@@ -159,6 +164,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
             voiceURI={state.selectedVoiceURI}
             mode="preference"
             label={`Description ${item.label}`}
+            embedded
             onReplay={() =>
               setReplayCounts((current) => ({
                 ...current,

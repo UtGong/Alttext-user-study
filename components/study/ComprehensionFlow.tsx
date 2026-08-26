@@ -80,7 +80,7 @@ export function ComprehensionFlow({ state, updateState }: Props) {
         participantId: state.participant.participantId, sessionId: state.sessionId, trialId, studyMode,
         sequenceGroup: state.participant.sequenceGroup, testMode: state.testMode,
         selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI, trialIndex: next, randomizedDisplayPosition: next,
-        imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel,
+        imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel, complexityScore: stimulus.complexityScore ?? null,
         role: "pilot", imageSet: stimulus.imageSet,
         pilotIndex: stimulus.pilotIndex ?? null, condition, descriptionText,
         baselineSpatialExpressionCount, spatialSpatialExpressionCount, spatialKendallTau,

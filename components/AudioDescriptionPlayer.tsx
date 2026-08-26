@@ -11,6 +11,7 @@ type AudioDescriptionPlayerProps = {
   voiceURI?: string;
   mode: "sample" | "practice" | "trial" | "preference";
   label?: string;
+  embedded?: boolean;
   maxReplays?: number;
   onPlayed?: () => void;
   onReplay?: () => void;
@@ -24,6 +25,7 @@ export function AudioDescriptionPlayer({
   voiceURI,
   mode,
   label = "description",
+  embedded = false,
   maxReplays,
   onPlayed,
   onReplay,
@@ -90,10 +92,13 @@ export function AudioDescriptionPlayer({
 
   return (
     <section
-      className="card audio-card"
-      aria-labelledby={`${label.replaceAll(" ", "-")}-heading`}
+      className={embedded ? "audio-player-embedded" : "card audio-card"}
+      aria-label={embedded ? `${label} audio controls` : undefined}
+      aria-labelledby={embedded ? undefined : `${label.replaceAll(" ", "-")}-heading`}
     >
-      <h3 id={`${label.replaceAll(" ", "-")}-heading`}>Audio {label}</h3>
+      {!embedded && (
+        <h3 id={`${label.replaceAll(" ", "-")}-heading`}>Audio {label}</h3>
+      )}
 
       {replayHelp && <p className="help-text">{replayHelp}</p>}
 

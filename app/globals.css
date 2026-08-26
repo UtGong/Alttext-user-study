@@ -526,65 +526,22 @@ code {
   font-size: 0.95rem;
 }
 
-.trial-banner {
-  border: 3px solid var(--focus);
-  border-radius: 16px;
-  padding: 1rem;
-  margin-bottom: 1.25rem;
-  background: #eef5ff;
-}
-
-.trial-banner h2 {
-  margin-bottom: 0.5rem;
-}
-
-.question-card {
-  border: 2px solid var(--border);
-  border-left: 8px solid var(--focus);
-  border-radius: 14px;
-  padding: 1rem;
-  margin: 1.25rem 0;
-  background: #ffffff;
-}
-
-.question-card h3 {
-  margin-top: 0;
-}
-
-.nested-fieldset {
-  border-width: 1px;
-  margin-bottom: 0;
-}
-
-.audio-card {
-  border-left: 8px solid var(--primary);
-}
-
-.visible-status {
-  margin: 0.75rem 0 0;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-select {
-  width: 100%;
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: 0.75rem;
-  background: #fff;
-  color: var(--text);
-}
-
-.success {
-  border: 2px solid #0f7b0f;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-top: 1rem;
-  background: #effaf0;
-  color: #064f06;
-  font-weight: 700;
-}
-
 .preference-description-card {
-  margin-bottom: 2rem;
+  margin: 1.5rem 0;
+  padding: 1.25rem 0;
+  border-top: 2px solid var(--border);
+}
+
+.preference-description-card h3 {
+  margin: 0 0 0.75rem;
+}
+
+.preference-description-card .description-transcript {
+  margin: 0.75rem 0;
+  border-left: 0;
+  border-radius: 10px;
+}
+
+.audio-player-embedded {
+  margin: 0;
 }

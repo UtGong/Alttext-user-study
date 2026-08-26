@@ -8,13 +8,16 @@ import {
   GroupSummary,
   NumericSummary,
   StudyAnalysis,
-  StudyRecord
+  StudyRecord,
+  TrialMetricSummary
 } from "@/lib/analysis";
 
 const format = (value: number | null, suffix = "") =>
   value === null ? "—" : `${value.toLocaleString(undefined, { maximumFractionDigits: 2 })}${suffix}`;
 
 const mean = (summary: NumericSummary) => format(summary.mean);
+const meanWithN = (summary: NumericSummary) =>
+  summary.n > 0 ? `${mean(summary)} (n=${summary.n})` : "—";
 
 function downloadJson(filename: string, value: unknown) {
   const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json" });
@@ -35,7 +38,11 @@ function SummaryCards({ analysis }: { analysis: StudyAnalysis }) {
     ["Mean scene clarity", mean(analysis.overall.overallSceneClarity)],
     ["Mean spatial confidence", mean(analysis.overall.spatialRelationsConfidence)],
     ["Mean mental demand", mean(analysis.overall.mentalDemand)],
-    ["Preference trials", analysis.preference.reduce((sum, item) => sum + item.firstChoices, 0)]
+    ["Mean complexity score", mean(analysis.overall.complexityScore)],
+    ["Mean presented spatial expressions", mean(analysis.overall.presentedSpatialExpressionCount)],
+    ["Mean presented Kendall’s τ", mean(analysis.overall.presentedKendallTau)],
+    ["Preference trials", analysis.preferenceTrialCount],
+    ["No-preference choices", analysis.noPreferenceCount]
   ];
 
   return (
@@ -46,6 +53,91 @@ function SummaryCards({ analysis }: { analysis: StudyAnalysis }) {
           <strong>{value}</strong>
         </div>
       ))}
+    </div>
+  );
+}
+
+function DescriptionMetricsTable({ title, rows }: { title: string; rows: GroupSummary[] }) {
+  return (
+    <section className="card">
+      <h2>{title}</h2>
+      <p>Cells report the mean and number of trials with a recorded value.</p>
+      <div className="table-scroll">
+        <table className="analysis-table">
+          <thead>
+            <tr>
+              <th scope="col">Group</th>
+              <th scope="col">Trials</th>
+              <th scope="col">Complexity score</th>
+              <th scope="col">Baseline spatial expressions</th>
+              <th scope="col">Spatial-order expressions</th>
+              <th scope="col">Spatial-order Kendall’s τ</th>
+              <th scope="col">Presented expressions</th>
+              <th scope="col">Presented Kendall’s τ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.name}>
+                <th scope="row">{row.name}</th>
+                <td>{row.trialCount}</td>
+                <td>{meanWithN(row.complexityScore)}</td>
+                <td>{meanWithN(row.baselineSpatialExpressionCount)}</td>
+                <td>{meanWithN(row.spatialSpatialExpressionCount)}</td>
+                <td>{meanWithN(row.spatialKendallTau)}</td>
+                <td>{meanWithN(row.presentedSpatialExpressionCount)}</td>
+                <td>{meanWithN(row.presentedKendallTau)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function TrialMetricsTable({ rows }: { rows: TrialMetricSummary[] }) {
+  return (
+    <div className="table-scroll">
+      <h3>Trial-level description metrics</h3>
+      <table className="analysis-table">
+        <thead>
+          <tr>
+            <th scope="col">Trial</th>
+            <th scope="col">Image</th>
+            <th scope="col">Condition</th>
+            <th scope="col">Complexity</th>
+            <th scope="col">Complexity score</th>
+            <th scope="col">Baseline expressions</th>
+            <th scope="col">Spatial-order expressions</th>
+            <th scope="col">Spatial-order τ</th>
+            <th scope="col">Presented expressions</th>
+            <th scope="col">Presented τ</th>
+            <th scope="col">Spatial accuracy</th>
+            <th scope="col">Replays</th>
+            <th scope="col">Time (sec)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={`${row.imageId}-${row.trialIndex ?? index}`}>
+              <td>{row.trialIndex ?? index + 1}</td>
+              <th scope="row">{row.imageFilename || row.imageId || "Unknown"}</th>
+              <td>{row.condition}</td>
+              <td>{row.complexityLevel}</td>
+              <td>{format(row.complexityScore)}</td>
+              <td>{format(row.baselineSpatialExpressionCount)}</td>
+              <td>{format(row.spatialSpatialExpressionCount)}</td>
+              <td>{format(row.spatialKendallTau)}</td>
+              <td>{format(row.presentedSpatialExpressionCount)}</td>
+              <td>{format(row.presentedKendallTau)}</td>
+              <td>{format(row.spatialAccuracyPercent, "%")}</td>
+              <td>{format(row.replayCount)}</td>
+              <td>{format(row.responseTimeSeconds)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -237,6 +329,8 @@ export function AnalysisDashboard() {
 
           <OutcomeTable title="Performance by condition" rows={analysis.byCondition} />
           <OutcomeTable title="Performance by image complexity" rows={analysis.byComplexity} />
+          <DescriptionMetricsTable title="Description metrics by condition" rows={analysis.byCondition} />
+          <DescriptionMetricsTable title="Description metrics by image complexity" rows={analysis.byComplexity} />
           <SpatialBreakdownTable title="Spatial accuracy by frame of reference" rows={analysis.byFrameOfReference} />
           <SpatialBreakdownTable title="Spatial accuracy by object focus" rows={analysis.byObjectFocus} />
 
@@ -244,11 +338,11 @@ export function AnalysisDashboard() {
             <h2>Preference results</h2>
             <div className="table-scroll">
               <table className="analysis-table">
-                <thead><tr><th scope="col">Condition</th><th scope="col">Appearances</th><th scope="col">First choices</th><th scope="col">First-choice rate</th><th scope="col">Mean rank</th><th scope="col">Rank counts</th></tr></thead>
+                <thead><tr><th scope="col">Condition</th><th scope="col">Appearances</th><th scope="col">First choices</th><th scope="col">First-choice rate</th><th scope="col">Mean rank</th><th scope="col">Mean spatial expressions</th><th scope="col">Mean Kendall’s τ</th><th scope="col">Rank counts</th></tr></thead>
                 <tbody>
                   {analysis.preference.map((item) => (
                     <tr key={item.condition}>
-                      <th scope="row">{item.condition}</th><td>{item.appearances}</td><td>{item.firstChoices}</td><td>{format(item.firstChoicePercent, "%")}</td><td>{format(item.meanRank)}</td><td>{Object.entries(item.rankCount).map(([rank, count]) => `${rank}: ${count}`).join(", ") || "—"}</td>
+                      <th scope="row">{item.condition}</th><td>{item.appearances}</td><td>{item.firstChoices}</td><td>{format(item.firstChoicePercent, "%")}</td><td>{format(item.meanRank)}</td><td>{meanWithN(item.spatialExpressionCount)}</td><td>{meanWithN(item.kendallTau)}</td><td>{Object.entries(item.rankCount).map(([rank, count]) => `${rank}: ${count}`).join(", ") || "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -263,13 +357,14 @@ export function AnalysisDashboard() {
                 <summary>{participant.participantId} — {format(participant.overall.spatialAccuracyPercent, "%")} spatial accuracy</summary>
                 <p>Schema {participant.schemaVersion ?? "unknown"}; app {participant.appVersion || "unknown"}; sequence group {participant.sequenceGroup || "unknown"}.</p>
                 <OutcomeTable title="Condition results" rows={participant.byCondition} />
+                <TrialMetricsTable rows={participant.trialMetrics} />
                 {participant.preference.length > 0 && (
                   <div className="table-scroll">
                     <h3>Preference results</h3>
                     <table className="analysis-table">
-                      <thead><tr><th scope="col">Condition</th><th scope="col">First choices</th><th scope="col">First-choice rate</th><th scope="col">Mean rank</th></tr></thead>
+                      <thead><tr><th scope="col">Condition</th><th scope="col">First choices</th><th scope="col">First-choice rate</th><th scope="col">Mean rank</th><th scope="col">Mean spatial expressions</th><th scope="col">Mean Kendall’s τ</th></tr></thead>
                       <tbody>{participant.preference.map((item) => (
-                        <tr key={item.condition}><th scope="row">{item.condition}</th><td>{item.firstChoices}</td><td>{format(item.firstChoicePercent, "%")}</td><td>{format(item.meanRank)}</td></tr>
+                        <tr key={item.condition}><th scope="row">{item.condition}</th><td>{item.firstChoices}</td><td>{format(item.firstChoicePercent, "%")}</td><td>{format(item.meanRank)}</td><td>{meanWithN(item.spatialExpressionCount)}</td><td>{meanWithN(item.kendallTau)}</td></tr>
                       ))}</tbody>
                     </table>
                   </div>
@@ -277,11 +372,11 @@ export function AnalysisDashboard() {
                 {participant.dataQualityFlags.length > 0 && (
                   <div><h3>Data-quality flags</h3><ul>{participant.dataQualityFlags.map((flag) => <li key={flag}>{flag}</li>)}</ul></div>
                 )}
-                <h3>Preference explanations (TODO)</h3>
+                <h3>Preference explanations</h3>
                 {participant.preferenceExplanations.map((response, index) => (
                   <div className="qualitative-response" key={`${response.preferredCondition}-${index}`}><strong>Preferred condition: {response.preferredCondition || "Unknown"}</strong><p>{response.explanation || "No response"}</p></div>
                 ))}
-                <h3>Free recall responses (TODO)</h3>
+                <h3>Free recall responses</h3>
                 {participant.freeRecallResponses.map((response, index) => (
                   <div className="qualitative-response" key={`${response.imageId}-${index}`}>
                     <strong>{response.condition || "Unknown condition"}, image {response.imageId || index + 1}</strong>
@@ -300,8 +395,9 @@ export function AnalysisDashboard() {
             <h2>Updated analysis plan</h2>
             <ol>
               <li><strong>Primary outcome:</strong> spatial-answer accuracy by condition, using stored eligible denominators and reporting uncertainty separately.</li>
+              <li><strong>Description metrics:</strong> report spatial-expression counts and Kendall&apos;s τ for the baseline, spatial-order, and actually presented descriptions, alongside image complexity.</li>
               <li><strong>Secondary outcomes:</strong> scene clarity, spatial confidence, content comprehension, mental demand, frustration, replay behavior, and response time.</li>
-              <li><strong>Preference:</strong> first-choice rates and mean ranks by stored condition, supporting current two-condition and legacy multi-condition pilots.</li>
+              <li><strong>Preference:</strong> first-choice rates and mean ranks by stored condition, with the description metrics for each option.</li>
               <li><strong>Moderators:</strong> describe results by complexity, frame of reference, and main versus secondary object focus.</li>
               <li><strong>Qualitative analysis:</strong> manually code free recall, preference explanations, and interviews; report a codebook and inter-rater agreement rather than automated scores.</li>
               <li><strong>Final inference:</strong> after data collection, inspect distributions and use participant/image-aware mixed models or corrected paired nonparametric tests. Report effect sizes and uncertainty, not p-values alone.</li>

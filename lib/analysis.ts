@@ -1,3 +1,5 @@
+import { stimuli } from "@/lib/stimuli";
+
 export type StudyRecord = Record<string, unknown> & {
   id?: string;
   participantId?: string;
@@ -29,6 +31,12 @@ export type GroupSummary = {
   spatialEligible: number;
   spatialAccuracyPercent: number | null;
   uncertainAnswerCount: number;
+  complexityScore: NumericSummary;
+  baselineSpatialExpressionCount: NumericSummary;
+  spatialSpatialExpressionCount: NumericSummary;
+  presentedSpatialExpressionCount: NumericSummary;
+  spatialKendallTau: NumericSummary;
+  presentedKendallTau: NumericSummary;
   overallSceneClarity: NumericSummary;
   spatialRelationsConfidence: NumericSummary;
   contentComprehension: NumericSummary;
@@ -46,6 +54,25 @@ export type PreferenceSummary = {
   firstChoicePercent: number | null;
   meanRank: number | null;
   rankCount: Record<string, number>;
+  spatialExpressionCount: NumericSummary;
+  kendallTau: NumericSummary;
+};
+
+export type TrialMetricSummary = {
+  trialIndex: number | null;
+  imageId: string;
+  imageFilename: string;
+  condition: string;
+  complexityLevel: string;
+  complexityScore: number | null;
+  baselineSpatialExpressionCount: number | null;
+  spatialSpatialExpressionCount: number | null;
+  presentedSpatialExpressionCount: number | null;
+  spatialKendallTau: number | null;
+  presentedKendallTau: number | null;
+  spatialAccuracyPercent: number | null;
+  replayCount: number | null;
+  responseTimeSeconds: number | null;
 };
 
 export type ParticipantAnalysis = {
@@ -57,6 +84,7 @@ export type ParticipantAnalysis = {
   sequenceGroup: string;
   overall: GroupSummary;
   byCondition: GroupSummary[];
+  trialMetrics: TrialMetricSummary[];
   preference: PreferenceSummary[];
   preferenceExplanations: { preferredCondition: string; explanation: string }[];
   freeRecallResponses: { imageId: string; condition: string; response: string }[];
@@ -70,6 +98,8 @@ export type StudyAnalysis = {
   includedRecordCount: number;
   excludedTestRecordCount: number;
   participantCount: number;
+  preferenceTrialCount: number;
+  noPreferenceCount: number;
   overall: GroupSummary;
   byCondition: GroupSummary[];
   byComplexity: GroupSummary[];
@@ -95,6 +125,48 @@ const asString = (value: unknown, fallback = "") =>
 
 const asNumber = (value: unknown): number | null =>
   typeof value === "number" && Number.isFinite(value) ? value : null;
+
+const currentStimuliById = new Map(
+  stimuli.flatMap((stimulus) => [
+    [stimulus.uuid, stimulus] as const,
+    [stimulus.imageFilename, stimulus] as const
+  ])
+);
+
+function enrichTrialMetrics(trial: Trial): Trial {
+  const stimulus =
+    currentStimuliById.get(asString(trial.imageId)) ??
+    currentStimuliById.get(asString(trial.uuid)) ??
+    currentStimuliById.get(asString(trial.imageFilename));
+  if (!stimulus) return trial;
+
+  const condition = asString(trial.condition);
+  const conditionMetric =
+    condition === "baseline" || condition === "spatial"
+      ? stimulus.descriptionMetrics?.[condition]
+      : undefined;
+
+  return {
+    ...trial,
+    complexityScore: asNumber(trial.complexityScore) ?? stimulus.complexityScore ?? null,
+    baselineSpatialExpressionCount:
+      asNumber(trial.baselineSpatialExpressionCount) ??
+      stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ??
+      null,
+    spatialSpatialExpressionCount:
+      asNumber(trial.spatialSpatialExpressionCount) ??
+      stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ??
+      null,
+    spatialKendallTau:
+      asNumber(trial.spatialKendallTau) ??
+      stimulus.descriptionMetrics?.spatial?.kendallTau ??
+      null,
+    spatialExpressionCount:
+      asNumber(trial.spatialExpressionCount) ?? conditionMetric?.spatialExpressionCount ?? null,
+    presentedKendallTau:
+      asNumber(trial.presentedKendallTau) ?? conditionMetric?.kendallTau ?? null
+  };
+}
 
 const ratingValue = (trial: Trial, group: "ratings" | "workload", key: string) =>
   asNumber(asObject(asObject(trial[group])[key]).value);
@@ -173,6 +245,20 @@ function summarizeTrials(name: string, entries: { participantId: string; trial: 
     spatialEligible,
     spatialAccuracyPercent: spatialEligible > 0 ? round((spatialCorrect / spatialEligible) * 100) : null,
     uncertainAnswerCount,
+    complexityScore: summarizeNumbers(entries.map(({ trial }) => asNumber(trial.complexityScore))),
+    baselineSpatialExpressionCount: summarizeNumbers(
+      entries.map(({ trial }) => asNumber(trial.baselineSpatialExpressionCount))
+    ),
+    spatialSpatialExpressionCount: summarizeNumbers(
+      entries.map(({ trial }) => asNumber(trial.spatialSpatialExpressionCount))
+    ),
+    presentedSpatialExpressionCount: summarizeNumbers(
+      entries.map(({ trial }) => asNumber(trial.spatialExpressionCount))
+    ),
+    spatialKendallTau: summarizeNumbers(entries.map(({ trial }) => asNumber(trial.spatialKendallTau))),
+    presentedKendallTau: summarizeNumbers(
+      entries.map(({ trial }) => asNumber(trial.presentedKendallTau))
+    ),
     overallSceneClarity: summarizeNumbers(entries.map(({ trial }) => ratingValue(trial, "ratings", "overallSceneClarity"))),
     spatialRelationsConfidence: summarizeNumbers(entries.map(({ trial }) => ratingValue(trial, "ratings", "spatialRelationsConfidence"))),
     contentComprehension: summarizeNumbers(entries.map(({ trial }) => ratingValue(trial, "ratings", "contentComprehension"))),
@@ -202,12 +288,26 @@ function groupTrials(
 const rankKeys = ["first", "second", "third", "fourth"];
 
 function summarizePreferences(records: StudyRecord[]): PreferenceSummary[] {
-  const conditions = new Map<string, { appearances: number; first: number; ranks: number[] }>();
+  const conditions = new Map<
+    string,
+    {
+      appearances: number;
+      first: number;
+      ranks: number[];
+      spatialExpressionCounts: number[];
+      kendallTaus: number[];
+    }
+  >();
 
   for (const record of records) {
     for (const preference of asArray(record.preferenceResponses)) {
+      const preferenceStimulus =
+        currentStimuliById.get(asString(preference.imageId)) ??
+        currentStimuliById.get(asString(preference.uuid)) ??
+        currentStimuliById.get(asString(preference.imageFilename));
+      const randomizedOrder = asArray(preference.randomizedOrder);
       const labelToCondition = new Map(
-        asArray(preference.randomizedOrder).map((item) => [
+        randomizedOrder.map((item) => [
           asString(item.label),
           asString(item.condition, "unknown")
         ])
@@ -218,9 +318,25 @@ function summarizePreferences(records: StudyRecord[]): PreferenceSummary[] {
         asString(preference.preferenceChoice) === "none" ||
         asString(preference.preferredCondition) === "none";
 
-      for (const condition of Array.from(labelToCondition.values())) {
-        const current = conditions.get(condition) ?? { appearances: 0, first: 0, ranks: [] };
+      for (const item of randomizedOrder) {
+        const condition = asString(item.condition, "unknown");
+        const stimulusMetric =
+          condition === "baseline" || condition === "spatial"
+            ? preferenceStimulus?.descriptionMetrics?.[condition]
+            : undefined;
+        const current = conditions.get(condition) ?? {
+          appearances: 0,
+          first: 0,
+          ranks: [],
+          spatialExpressionCounts: [],
+          kendallTaus: []
+        };
         current.appearances += 1;
+        const spatialExpressionCount =
+          asNumber(item.spatialExpressionCount) ?? stimulusMetric?.spatialExpressionCount ?? null;
+        const kendallTau = asNumber(item.kendallTau) ?? stimulusMetric?.kendallTau ?? null;
+        if (spatialExpressionCount !== null) current.spatialExpressionCounts.push(spatialExpressionCount);
+        if (kendallTau !== null) current.kendallTaus.push(kendallTau);
         conditions.set(condition, current);
       }
 
@@ -230,7 +346,13 @@ function summarizePreferences(records: StudyRecord[]): PreferenceSummary[] {
         const label = asString(ranking[key]) || (index === 0 ? fallbackFirst : "");
         const condition = labelToCondition.get(label) || (index === 0 ? asString(preference.preferredCondition) : "");
         if (!condition) return;
-        const current = conditions.get(condition) ?? { appearances: 0, first: 0, ranks: [] };
+        const current = conditions.get(condition) ?? {
+          appearances: 0,
+          first: 0,
+          ranks: [],
+          spatialExpressionCounts: [],
+          kendallTaus: []
+        };
         current.ranks.push(index + 1);
         if (index === 0) current.first += 1;
         conditions.set(condition, current);
@@ -248,7 +370,9 @@ function summarizePreferences(records: StudyRecord[]): PreferenceSummary[] {
       rankCount: value.ranks.reduce((counts: Record<string, number>, rank: number) => {
         counts[String(rank)] = (counts[String(rank)] ?? 0) + 1;
         return counts;
-      }, {})
+      }, {}),
+      spatialExpressionCount: summarizeNumbers(value.spatialExpressionCounts),
+      kendallTau: summarizeNumbers(value.kendallTaus)
     }))
     .sort((a, b) => a.condition.localeCompare(b.condition));
 }
@@ -292,9 +416,42 @@ function groupSpatialAnswers(
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
+function trialAccuracyPercent(trial: Trial) {
+  const storedProportion = asNumber(trial.spatialAccuracyProportion);
+  if (storedProportion !== null) return round(storedProportion * 100);
+
+  const correct = asNumber(trial.spatialAccuracyScore);
+  const eligible = asNumber(trial.spatialEligibleQuestionCount);
+  return correct !== null && eligible !== null && eligible > 0
+    ? round((correct / eligible) * 100)
+    : null;
+}
+
+function trialMetricSummary(trial: Trial): TrialMetricSummary {
+  return {
+    trialIndex: asNumber(trial.trialIndex),
+    imageId: asString(trial.imageId) || asString(trial.uuid),
+    imageFilename: asString(trial.imageFilename),
+    condition: asString(trial.condition, "unknown"),
+    complexityLevel: asString(trial.complexityLevel, "unknown"),
+    complexityScore: asNumber(trial.complexityScore),
+    baselineSpatialExpressionCount: asNumber(trial.baselineSpatialExpressionCount),
+    spatialSpatialExpressionCount: asNumber(trial.spatialSpatialExpressionCount),
+    presentedSpatialExpressionCount: asNumber(trial.spatialExpressionCount),
+    spatialKendallTau: asNumber(trial.spatialKendallTau),
+    presentedKendallTau: asNumber(trial.presentedKendallTau),
+    spatialAccuracyPercent: trialAccuracyPercent(trial),
+    replayCount: asNumber(trial.replayCount),
+    responseTimeSeconds: responseTimeSeconds(trial)
+  };
+}
+
 function participantAnalysis(record: StudyRecord): ParticipantAnalysis {
   const participantId = participantIdFor(record);
-  const entries = asArray(record.comprehensionResponses).map((trial) => ({ participantId, trial }));
+  const entries = asArray(record.comprehensionResponses).map((trial) => ({
+    participantId,
+    trial: enrichTrialMetrics(trial)
+  }));
   const flags: string[] = [];
   const trials = entries.map((entry) => entry.trial);
 
@@ -308,6 +465,19 @@ function participantAnalysis(record: StudyRecord): ParticipantAnalysis {
   if (trials.some((trial) => ratingValue(trial, "workload", "mentalDemand") === null)) {
     flags.push("One or more trials are missing per-image workload ratings.");
   }
+  if (
+    trials.some(
+      (trial) =>
+        asNumber(trial.baselineSpatialExpressionCount) === null ||
+        asNumber(trial.spatialSpatialExpressionCount) === null ||
+        asNumber(trial.spatialKendallTau) === null
+    )
+  ) {
+    flags.push("One or more trials are missing description metrics.");
+  }
+  if (trials.some((trial) => asNumber(trial.complexityScore) === null)) {
+    flags.push("One or more trials are missing a complexity score.");
+  }
   const conditions = new Set(trials.map((trial) => asString(trial.condition)).filter(Boolean));
   if (conditions.size > 2) flags.push("Legacy pilot record contains more than two comprehension conditions.");
 
@@ -320,6 +490,7 @@ function participantAnalysis(record: StudyRecord): ParticipantAnalysis {
     sequenceGroup: asString(asObject(record.participant).sequenceGroup),
     overall: summarizeTrials("All conditions", entries),
     byCondition: groupTrials(entries, (trial) => [asString(trial.condition, "unknown")]),
+    trialMetrics: trials.map(trialMetricSummary),
     preference: summarizePreferences([record]),
     preferenceExplanations: asArray(record.preferenceResponses).map((response) => ({
       preferredCondition: asString(response.preferredCondition),
@@ -342,15 +513,32 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
   const included = records.filter((record) => record.testMode !== true);
   const entries = included.flatMap((record) => {
     const participantId = participantIdFor(record);
-    return asArray(record.comprehensionResponses).map((trial) => ({ participantId, trial }));
+    return asArray(record.comprehensionResponses).map((trial) => ({
+      participantId,
+      trial: enrichTrialMetrics(trial)
+    }));
   });
 
   return {
     generatedAt: new Date().toISOString(),
-    planVersion: "current-schema-v10-descriptive-2026-08",
+    planVersion: "current-schema-v11-description-metrics-2026-08",
     includedRecordCount: included.length,
     excludedTestRecordCount: records.length - included.length,
     participantCount: new Set(included.map(participantIdFor)).size,
+    preferenceTrialCount: included.reduce(
+      (sum, record) => sum + asArray(record.preferenceResponses).length,
+      0
+    ),
+    noPreferenceCount: included.reduce(
+      (sum, record) =>
+        sum +
+        asArray(record.preferenceResponses).filter(
+          (preference) =>
+            asString(preference.preferenceChoice) === "none" ||
+            asString(preference.preferredCondition) === "none"
+        ).length,
+      0
+    ),
     overall: summarizeTrials("All participants", entries),
     byCondition: groupTrials(entries, (trial) => [asString(trial.condition, "unknown")]),
     byComplexity: groupTrials(entries, (trial) => [asString(trial.complexityLevel, "unknown")]),
@@ -362,7 +550,8 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
       "Test-mode records are excluded from aggregate results.",
       "Not sure responses are counted as uncertainty and excluded from eligible spatial-accuracy denominators when the stored eligible count is unavailable.",
       "Free recall and interview responses are displayed for manual qualitative coding; the app does not invent automated semantic-gist or recall scores.",
-      "Current schema v10 uses one combined pilot-comprehension and preference workflow, composite trial IDs, description metrics, and total plus frame-specific spatial accuracy.",
+      "Current schema v11 uses one combined pilot-comprehension and preference workflow, fixed pilot conditions, composite trial IDs, description metrics, and total plus frame-specific spatial accuracy.",
+      "Description-metric summaries use stored spatial-expression counts, Kendall's tau, and complexity scores; missing values are backfilled only when a saved image identifier matches the current stimuli file.",
       "Legacy pilot records with additional conditions, effort ratings, or longer rankings remain readable and are labeled by their stored condition names.",
       "The dashboard provides descriptive statistics. Confirm assumptions and use participant/image-aware models or corrected paired tests in the final statistical workflow."
     ]

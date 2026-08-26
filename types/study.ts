@@ -146,6 +146,7 @@ export type TrialResponse = {
   pilotIndex: number | null;
   rowIndex: number;
   complexityLevel: ComplexityLevel;
+  complexityScore: number | null;
   imageSet: ImageSet;
   condition: Condition;
   descriptionText: string;
@@ -216,6 +217,7 @@ export type PreferenceResponse = {
   imageSet: "preference";
   rowIndex: number;
   complexityLevel: ComplexityLevel;
+  complexityScore: number | null;
   randomizedOrder: {
     label: DescriptionLabel;
     displayPosition: number;
