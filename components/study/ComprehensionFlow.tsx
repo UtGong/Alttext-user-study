@@ -109,15 +109,15 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
 
-    <StimulusImageToggle
-      imageFilename={stimulus.imageFilename}
-      imageUrl={stimulus.imageUrl}
-    />
-
-    <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
-      onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
-
-    {step === "audio" && <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("recall")}>Continue</AccessibleButton>}
+    {step === "audio" && <>
+      <StimulusImageToggle
+        imageFilename={stimulus.imageFilename}
+        imageUrl={stimulus.imageUrl}
+      />
+      <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
+        onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
+      <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("recall")}>Continue</AccessibleButton>
+    </>}
 
     {step === "recall" && <section className="question-card"><h3>Scene recall</h3><div className="field-label"><label htmlFor="free-recall">{recallPrompt}</label><QuestionAudioButton text={recallPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="free-recall" required={required} rows={6} value={freeRecall} onChange={setFreeRecall} /></div><AccessibleButton type="button" disabled={required && !freeRecall.trim()} onClick={() => advance(questions.length ? "spatial" : "ratings")}>Continue</AccessibleButton></section>}
 

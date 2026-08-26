@@ -86,10 +86,15 @@ test("fixed pilot conditions each contain 1 low, 2 medium, and 2 high complexity
   }
 });
 
-test("pilot copies use the updated pilot questions", () => {
-  const river = pilot.find((item) => item.uuid === "823405e0-599f-4fd8-ae71-4d901edc36b0");
-  assert.ok(river);
-  assert.ok(river.spatialQuestions.some((q) => q.question === "Were the small boats positioned in front of the bridge?" && q.correctAnswer === "Yes"));
+test("the interface uses the document-backed main questions for pilot copies", async () => {
+  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+  assert.match(source, /canonicalQuestionsByUuid/);
+  assert.match(source, /spatialQuestions: canonicalQuestionsByUuid\.get\(stimulus\.uuid\)/);
+
+  const tree = comprehension.find((item) => item.uuid === "c50ee8c2-db92-4e58-a6b8-0243dfe829d8");
+  const dog = comprehension.find((item) => item.uuid === "bf9843af-1922-483f-8b6b-ccfa852de356");
+  assert.ok(tree.spatialQuestions.some((q) => q.question === "Was the gnarled tree positioned on the left side of the image?"));
+  assert.ok(dog.spatialQuestions.some((q) => q.question === "Was the brown dog positioned in the lower-right corner of the scene?"));
 });
 
 test("active pilot question sets contain two intrinsic and two absolute Yes/No questions", () => {
@@ -380,6 +385,9 @@ test("analysis surfaces description metrics at aggregate and participant levels"
   assert.match(dashboard, /Spatial-order Kendall’s τ/);
   assert.match(dashboard, /Trial-level description metrics/);
   assert.match(dashboard, /Mean spatial expressions/);
+  assert.match(analysis, /bySpatialExpressionCount/);
+  assert.match(dashboard, /Analysis charts/);
+  assert.match(dashboard, /Accuracy by number of spatial expressions/);
 });
 
 test("expected speech interruptions do not display playback errors", async () => {
@@ -395,7 +403,7 @@ test("comprehension audio remains available with only one replay", async () => {
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   assert.match(player, /onClick=\{\(\) => play\(false\)\} disabled=\{playedOnce\}/);
   assert.match(flow, /maxReplays=\{1\}/);
-  assert.doesNotMatch(flow, /step === "audio" && <><AudioDescriptionPlayer/);
+  assert.match(flow, /step === "audio" && <>[\s\S]*<AudioDescriptionPlayer/);
 });
 
 test("test mode can generate mock records and jump to the save page", async () => {

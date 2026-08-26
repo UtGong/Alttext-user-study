@@ -8,8 +8,18 @@ export const mainComprehensionStimuli = stimuli
   .filter((stimulus) => stimulus.role === "comprehension")
   .sort((a, b) => a.rowIndex - b.rowIndex);
 
+const canonicalQuestionsByUuid = new Map(
+  mainComprehensionStimuli.map((stimulus) => [stimulus.uuid, stimulus.spatialQuestions] as const)
+);
+
 export const pilotComprehensionStimuli = stimuli
   .filter((stimulus) => stimulus.role === "pilot" && stimulus.imageSet === "pilot")
+  .map((stimulus) => ({
+    ...stimulus,
+    // The main comprehension records preserve the questions copied from the study document.
+    // Pilot copies share those exact questions so interface wording cannot drift.
+    spatialQuestions: canonicalQuestionsByUuid.get(stimulus.uuid) ?? stimulus.spatialQuestions
+  }))
   .sort((a, b) => (a.pilotIndex ?? Number.MAX_SAFE_INTEGER) - (b.pilotIndex ?? Number.MAX_SAFE_INTEGER));
 
 export const preferenceStimuli = stimuli

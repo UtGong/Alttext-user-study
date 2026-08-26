@@ -57,6 +57,74 @@ function SummaryCards({ analysis }: { analysis: StudyAnalysis }) {
   );
 }
 
+type ChartDatum = { label: string; value: number | null; detail?: string };
+
+function BarChart({
+  title,
+  description,
+  data,
+  maximum,
+  suffix = ""
+}: {
+  title: string;
+  description: string;
+  data: ChartDatum[];
+  maximum: number;
+  suffix?: string;
+}) {
+  return (
+    <section className="analysis-chart" aria-labelledby={`${title.replace(/\W+/g, "-").toLowerCase()}-heading`}>
+      <h3 id={`${title.replace(/\W+/g, "-").toLowerCase()}-heading`}>{title}</h3>
+      <p>{description}</p>
+      <div className="bar-chart" role="img" aria-label={`${title}. ${data.map((item) => `${item.label}: ${format(item.value, suffix)}`).join("; ")}`}>
+        {data.map((item) => {
+          const width = item.value === null ? 0 : Math.max(0, Math.min(100, (item.value / maximum) * 100));
+          return (
+            <div className="bar-chart-row" key={item.label}>
+              <span className="bar-chart-label">{item.label}</span>
+              <span className="bar-chart-track" aria-hidden="true">
+                <span className="bar-chart-fill" style={{ width: `${width}%` }} />
+              </span>
+              <strong>{format(item.value, suffix)}</strong>
+              {item.detail && <small>{item.detail}</small>}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function AnalysisCharts({ analysis }: { analysis: StudyAnalysis }) {
+  const conditionAccuracy = analysis.byCondition.map((row) => ({
+    label: row.name,
+    value: row.spatialAccuracyPercent,
+    detail: `${row.spatialCorrect}/${row.spatialEligible} eligible answers`
+  }));
+  const preference = analysis.preference.map((row) => ({
+    label: row.condition,
+    value: row.firstChoicePercent,
+    detail: `${row.firstChoices}/${row.appearances} trials`
+  }));
+  const expressionAccuracy = analysis.bySpatialExpressionCount.map((row) => ({
+    label: row.name === "Missing" ? "Missing count" : `${row.name} expressions`,
+    value: row.spatialAccuracyPercent,
+    detail: `${row.trialCount} trial${row.trialCount === 1 ? "" : "s"}`
+  }));
+
+  return (
+    <section className="card" aria-labelledby="analysis-charts-heading">
+      <h2 id="analysis-charts-heading">Analysis charts</h2>
+      <p>Charts update with the selected participant records. Exact values remain available in the tables below.</p>
+      <div className="analysis-chart-grid">
+        <BarChart title="Spatial accuracy by condition" description="Percent correct among eligible spatial answers." data={conditionAccuracy} maximum={100} suffix="%" />
+        <BarChart title="Preference by condition" description="Percent of appearances selected as the clearer spatial description." data={preference} maximum={100} suffix="%" />
+        <BarChart title="Accuracy by number of spatial expressions" description="Spatial accuracy grouped by the count in the description actually presented." data={expressionAccuracy} maximum={100} suffix="%" />
+      </div>
+    </section>
+  );
+}
+
 function DescriptionMetricsTable({ title, rows }: { title: string; rows: GroupSummary[] }) {
   return (
     <section className="card">
@@ -327,8 +395,11 @@ export function AnalysisDashboard() {
             <SummaryCards analysis={analysis} />
           </section>
 
+          <AnalysisCharts analysis={analysis} />
+
           <OutcomeTable title="Performance by condition" rows={analysis.byCondition} />
           <OutcomeTable title="Performance by image complexity" rows={analysis.byComplexity} />
+          <OutcomeTable title="Performance by number of spatial expressions" rows={analysis.bySpatialExpressionCount} />
           <DescriptionMetricsTable title="Description metrics by condition" rows={analysis.byCondition} />
           <DescriptionMetricsTable title="Description metrics by image complexity" rows={analysis.byComplexity} />
           <SpatialBreakdownTable title="Spatial accuracy by frame of reference" rows={analysis.byFrameOfReference} />

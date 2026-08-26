@@ -103,6 +103,7 @@ export type StudyAnalysis = {
   overall: GroupSummary;
   byCondition: GroupSummary[];
   byComplexity: GroupSummary[];
+  bySpatialExpressionCount: GroupSummary[];
   byFrameOfReference: GroupSummary[];
   byObjectFocus: GroupSummary[];
   preference: PreferenceSummary[];
@@ -542,6 +543,14 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
     overall: summarizeTrials("All participants", entries),
     byCondition: groupTrials(entries, (trial) => [asString(trial.condition, "unknown")]),
     byComplexity: groupTrials(entries, (trial) => [asString(trial.complexityLevel, "unknown")]),
+    bySpatialExpressionCount: groupTrials(entries, (trial) => {
+      const count = asNumber(trial.spatialExpressionCount);
+      return [count === null ? "Missing" : String(count)];
+    }).sort((a, b) => {
+      if (a.name === "Missing") return 1;
+      if (b.name === "Missing") return -1;
+      return Number(a.name) - Number(b.name);
+    }),
     byFrameOfReference: groupSpatialAnswers(entries, "frameOfReference"),
     byObjectFocus: groupSpatialAnswers(entries, "objectFocus"),
     preference: summarizePreferences(included),
