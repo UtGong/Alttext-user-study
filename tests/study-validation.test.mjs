@@ -6,13 +6,15 @@ const stimuli = JSON.parse(await readFile(new URL("../data/stimuli.json", import
 const comprehension = stimuli.filter((item) => item.role === "comprehension");
 const preference = stimuli.filter((item) => item.role === "preference");
 const pilot = stimuli.filter((item) => item.role === "pilot" && item.imageSet === "pilot");
+const reserve = stimuli.filter((item) => item.role === "reserve" && item.imageSet === "pilot");
 const activeConditions = ["baseline", "spatial"];
 
-test("the revised stimulus inventory contains 36 role-separated records", () => {
-  assert.equal(stimuli.length, 36);
+test("the revised stimulus inventory contains 35 role-separated records", () => {
+  assert.equal(stimuli.length, 35);
   assert.equal(comprehension.length, 20);
-  assert.equal(pilot.length, 13);
+  assert.equal(pilot.length, 10);
   assert.equal(preference.length, 3);
+  assert.equal(reserve.length, 2);
 });
 
 test("all comprehension stimuli provide the two active descriptions", () => {
@@ -31,22 +33,34 @@ test("preference stimuli provide the two active descriptions", () => {
   }
 });
 
-test("the pilot set contains exactly 13 consecutively indexed records", async () => {
+test("the pilot set contains exactly 10 consecutively indexed records", async () => {
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   assert.match(source, /stimulus\.role === "pilot" && stimulus\.imageSet === "pilot"/);
-  assert.equal(pilot.length, 13);
-  assert.deepEqual(pilot.map((item) => item.pilotIndex).sort((a, b) => a - b), Array.from({ length: 13 }, (_, index) => index + 1));
+  assert.equal(pilot.length, 10);
+  assert.deepEqual(pilot.map((item) => item.pilotIndex).sort((a, b) => a - b), Array.from({ length: 10 }, (_, index) => index + 1));
   for (const item of pilot) {
     for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
   }
   assert.doesNotMatch(flow, /descriptions\.(semantic|spatial2d)/);
 });
 
+test("the pilot set contains 2 low, 4 medium, and 4 high complexity images", () => {
+  const complexityCounts = Object.fromEntries(
+    ["low", "medium", "high"].map((level) => [level, pilot.filter((item) => item.complexityLevel === level).length])
+  );
+  assert.deepEqual(complexityCounts, { low: 2, medium: 4, high: 4 });
+  assert.deepEqual(
+    reserve.map((item) => item.uuid).sort(),
+    ["00209fb1-64a2-4961-9ccc-8c6c06117df2", "c1059816-1dc7-4af1-a5b3-26772de84b08"]
+  );
+  assert.ok(reserve.every((item) => item.pilotIndex === undefined));
+});
+
 test("pilot copies use the updated pilot questions", () => {
-  const lincoln = pilot.find((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08");
-  assert.ok(lincoln);
-  assert.ok(lincoln.spatialQuestions.some((q) => q.question === "Were the horses positioned in front of the domed U.S. building?" && q.correctAnswer === "Yes"));
+  const river = pilot.find((item) => item.uuid === "823405e0-599f-4fd8-ae71-4d901edc36b0");
+  assert.ok(river);
+  assert.ok(river.spatialQuestions.some((q) => q.question === "Were the small boats positioned in front of the bridge?" && q.correctAnswer === "Yes"));
 });
 
 test("active pilot question sets contain two intrinsic and two absolute Yes/No questions", () => {
@@ -60,13 +74,12 @@ test("active pilot question sets contain two intrinsic and two absolute Yes/No q
   }
 });
 
-test("duplicate UUIDs across roles are preserved and trial identity is composite", async () => {
+test("the shared image is reserved for the preference task", async () => {
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  const duplicateUuids = [...new Set(stimuli.map((item) => item.uuid).filter((uuid, index, all) => all.indexOf(uuid) !== index))];
-  assert.ok(duplicateUuids.length > 0);
-  for (const uuid of duplicateUuids) {
-    assert.ok(new Set(stimuli.filter((item) => item.uuid === uuid).map((item) => item.role)).size > 1, uuid);
-  }
+  const preferenceOnlyUuid = "cd382af4-5334-485a-8121-c52ce7abf13a";
+  assert.equal(preference.filter((item) => item.uuid === preferenceOnlyUuid).length, 1);
+  assert.equal(pilot.some((item) => item.uuid === preferenceOnlyUuid), false);
+  assert.equal(new Set([...pilot, ...preference].map((item) => item.imageFilename)).size, pilot.length + preference.length);
   assert.match(source, /`\$\{stimulus\.role\}:\$\{stimulus\.imageSet\}:\$\{stimulus\.uuid\}`/);
   assert.match(source, /map\(createStimulusTrialId\)/);
   assert.doesNotMatch(source, /find\(\(stimulus\) => stimulus\.uuid ===/);
@@ -109,6 +122,21 @@ test("participant questions provide speech playback controls", async () => {
   assert.match(likert, /QuestionAudioButton/);
   assert.match(comprehensionFlow, /recallPrompt[\s\S]*QuestionAudioButton/);
   assert.match(preferenceFlow, /What made the spatial arrangement clearer[\s\S]*QuestionAudioButton/);
+});
+
+test("every active trial provides an accessible image show and hide control", async () => {
+  const toggle = await readFile(new URL("../components/StimulusImageToggle.tsx", import.meta.url), "utf8");
+  const comprehensionFlow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const preferenceFlow = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+
+  assert.match(toggle, /"Show image"/);
+  assert.match(toggle, /"Hide image"/);
+  assert.match(toggle, /aria-expanded=\{visible\}/);
+  assert.match(toggle, /`\/images\/\$\{encodeURIComponent\(imageFilename\)\}`/);
+  assert.match(toggle, /imageUrl\?\.trim\(\)/);
+  assert.match(toggle, /The image file is unavailable/);
+  assert.match(comprehensionFlow, /<StimulusImageToggle[\s\S]*imageFilename=\{stimulus\.imageFilename\}/);
+  assert.match(preferenceFlow, /<StimulusImageToggle[\s\S]*imageFilename=\{stimulus\.imageFilename\}/);
 });
 
 test("consent and every answer type support speech interaction", async () => {
@@ -243,8 +271,8 @@ test("pilot counterbalancing reverses odd and even assignments across sequence g
   assert.match(config, /A: \{ odd: "spatial", even: "baseline" \}/);
   assert.match(config, /B: \{ odd: "baseline", even: "spatial" \}/);
   assert.match(source, /stimulus\.pilotIndex! % 2 === 1 \? "odd" : "even"/);
-  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 1).length, 7);
-  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 0).length, 6);
+  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 1).length, 5);
+  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 0).length, 5);
 });
 
 test("preference flow uses record conditions, ignores spatial questions, and logs randomized mappings", async () => {

@@ -7,6 +7,7 @@
 - Confirm the combined pilot-comprehension and preference workflow is active.
 - Assign sequence group A or B.
 - Confirm audio output device and volume.
+- Confirm every selected image loads from its Show image button.
 - Confirm microphone input and speech-to-text support if the participant wants to speak answers.
 - Ask participant to select audio speed.
 - Run the practice trial.

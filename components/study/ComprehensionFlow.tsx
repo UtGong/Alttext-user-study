@@ -8,6 +8,7 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
+import { StimulusImageToggle } from "@/components/StimulusImageToggle";
 import { calculateSpatialAccuracy } from "@/lib/scoring";
 import { createStimulusTrialId, getComprehensionStimuli, getComprehensionStimulus, getConditionForStimulus, getDescriptionForStimulus, preferenceStimuli } from "@/lib/stimuli";
 import { LikertResponse, OrderedAudioPlayEvent, SpatialAnswer, StudyState } from "@/types/study";
@@ -107,6 +108,11 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     <ProgressIndicator label="Comprehension trial" current={state.comprehensionIndex + 1} total={activeStimuli.length} />
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
+
+    <StimulusImageToggle
+      imageFilename={stimulus.imageFilename}
+      imageUrl={stimulus.imageUrl}
+    />
 
     <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
       onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />

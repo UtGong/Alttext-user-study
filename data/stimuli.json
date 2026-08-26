@@ -1947,7 +1947,7 @@
     "imageFilename": "sample_c1059816-1dc7-4af1-a5b3-26772de84b08.png",
     "complexityLevel": "medium",
     "complexityScore": 0.6909,
-    "role": "pilot",
+    "role": "reserve",
     "imageSet": "pilot",
     "descriptions": {
       "baseline": "A columned, domed white marble U.S. building fills the upper right and middle background. Below it near the lower center, Abraham Lincoln appears among figures. Across the lower foreground, two white horses move from right to left, with another horse partly visible beside them. On the far right, a woman stands above the horses.",
@@ -2009,7 +2009,6 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 5,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 9
@@ -2088,7 +2087,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 6,
+    "pilotIndex": 5,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 9
@@ -2167,7 +2166,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 7,
+    "pilotIndex": 6,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 10
@@ -2246,7 +2245,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 8,
+    "pilotIndex": 7,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 8
@@ -2263,7 +2262,7 @@
     "imageFilename": "sample_00209fb1-64a2-4961-9ccc-8c6c06117df2.png",
     "complexityLevel": "medium",
     "complexityScore": 0.7056,
-    "role": "pilot",
+    "role": "reserve",
     "imageSet": "pilot",
     "descriptions": {
       "baseline": "A garden stretches across the lower part of the scene, with three people near the lower right. A tall pine tree stands closer in the center foreground, rising upward into the vivid blue sky above. Farther back on the right, a manor-like house appears behind the garden.",
@@ -2325,7 +2324,6 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 9,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 8
@@ -2333,85 +2331,6 @@
       "spatial": {
         "spatialExpressionCount": 9,
         "kendallTau": 0.9486832980505137
-      }
-    }
-  },
-  {
-    "rowIndex": 41,
-    "uuid": "cd382af4-5334-485a-8121-c52ce7abf13a",
-    "imageFilename": "sample_cd382af4-5334-485a-8121-c52ce7abf13a.png",
-    "complexityLevel": "high",
-    "complexityScore": 0.7458,
-    "role": "pilot",
-    "imageSet": "pilot",
-    "descriptions": {
-      "baseline": "A thin nude man is centered on a dark wooden cross, his arms stretched horizontally along the crossbeam. At the top center of the cross, above his head, a plaque reads “INRI.” Blood runs from both hands at the far left and far right ends of the crossbeam, from the side of his torso, and down from his feet near the lower center. Directly below his feet, at the base of the vertical cross, a skull is positioned near the bottom center.",
-      "spatial": "At the bottom center of the crucifixion scene, a skull rests at the base of the cross. Just above it, blood runs down from Christ’s nailed feet along the vertical beam. Continuing upward, the nude, thin man hangs on the cross with his legs together, a white cloth around his waist, his torso stretched, and his arms extended horizontally. Behind his body and arms, the dark wooden cross forms a long horizontal bar and a vertical support rising above his head. At the very top of the cross, above Christ’s head, a small plaque bears the inscription “INRI.”",
-      "semantic": "At the lower center of the painting, blood trickles from the nailed feet of a nude, thin man whose body rises vertically through the center of the canvas with arms stretched wide. Above his bowed head near the top center, the inscription “INRI” appears on a small plaque. Behind and around him, a dark wooden cross spans horizontally across the upper portion and continues downward through the center. At the base of the cross near the bottom center, directly below the feet, a skull rests on the ground.",
-      "spatial2d": "At the lower center of the painting, a skull sits at the base of the crucifix near the bottom edge. Just above it, blood runs down from the nailed feet of the crucified figure. Rising upward through the center of the canvas is the nude, thin man, shown with an emaciated torso, outstretched arms, and a bowed head under a crown of thorns. Behind him, a dark wooden cross spans horizontally across the upper middle and continues vertically down the center. At the very top center, above the crossbeam, a small inscription reads “INRI.”"
-    },
-    "audio": {},
-    "targetElements": [
-      "nude thin man",
-      "skull",
-      "wooden cross",
-      "INRI",
-      "Blood"
-    ],
-    "spatialQuestions": [
-      {
-        "id": "pilot_41_q_intrinsic_1",
-        "frameOfReference": "intrinsic",
-        "question": "Was the skull positioned below the thin man?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "pilot_41_q_intrinsic_2",
-        "frameOfReference": "intrinsic",
-        "question": "Was the “INRI” plaque positioned above the thin man?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "pilot_41_q_absolute_3",
-        "frameOfReference": "absolute",
-        "question": "Was the skull positioned near the bottom center of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "pilot_41_q_absolute_4",
-        "frameOfReference": "absolute",
-        "question": "Was the wooden cross centered in the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      }
-    ],
-    "gistQuestion": {
-      "question": "What kind of scene or main subject was described?",
-      "expectedAnswer": "Open-ended response, code after study."
-    },
-    "pilotIndex": 10,
-    "descriptionMetrics": {
-      "baseline": {
-        "spatialExpressionCount": 9
-      },
-      "spatial": {
-        "spatialExpressionCount": 8,
-        "kendallTau": 0.6324555320336759
       }
     }
   },
@@ -2483,7 +2402,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 11,
+    "pilotIndex": 8,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 7
@@ -2562,7 +2481,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 12,
+    "pilotIndex": 9,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 8
@@ -2641,7 +2560,7 @@
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
     },
-    "pilotIndex": 13,
+    "pilotIndex": 10,
     "descriptionMetrics": {
       "baseline": {
         "spatialExpressionCount": 7

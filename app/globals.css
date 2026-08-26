@@ -144,6 +144,25 @@ h2 {
   margin: 0;
 }
 
+.stimulus-image-controls {
+  margin: 1rem 0;
+}
+
+.stimulus-image-frame {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--secondary);
+}
+
+.stimulus-image {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
 .analysis-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

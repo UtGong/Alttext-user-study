@@ -14,7 +14,8 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - Researcher sequence group selection: A or B
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 13 pilot comprehension trials followed by 3 preference trials
+- 10 pilot comprehension trials followed by 3 preference trials
+- A Show image/Hide image control on every pilot and preference trial
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
 - Replay count logging
@@ -98,6 +99,10 @@ built from role, image set, UUID, and pilot index where applicable; repeated UUI
 are preserved.
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
+
+Image controls resolve each `imageFilename` under `public/images/`. Place the selected image
+files there with their exact JSON filenames. An optional future `imageUrl` value overrides the
+local path. Images are hidden by default, and missing files produce a participant-facing error.
 
 Open-ended answer fields also offer optional browser speech recognition. Starting speech input stops text-to-speech playback, requests microphone access, and inserts recognized text into the editable answer field. The website does not retain microphone audio. Browser speech-recognition support varies, so typing and operating-system dictation remain available fallbacks.
 

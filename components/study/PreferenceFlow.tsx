@@ -7,6 +7,7 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
+import { StimulusImageToggle } from "@/components/StimulusImageToggle";
 import { createStimulusTrialId, getPreferenceConditions, preferenceStimuli } from "@/lib/stimuli";
 import {
   Condition,
@@ -135,6 +136,10 @@ export function PreferenceFlow({ state, updateState }: Props) {
       />
 
       <h2>Preference Trial {state.preferenceIndex + 1}</h2>
+      <StimulusImageToggle
+        imageFilename={stimulus.imageFilename}
+        imageUrl={stimulus.imageUrl}
+      />
       <p>
         Listen to the two descriptions. You may play them in any order and replay them as
         needed.
