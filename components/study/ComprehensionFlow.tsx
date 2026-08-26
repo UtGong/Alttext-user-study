@@ -8,8 +8,9 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
-import { comprehensionStimuli, getComprehensionStimulus, getConditionForStimulus, getDescriptionForStimulus, preferenceStimuli } from "@/lib/stimuli";
-import { AudioPlayEvent, LikertResponse, SpatialAnswer, StudyState } from "@/types/study";
+import { calculateSpatialAccuracy } from "@/lib/scoring";
+import { createStimulusTrialId, getComprehensionStimuli, getComprehensionStimulus, getConditionForStimulus, getDescriptionForStimulus, preferenceStimuli } from "@/lib/stimuli";
+import { LikertResponse, OrderedAudioPlayEvent, SpatialAnswer, StudyState } from "@/types/study";
 
 type Props = { state: StudyState; updateState: (patch: Partial<StudyState>) => void };
 type Step = "audio" | "recall" | "spatial" | "ratings" | "workload";
@@ -29,14 +30,22 @@ const workloadQuestions = {
 const likert = (value: number | null, labels: string[]): LikertResponse | null => value === null ? null : ({ value, label: labels[value - 1] });
 
 export function ComprehensionFlow({ state, updateState }: Props) {
+  const studyMode = state.studyMode;
+  const activeStimuli = getComprehensionStimuli();
   const stimulus = getComprehensionStimulus(state.comprehensionOrder, state.comprehensionIndex);
   const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus);
   const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus);
+  const trialId = createStimulusTrialId(stimulus);
+  const baselineSpatialExpressionCount = stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null;
+  const spatialSpatialExpressionCount = stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null;
+  const spatialKendallTau = stimulus.descriptionMetrics?.spatial?.kendallTau ?? null;
+  const spatialExpressionCount = stimulus.descriptionMetrics?.[condition]?.spatialExpressionCount ?? null;
+  const presentedKendallTau = stimulus.descriptionMetrics?.[condition]?.kendallTau ?? null;
   const questions = stimulus.spatialQuestions ?? [];
   const [step, setStep] = useState<Step>("audio");
   const [played, setPlayed] = useState(state.testMode);
   const [audioCompleted, setAudioCompleted] = useState(state.testMode);
-  const [playEvents, setPlayEvents] = useState<AudioPlayEvent[]>([]);
+  const [playEvents, setPlayEvents] = useState<OrderedAudioPlayEvent[]>([]);
   const [freeRecall, setFreeRecall] = useState("");
   const [spatialAnswers, setSpatialAnswers] = useState<Record<string, string>>({});
   const [ratings, setRatings] = useState({ overallSceneClarity: null as number | null, spatialRelationsConfidence: null as number | null, contentComprehension: null as number | null });
@@ -63,32 +72,44 @@ export function ComprehensionFlow({ state, updateState }: Props) {
       const isUncertain = answer === "Not sure";
       return { questionId: q.id, frameOfReference: q.frameOfReference, objectFocus: q.objectFocus ?? "main", question: q.question, answer, correctAnswer: q.correctAnswer ?? null, isCorrect: q.correctAnswer && !isUncertain ? answer === q.correctAnswer : null, isUncertain, requiresManualCoding: Boolean(q.requiresManualCoding) };
     });
-    const eligible = answers.filter((answer) => answer.correctAnswer !== null && !answer.isUncertain);
+    const accuracy = calculateSpatialAccuracy(answers);
     const next = state.comprehensionIndex + 1;
     updateState({
       comprehensionResponses: [...state.comprehensionResponses, {
-        participantId: state.participant.participantId, sequenceGroup: state.participant.sequenceGroup, testMode: state.testMode,
+        participantId: state.participant.participantId, sessionId: state.sessionId, trialId, studyMode,
+        sequenceGroup: state.participant.sequenceGroup, testMode: state.testMode,
         selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI, trialIndex: next, randomizedDisplayPosition: next,
         imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel,
-        imageSet: stimulus.imageSet, condition, descriptionText, replayCount: Math.max(0, playEvents.length - 1), replayed: playEvents.length > 1,
-        audioPlayEvents: playEvents, startedAt, audioStartedAt, audioEndedAt, submittedAt, freeRecallQuestion: recallPrompt, freeRecall, spatialAnswers: answers,
-        spatialAccuracyScore: eligible.filter((answer) => answer.isCorrect).length, spatialEligibleQuestionCount: eligible.length,
+        role: "pilot", imageSet: stimulus.imageSet,
+        pilotIndex: stimulus.pilotIndex ?? null, condition, descriptionText,
+        baselineSpatialExpressionCount, spatialSpatialExpressionCount, spatialKendallTau,
+        spatialExpressionCount, presentedKendallTau,
+        replayCount: Math.max(0, playEvents.length - 1), replayed: playEvents.length > 1,
+        audioPlayEvents: playEvents, startedAt, audioStartedAt, audioEndedAt, submittedAt,
+        responseTimeMs: Date.parse(submittedAt) - Date.parse(startedAt),
+        freeRecallQuestion: recallPrompt, freeRecall, spatialAnswers: answers,
+        spatialAccuracyScore: accuracy.overall.correct,
+        spatialEligibleQuestionCount: accuracy.overall.eligible,
+        spatialAccuracyProportion: accuracy.overall.proportion,
+        intrinsicAccuracy: accuracy.intrinsic, absoluteAccuracy: accuracy.absolute,
         ratings: { overallSceneClarity: likert(ratings.overallSceneClarity, agreementLabels), spatialRelationsConfidence: likert(ratings.spatialRelationsConfidence, agreementLabels), contentComprehension: likert(ratings.contentComprehension, agreementLabels) }, ratingQuestions,
         workload: { mentalDemand: likert(workload.mentalDemand, workloadLabels), frustration: likert(workload.frustration, workloadLabels) }, workloadQuestions, stepTimestamps: finalSteps
       }],
       comprehensionIndex: next,
-      phase: next >= comprehensionStimuli.length ? (preferenceStimuli.length ? "preference" : "interview") : "comprehension"
+      phase: next >= activeStimuli.length
+        ? (preferenceStimuli.length ? "preference" : "interview")
+        : "comprehension"
     });
   }
 
   const required = !state.testMode;
   return <form className="panel" onSubmit={submit}>
-    <ProgressIndicator label="Comprehension trial" current={state.comprehensionIndex + 1} total={comprehensionStimuli.length} />
+    <ProgressIndicator label="Comprehension trial" current={state.comprehensionIndex + 1} total={activeStimuli.length} />
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
 
     <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
-      onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, event])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
+      onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
 
     {step === "audio" && <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("recall")}>Continue</AccessibleButton>}
 

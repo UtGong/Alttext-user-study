@@ -214,12 +214,17 @@ function summarizePreferences(records: StudyRecord[]): PreferenceSummary[] {
       );
       const ranking = asObject(preference.ranking);
       const fallbackFirst = asString(preference.bestChoice);
+      const noPreference =
+        asString(preference.preferenceChoice) === "none" ||
+        asString(preference.preferredCondition) === "none";
 
       for (const condition of Array.from(labelToCondition.values())) {
         const current = conditions.get(condition) ?? { appearances: 0, first: 0, ranks: [] };
         current.appearances += 1;
         conditions.set(condition, current);
       }
+
+      if (noPreference) continue;
 
       rankKeys.forEach((key, index) => {
         const label = asString(ranking[key]) || (index === 0 ? fallbackFirst : "");
@@ -342,7 +347,7 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
 
   return {
     generatedAt: new Date().toISOString(),
-    planVersion: "current-schema-v7-descriptive-2026-08",
+    planVersion: "current-schema-v10-descriptive-2026-08",
     includedRecordCount: included.length,
     excludedTestRecordCount: records.length - included.length,
     participantCount: new Set(included.map(participantIdFor)).size,
@@ -357,7 +362,7 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
       "Test-mode records are excluded from aggregate results.",
       "Not sure responses are counted as uncertainty and excluded from eligible spatial-accuracy denominators when the stored eligible count is unavailable.",
       "Free recall and interview responses are displayed for manual qualitative coding; the app does not invent automated semantic-gist or recall scores.",
-      "Current schema v7 uses baseline and spatial comprehension conditions, four spatial questions per image, three experience ratings, and mental-demand/frustration workload items.",
+      "Current schema v10 uses one combined pilot-comprehension and preference workflow, composite trial IDs, description metrics, and total plus frame-specific spatial accuracy.",
       "Legacy pilot records with additional conditions, effort ratings, or longer rankings remain readable and are labeled by their stored condition names.",
       "The dashboard provides descriptive statistics. Confirm assumptions and use participant/image-aware models or corrected paired tests in the final statistical workflow."
     ]

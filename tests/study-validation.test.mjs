@@ -5,7 +5,15 @@ import test from "node:test";
 const stimuli = JSON.parse(await readFile(new URL("../data/stimuli.json", import.meta.url), "utf8"));
 const comprehension = stimuli.filter((item) => item.role === "comprehension");
 const preference = stimuli.filter((item) => item.role === "preference");
+const pilot = stimuli.filter((item) => item.role === "pilot" && item.imageSet === "pilot");
 const activeConditions = ["baseline", "spatial"];
+
+test("the revised stimulus inventory contains 36 role-separated records", () => {
+  assert.equal(stimuli.length, 36);
+  assert.equal(comprehension.length, 20);
+  assert.equal(pilot.length, 13);
+  assert.equal(preference.length, 3);
+});
 
 test("all comprehension stimuli provide the two active descriptions", () => {
   assert.equal(comprehension.length, 20);
@@ -15,39 +23,60 @@ test("all comprehension stimuli provide the two active descriptions", () => {
 });
 
 test("preference stimuli provide the two active descriptions", () => {
-  assert.ok(preference.length > 0);
+  assert.equal(preference.length, 3);
   for (const item of preference) {
+    assert.equal(item.imageSet, "preference");
+    assert.deepEqual(item.preferenceConditions, activeConditions);
     for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
   }
 });
 
-test("the active comprehension set contains 10 images and both edited-question images", async () => {
+test("the pilot set contains exactly 13 consecutively indexed records", async () => {
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  assert.match(source, /stimulus\.imageSet === "set2" \|\| stimulus\.imageSet === "set3"/);
-  const active = comprehension.filter((item) => item.imageSet === "set2" || item.imageSet === "set3");
-  assert.equal(active.length, 10);
-  assert.ok(active.some((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08"));
-  assert.ok(active.some((item) => item.uuid === "c9c0f26e-a559-43ab-b517-0384e347ade8"));
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  assert.match(source, /stimulus\.role === "pilot" && stimulus\.imageSet === "pilot"/);
+  assert.equal(pilot.length, 13);
+  assert.deepEqual(pilot.map((item) => item.pilotIndex).sort((a, b) => a - b), Array.from({ length: 13 }, (_, index) => index + 1));
+  for (const item of pilot) {
+    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
+  }
+  assert.doesNotMatch(flow, /descriptions\.(semantic|spatial2d)/);
 });
 
-test("bolded spatial-question edits are used", () => {
-  const lincoln = stimuli.find((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08");
-  const goldSteps = stimuli.find((item) => item.uuid === "c9c0f26e-a559-43ab-b517-0384e347ade8");
-  assert.ok(lincoln.spatialQuestions.some((q) => q.question === "Were the horses positioned on the right side of Abraham Lincoln?" && q.correctAnswer === "No"));
-  assert.ok(goldSteps.spatialQuestions.some((q) => q.question === "Was the young girl positioned in front of the older bearded man?" && q.correctAnswer === "Yes"));
+test("pilot copies use the updated pilot questions", () => {
+  const lincoln = pilot.find((item) => item.uuid === "c1059816-1dc7-4af1-a5b3-26772de84b08");
+  assert.ok(lincoln);
+  assert.ok(lincoln.spatialQuestions.some((q) => q.question === "Were the horses positioned in front of the domed U.S. building?" && q.correctAnswer === "Yes"));
 });
 
-test("spatial question sets are either omitted or four scorable questions", () => {
-  for (const item of comprehension) {
+test("active pilot question sets contain two intrinsic and two absolute Yes/No questions", () => {
+  for (const item of pilot) {
     const questions = item.spatialQuestions ?? [];
-    if (!questions.length) continue;
     assert.equal(questions.length, 4, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "intrinsic").length, 2, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "absolute").length, 2, item.uuid);
-    assert.ok(questions.every((q) => q.correctAnswer && q.options.includes(q.correctAnswer)), item.uuid);
-    const perfectScore = questions.filter((q) => q.correctAnswer === q.correctAnswer).length;
-    assert.equal(perfectScore, 4);
+    assert.ok(questions.every((q) => JSON.stringify(q.options) === JSON.stringify(["Yes", "No"])), item.uuid);
+    assert.ok(questions.every((q) => q.correctAnswer === "Yes" || q.correctAnswer === "No"), item.uuid);
   }
+});
+
+test("duplicate UUIDs across roles are preserved and trial identity is composite", async () => {
+  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+  const duplicateUuids = [...new Set(stimuli.map((item) => item.uuid).filter((uuid, index, all) => all.indexOf(uuid) !== index))];
+  assert.ok(duplicateUuids.length > 0);
+  for (const uuid of duplicateUuids) {
+    assert.ok(new Set(stimuli.filter((item) => item.uuid === uuid).map((item) => item.role)).size > 1, uuid);
+  }
+  assert.match(source, /`\$\{stimulus\.role\}:\$\{stimulus\.imageSet\}:\$\{stimulus\.uuid\}`/);
+  assert.match(source, /map\(createStimulusTrialId\)/);
+  assert.doesNotMatch(source, /find\(\(stimulus\) => stimulus\.uuid ===/);
+});
+
+test("main records may omit description metrics without affecting loading", async () => {
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  assert.ok(comprehension.some((item) => item.descriptionMetrics === undefined));
+  assert.match(flow, /stimulus\.descriptionMetrics\?\.baseline\?\.spatialExpressionCount \?\? null/);
+  assert.match(flow, /const spatialExpressionCount = stimulus\.descriptionMetrics\?\.\[condition\]\?\.spatialExpressionCount \?\? null/);
 });
 
 test("all stimuli have complete spatial question sets", () => {
@@ -79,7 +108,7 @@ test("participant questions provide speech playback controls", async () => {
   assert.match(likert, /Answer choices:/);
   assert.match(likert, /QuestionAudioButton/);
   assert.match(comprehensionFlow, /recallPrompt[\s\S]*QuestionAudioButton/);
-  assert.match(preferenceFlow, /Why did you prefer that description\?[\s\S]*QuestionAudioButton/);
+  assert.match(preferenceFlow, /What made the spatial arrangement clearer[\s\S]*QuestionAudioButton/);
 });
 
 test("consent and every answer type support speech interaction", async () => {
@@ -114,7 +143,9 @@ test("revised participant-facing study questions are present", async () => {
   assert.match(comprehensionFlow, /Mention what you remember, including the people or objects present/);
   assert.match(comprehensionFlow, /\["Not sure"\]/);
   assert.doesNotMatch(preferenceFlow, /Question 1: Best description|Which description helped you understand the image best/);
-  assert.match(preferenceFlow, /const bestChoice = ranking\.first/);
+  assert.match(preferenceFlow, /Which description communicates the spatial arrangement more clearly\?/);
+  assert.match(preferenceFlow, /label: "No preference"/);
+  assert.match(preferenceFlow, /preferenceChoice === "none" \? "No preference"/);
   assert.doesNotMatch(player, /You may play and replay this description as many times as needed/);
   assert.match(app, /<h2>Final Questions<\/h2>/);
   assert.match(app, /clear mental map of a scene right away/);
@@ -124,11 +155,15 @@ test("revised participant-facing study questions are present", async () => {
 
 test("uncertain spatial answers are recorded but excluded from accuracy scoring", async () => {
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const scoring = await readFile(new URL("../lib/scoring.ts", import.meta.url), "utf8");
   const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
 
   assert.match(flow, /const isUncertain = answer === "Not sure"/);
   assert.match(flow, /isCorrect: q\.correctAnswer && !isUncertain \? answer === q\.correctAnswer : null/);
-  assert.match(flow, /answer\.correctAnswer !== null && !answer\.isUncertain/);
+  assert.match(scoring, /answer\.correctAnswer !== null && !answer\.isUncertain/);
+  assert.match(scoring, /frameOfReference === "intrinsic"/);
+  assert.match(scoring, /frameOfReference === "absolute"/);
+  assert.match(flow, /spatialAccuracyProportion: accuracy\.overall\.proportion/);
   assert.match(types, /isUncertain: boolean/);
 });
 
@@ -144,10 +179,15 @@ test("all participant answers are retained in the Firestore payload and exports"
   assert.match(route, /const resultToSave = \{[\s\S]*\.\.\.body/);
   assert.match(route, /\.set\(resultToSave\)/);
   assert.match(flow, /freeRecall,[\s\S]*spatialAnswers: answers/);
+  assert.match(flow, /participantId:[\s\S]*sessionId:[\s\S]*trialId/);
+  assert.match(flow, /role:[\s\S]*pilotIndex:[\s\S]*condition/);
+  assert.match(flow, /baselineSpatialExpressionCount[\s\S]*spatialKendallTau/);
+  assert.match(flow, /eventSequence: current\.length \+ 1/);
   assert.match(flow, /ratings: \{ overallSceneClarity:[\s\S]*spatialRelationsConfidence:[\s\S]*contentComprehension:/);
   assert.match(flow, /workload: \{ mentalDemand:[\s\S]*frustration:/);
   assert.doesNotMatch(flow, /effort:/);
   assert.match(preferenceFlow, /ranking,[\s\S]*explanation/);
+  assert.match(preferenceFlow, /preferenceChoice,[\s\S]*preferredCondition/);
   assert.match(app, /interviewResponses: questions\.map[\s\S]*questionId:[\s\S]*question:[\s\S]*answer:/);
   assert.match(app, /practiceResponse: practiceResponse\.trim\(\)/);
   assert.match(flow, /freeRecallQuestion: recallPrompt/);
@@ -188,24 +228,53 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 7/);
-  assert.match(types, /schemaVersion: 7/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 10/);
+  assert.match(types, /schemaVersion: 10/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
   assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
-test("preference flow randomizes and records two conditions", async () => {
-  const source = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+test("pilot counterbalancing reverses odd and even assignments across sequence groups", async () => {
   const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
-  assert.match(source, /shuffle\(STUDY_CONDITIONS\)/);
-  assert.match(config, /STUDY_CONDITIONS: Condition\[\] = \["baseline", "spatial"\]/);
+  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+
+  assert.match(config, /A: \{ odd: "spatial", even: "baseline" \}/);
+  assert.match(config, /B: \{ odd: "baseline", even: "spatial" \}/);
+  assert.match(source, /stimulus\.pilotIndex! % 2 === 1 \? "odd" : "even"/);
+  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 1).length, 7);
+  assert.equal(pilot.filter((item) => item.pilotIndex % 2 === 0).length, 6);
+});
+
+test("preference flow uses record conditions, ignores spatial questions, and logs randomized mappings", async () => {
+  const source = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
+  const stimuliSource = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+  assert.match(source, /shuffle\(getPreferenceConditions\(stimulus\)\)/);
+  assert.match(stimuliSource, /stimulus\.preferenceConditions \?\? \[\]/);
   assert.match(source, /randomizedOrder,/);
-  assert.match(source, /preferredCondition:/);
+  assert.match(source, /condition: item\.condition/);
+  assert.match(source, /preferredCondition/);
   assert.match(source, /\["A", "B"\]/);
   assert.doesNotMatch(source, /"C"|"D"/);
+  assert.doesNotMatch(source, /spatialQuestions/);
+  assert.doesNotMatch(source, /descriptions\.(semantic|spatial2d)/);
   assert.doesNotMatch(source, /Text of Description|description-text-block/);
+});
+
+test("the only study flow combines pilot comprehension followed by preference", async () => {
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
+  const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
+
+  assert.match(types, /StudyMode = "pilot-preference"/);
+  assert.match(app, /studyMode: "pilot-preference"/);
+  assert.doesNotMatch(app, /Researcher study mode|Main comprehension \(20 images\)|Preference comparison \(3 images\)/);
+  assert.match(source, /stimulus\.role === "comprehension"/);
+  assert.match(source, /getComprehensionStimuli\(\): Stimulus\[\] \{[\s\S]*return pilotComprehensionStimuli/);
+  assert.match(flow, /preferenceStimuli\.length \? "preference" : "interview"/);
+  assert.match(app, /Study task: Pilot comprehension and preference/);
 });
 
 test("exports include randomized order and verbal and internal Likert values", async () => {
@@ -215,6 +284,15 @@ test("exports include randomized order and verbal and internal Likert values", a
   assert.match(source, /overallSceneClarity\?\.value/);
   assert.match(source, /spatialAccuracyScore/);
   assert.match(source, /spatialEligibleQuestionCount/);
+  assert.match(source, /intrinsicAccuracyProportion/);
+  assert.match(source, /absoluteAccuracyProportion/);
+  assert.match(source, /baselineSpatialExpressionCount/);
+  assert.match(source, /spatialSpatialExpressionCount/);
+  assert.match(source, /spatialKendallTau/);
+  assert.match(source, /"spatialExpressionCount"/);
+  assert.match(source, /spatialExpressionCount: response\.spatialExpressionCount/);
+  assert.match(source, /descriptionACondition/);
+  assert.match(source, /playbackEventsJson/);
 });
 
 test("expected speech interruptions do not display playback errors", async () => {
@@ -239,7 +317,7 @@ test("test mode can generate mock records and jump to the save page", async () =
   assert.match(app, /Generate mock data and go to save page/);
   assert.match(app, /updateState\(createMockStudyData\(state\)\)/);
   assert.match(mock, /phase: "complete", testMode: true/);
-  assert.match(mock, /comprehensionStimuli\.map/);
+  assert.match(mock, /activeComprehensionStimuli\.map/);
   assert.match(mock, /preferenceStimuli\.map/);
 });
 

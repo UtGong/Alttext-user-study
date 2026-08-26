@@ -10,10 +10,11 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 ## Features
 
 - Participant setup
+- One combined pilot-comprehension and preference workflow
 - Researcher sequence group selection: A or B
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 10 comprehension trials
+- 13 pilot comprehension trials followed by 3 preference trials
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
 - Replay count logging
@@ -87,6 +88,14 @@ Each stimulus includes:
 - no-order and spatial-depth descriptions used by the interface
 - target elements
 - spatial questions
+- optional description metrics
+- role-specific fields such as `pilotIndex` or `preferenceConditions`
+
+The revised file contains 20 retained main comprehension records, 13 active pilot records, and
+3 active preference records. The main records and their drafted questions remain in the JSON for
+future use but are not offered as a study mode. Records are addressed by a composite trial ID
+built from role, image set, UUID, and pilot index where applicable; repeated UUIDs across roles
+are preserved.
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
 
@@ -94,15 +103,19 @@ Open-ended answer fields also offer optional browser speech recognition. Startin
 
 ## Counterbalancing
 
-The study uses two sequence groups. The 10 active images comprise five images from each
-set, so each participant receives five trials in each condition:
+The active comprehension task uses all 13 records labeled `pilot`. Odd and even `pilotIndex`
+values form counterbalance groups whose assignments reverse between sequence groups:
 
-| Group | Set 2 | Set 3 |
+| Group | Odd pilot indices | Even pilot indices |
 |---|---|---|
 | A | Spatial (Depth) | No order |
 | B | No order | Spatial (Depth) |
 
 Researchers select the sequence group on the participant setup page.
+
+The three preference trials follow the pilot comprehension trials automatically. Each record
+supplies its two active conditions through `preferenceConditions`; their A/B labels are randomized
+without revealing condition names.
 
 ## Audio behavior
 
@@ -131,11 +144,18 @@ During real trials:
 - Experience ratings separately measure overall scene clarity, spatial-relationship confidence, and content comprehension.
 - Mental demand and frustration are collected after each image for condition-by-condition comparison.
 - In preference trials, descriptions A and B can be replayed without a limit. Both must be played before a preference is saved.
+- Preference responses are Description A, Description B, or No preference.
 - The preference explanation is required and stored with playback events and replay counts.
 
 ## Data storage
 
-The full study state is autosaved in the browser and submitted to Firestore at completion. Version 7 records include `schemaVersion`, `comprehensionOrder`, per-trial `randomizedDisplayPosition`, experience-rating fields, two per-image workload responses, preference playback events, replay counts, preference, and preference explanation. CSV exports include one workload row per image for condition-by-condition comparison.
+The full study state is autosaved in the browser and submitted to Firestore at completion.
+Version 10 records identify the combined workflow and include session and composite trial IDs,
+role and pilot metadata, exact presented text, optional description metrics, ordered playback
+events, overall and intrinsic/absolute accuracy, response timing, workload responses, and complete
+preference mappings. Each pilot trial records `spatialExpressionCount` as the canonical count for
+the description actually presented.
+Description metrics are exported as study metadata and are never shown to participants.
 
 The home page also contains a researcher-only data viewer. Set a strong, private
 `RESEARCHER_ACCESS_KEY` environment variable on the server and enter that same key in the
@@ -166,8 +186,8 @@ The UI avoids drag-and-drop, hover-only interaction, hidden custom widgets, and 
 Before running a real study, manually verify:
 
 1. Spatial questions are correct for each image.
-2. The selected 10 comprehension stimuli are final.
-3. The 3 preference stimuli are final.
+2. The 13 active pilot stimuli are final; the 20 inactive main records remain intact for future use.
+3. The 3 preference stimuli and their `preferenceConditions` are final.
 4. The text-to-speech voice is acceptable, or replace TTS with recorded audio files.
 5. Exported JSON/CSV contains the fields needed for analysis.
 6. The interface has been tested with keyboard only and at least one screen reader.

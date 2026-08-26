@@ -4,6 +4,7 @@
 
 - Open the study interface in a supported browser.
 - Confirm the participant ID format.
+- Confirm the combined pilot-comprehension and preference workflow is active.
 - Assign sequence group A or B.
 - Confirm audio output device and volume.
 - Confirm microphone input and speech-to-text support if the participant wants to speak answers.
@@ -31,7 +32,8 @@
 - Export JSON.
 - Export CSV.
 - Verify the workload CSV contains one row per image with mental demand, frustration, condition, and display position.
-- Verify preference exports contain randomized order, preferred condition, ranking explanations, and playback events.
+- Verify comprehension exports contain session/trial IDs, role, pilot index, canonical `spatialExpressionCount`, description metrics, total accuracy, and intrinsic/absolute accuracy.
+- Verify preference exports contain A/B condition mappings, exact description text, metrics, selected condition or no preference, replay counts, and playback events.
 - Verify exported files are saved.
 - Clear session before the next participant.
 

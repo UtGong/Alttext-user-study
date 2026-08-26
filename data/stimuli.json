@@ -1388,17 +1388,17 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A wall fills the background. Along the lower right, a blue couch holds a seated man turned toward a woman beside him. To the left of them, a smaller younger boy stands lower in the scene near the couch area.",
-      "spatial": "A broad, mottled wall fills the upper half of the painting, stretching across the canvas in dark brown, green, and gray tones. Below it and slightly right of center, a dark blue couch runs horizontally behind the figures. Just left of the couch’s middle, a seated man in a dark suit turns his face outward toward the viewer. To his right, near the center-right of the painting, a woman in a white dress and bonnet sits on the couch holding a child. Farther down and to the left, near the lower-left edge of the scene, a smaller younger boy stands in front of the group, dressed in blue and looking forward.",
+      "baseline": "Against a large wall filling the background, a blue couch stretches across the lower right. On the couch, a seated man faces forward while turning slightly toward the viewer’s left. A woman stands to the right of him, and a smaller younger boy is positioned farther left, near the lower part of the scene.",
+      "spatial": "At the lower left, a smaller young boy stands in a dark blue outfit, looking out from beside taller children. Moving rightward, a woman in a white cap and pale dress sits among the family group, with children clustered around her lap. Just to her left, a seated man in dark clothing turns his upper body and face toward the viewer, positioned slightly behind the children. Beneath and around the seated figures, a deep blue couch stretches horizontally across the lower middle and right side, supporting the group. Behind them all, the broad wall fills the upper background with muted brown, gray, and green brushy tones.",
       "semantic": "At the lower left of the painting, a smaller younger boy in a blue outfit stands near the edge of the group, looking outward. Moving rightward across the lower middle of the scene, a dark blue couch stretches behind and beneath several family members. Above them, filling much of the upper half of the canvas, a broad mottled wall in muted browns, greens, and grays forms the background. In front of this wall near the center, a seated man in dark clothing turns slightly toward the viewer, his body angled across the couch. To his right, in the lower center-right of the painting, a woman in a white dress and bonnet sits upright on the couch among the children.",
       "spatial2d": "In the lower left of the painting, a smaller young boy in a blue suit stands near the edge of the group. Moving rightward toward the center, a woman in a white bonnet and pale dress sits among children. Just to her left, a seated man in dark clothing turns his head toward the viewer. Beneath and around these central figures, a deep blue couch stretches across the lower middle and right side of the scene. Behind them all, a broad, muted wall fills the upper background of the painting."
     },
     "audio": {},
     "targetElements": [
-      "smaller younger boy",
-      "wall",
       "woman",
+      "wall",
       "blue couch",
+      "smaller younger boy",
       "turns seated man"
     ],
     "spatialQuestions": [
@@ -1446,7 +1446,20 @@
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
-    }
+    },
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 7
+      },
+      "spatial": {
+        "spatialExpressionCount": 8,
+        "kendallTau": 0.4472135954999579
+      }
+    },
+    "preferenceConditions": [
+      "baseline",
+      "spatial"
+    ]
   },
   {
     "rowIndex": 21,
@@ -1457,18 +1470,18 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A wide shimmering blue waterway fills the lower half of the scene, with a town of cream white buildings stretching across the middle. In the foreground near the lower center, a young woman in white sits twisting, with a pale pink umbrella positioned above and to her left.",
-      "spatial": "Along the lower half of the painting, a hazy waterside town stretches across the canvas, with clustered rooftops, masts, and muted shapes fading into the pale sky. Moving toward the center-right, a pale pink umbrella opens above the waterfront scene. To the left of it, near the lower-left center, cream-white buildings stand out among darker roofs and greenery. Below and across the lower middle of the painting, a wide shimmering blue waterway runs horizontally, reflecting soft tan and blue brushstrokes. In the lower center-right foreground, a young woman sits twisting slightly, wearing a light dress and dark hat, her figure extending downward toward the bottom edge.",
+      "baseline": "A pale blue sky fills the upper frame above a town along the lower left and center. A wide, shimmering blue waterway stretches across the lower half. In the foreground near the lower center, a young woman sits twisting to one side, wearing a pale pink umbrella above her.",
+      "spatial": "A young woman sits twisting in the lower center of the painting, her pale dress stretching downward toward the foreground. Just above and slightly to the right of her is a pale pink umbrella. Behind and around her, a wide shimmering blue waterway spreads across the lower half of the scene. Along the far bank above the waterway, a hazy town of low buildings, towers, and rooftops extends horizontally. Above the town, a broad pale blue sky fills most of the upper canvas.",
       "semantic": "A pale pink umbrella appears just right of center in the lower half of the painting, above a wide shimmering blue waterway that stretches horizontally across the lower foreground. Rising from the water near the center is a young seated woman, turned slightly as if twisting, wearing a pale dress with dark hair. Behind her, along the middle of the canvas, a hazy town spreads across the shoreline, and toward the left of this town are cream-white buildings clustered beneath the open, pale sky.",
       "spatial2d": "At the lower right of the painting, a young woman sits in a twisting pose and wears a light dress; above and slightly to the left of her is a pale pink umbrella. Across the lower half of the canvas, a wide shimmering blue waterway stretches horizontally beneath her and the distant shore. Along the left side of that shore, cream-white buildings cluster near the water’s edge, and above and around them the town extends across the middle of the painting."
     },
     "audio": {},
     "targetElements": [
-      "town",
-      "wide shimmering blue seems waterway",
-      "cream white buildings",
       "young sits twists wears woman",
-      "pale pink umbrella"
+      "pale pink umbrella",
+      "pale blue sky",
+      "town",
+      "wide shimmering blue seems waterway"
     ],
     "spatialQuestions": [
       {
@@ -1515,7 +1528,20 @@
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
-    }
+    },
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 7
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.7378647873726218
+      }
+    },
+    "preferenceConditions": [
+      "baseline",
+      "spatial"
+    ]
   },
   {
     "rowIndex": 41,
@@ -1526,18 +1552,18 @@
     "role": "preference",
     "imageSet": "preference",
     "descriptions": {
-      "baseline": "A nude thin man is centered on a wooden cross, with his arms stretched horizontally along the crossbeam. At the top of the cross, directly above his head, a sign reads “INRI.” Blood runs from both hands, down the right side of his torso, and from his feet near the lower center. A skull sits below the crossed feet at the base of the vertical beam.",
-      "spatial": "A dark wooden cross spans the upper center of the painting, with its vertical beam descending toward the lower middle. Fastened across it is a nude, thin man, his arms stretched wide near the top of the canvas and his pale body hanging down the center. Blood appears below, especially around the feet in the lower center, running down the cross. Above the man’s head, near the top center edge, a small plaque bears the inscription “INRI.” Far below, at the base of the cross near the bottom center of the painting, a skull rests on the ground.",
+      "baseline": "A thin nude man is centered on a dark wooden cross, his arms stretched horizontally along the crossbeam. At the top center of the cross, above his head, a plaque reads “INRI.” Blood runs from both hands at the far left and far right ends of the crossbeam, from the side of his torso, and down from his feet near the lower center. Directly below his feet, at the base of the vertical cross, a skull is positioned near the bottom center.",
+      "spatial": "At the bottom center of the crucifixion scene, a skull rests at the base of the cross. Just above it, blood runs down from Christ’s nailed feet along the vertical beam. Continuing upward, the nude, thin man hangs on the cross with his legs together, a white cloth around his waist, his torso stretched, and his arms extended horizontally. Behind his body and arms, the dark wooden cross forms a long horizontal bar and a vertical support rising above his head. At the very top of the cross, above Christ’s head, a small plaque bears the inscription “INRI.”",
       "semantic": "At the lower center of the painting, blood trickles from the nailed feet of a nude, thin man whose body rises vertically through the center of the canvas with arms stretched wide. Above his bowed head near the top center, the inscription “INRI” appears on a small plaque. Behind and around him, a dark wooden cross spans horizontally across the upper portion and continues downward through the center. At the base of the cross near the bottom center, directly below the feet, a skull rests on the ground.",
       "spatial2d": "At the lower center of the painting, a skull sits at the base of the crucifix near the bottom edge. Just above it, blood runs down from the nailed feet of the crucified figure. Rising upward through the center of the canvas is the nude, thin man, shown with an emaciated torso, outstretched arms, and a bowed head under a crown of thorns. Behind him, a dark wooden cross spans horizontally across the upper middle and continues vertically down the center. At the very top center, above the crossbeam, a small inscription reads “INRI.”"
     },
     "audio": {},
     "targetElements": [
-      "skull",
       "nude thin man",
+      "skull",
       "wooden cross",
-      "Blood",
-      "INRI"
+      "INRI",
+      "Blood"
     ],
     "spatialQuestions": [
       {
@@ -1584,6 +1610,1046 @@
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
+    },
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 8,
+        "kendallTau": 0.6324555320336759
+      }
+    },
+    "preferenceConditions": [
+      "baseline",
+      "spatial"
+    ]
+  },
+  {
+    "rowIndex": 5,
+    "uuid": "7ef08b06-e4ff-49e5-8c13-f79dd0b1a872",
+    "imageFilename": "sample_7ef08b06-e4ff-49e5-8c13-f79dd0b1a872.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.6943,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "At the lower center-right, a woman in ornate dress stands among several dressed people. To her left and right are dressed light-skinned people clustered closely around her, with a dressed light-skinned man near the lower center holding cloth. A nude baby boy lies near the lower center-left, below the group. At the far lower left, an arched bridge appears in the background beneath the figures.",
+      "spatial": "At the lower right, a cluster of six dressed light-skinned figures gathers closely, with richly patterned garments and faces turned inward. Moving leftward toward the center, a nude baby boy lies on his back across a dark draped lap, one leg lifted. Just to the left of the baby, a seated woman is shown from behind, her bare shoulders and braided hair visible as she faces into the group. Above and slightly to the right of her, a dressed light-skinned man sits with a dark cloak and pale cloth across his lap, looking toward the surrounding figures. Farther left in the background, below the trees and behind the figures, an arched bridge spans the distant landscape.",
+      "semantic": "In the lower left of the painting, an arched bridge appears in the distant landscape. Moving rightward across the lower half of the canvas, a group of six dressed light-skinned people gathers near the center-right, clustered around richly colored garments. Just above and to the right within this group, a woman with ornate hair and jewelry leans inward. Slightly left of her, near the lower center, six dressed light-skinned men are grouped together, including a seated figure in dark clothing. Below them and a little to the left of center, a nude baby boy lies on his back with one arm raised.",
+      "spatial2d": "At the lower right of the painting, a cluster of six dressed light-skinned people gathers around the richly dressed central figures. Moving leftward toward the lower center, a nude baby boy lies on his back with his limbs raised. Just above and to the right, a woman with light skin, styled hair, and ornate clothing leans in among the group. Farther left in the lower middle, six dressed light-skinned men appear together, including a seated man in dark clothing holding a pale cloth. Continuing to the lower left background, an arched bridge spans a distant landscape beneath the trees and blue sky."
+    },
+    "audio": {},
+    "targetElements": [
+      "woman",
+      "arched bridge",
+      "Six dressed light skinned man",
+      "nude baby boy",
+      "Six dressed light skinned person"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_5_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the nude baby boy positioned to the left of the woman?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_5_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the arched bridge positioned behind the group of people?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_5_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the arched bridge positioned in the lower-left area of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_5_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the main group of people concentrated in the center-right area of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 1,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.9486832980505137
+      }
+    }
+  },
+  {
+    "rowIndex": 31,
+    "uuid": "c50ee8c2-db92-4e58-a6b8-0243dfe829d8",
+    "imageFilename": "sample_c50ee8c2-db92-4e58-a6b8-0243dfe829d8.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.6948,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A pale-skinned balding man sits in the lower center-left, facing right toward a crucifix on the mid-right. A large open book rests in front of him near the lower center. A skull sits just to the right of the book. Above the man and book, a covered gnarled tree stretches across the upper right portion of the scene.",
+      "spatial": "A skull rests in the lower right foreground, just beside the lower edge of a large open book whose pages angle up toward the center. Above the book, the scene rises to a covered gnarled tree spreading dark branches and leafy foliage across the upper right portion of the image. Below this canopy and slightly to the left, a pale-skinned balding man with a white beard leans toward the book. To the man’s right, a crucifix stands upright, its long vertical form extending upward beside him.",
+      "semantic": "At the lower center-left of the painting, a pale-skinned balding man with a white beard leans forward in a brown robe. Above him, stretching across the upper middle and toward the right edge, a dark gnarled tree is covered with dense leaves and twisted branches. Below the man’s gaze in the lower center-right, a large open book rests on a surface with pale pages visible. Just to the right of the book near the lower right, a skull sits facing forward. Further right, near the right edge of the painting, an hourglass stands upright beside the skull.",
+      "spatial2d": "In the lower right of the painting, a skull rests on the ground beside pale grasses. Just above and to the left of it, a large open book lies across the foreground with its pages spread outward. To the right of the book, near the lower-right edge of the canvas, a narrow hourglass stands upright. Rising above these objects along the right side and stretching across the upper center of the painting, a covered, gnarled tree with dark twisting branches and dense leaves looms over the scene. Below this canopy, toward the lower center-left, a pale-skinned balding man with a white beard bends forward, his face turned toward the open book."
+    },
+    "audio": {},
+    "targetElements": [
+      "large book",
+      "pale skinned balding man",
+      "skull",
+      "crucifix",
+      "covered gnarled tree"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_31_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the skull positioned to the right of the large book?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_31_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the crucifix positioned to the right of the balding man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_31_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the balding man positioned in the lower center-left area of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_31_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the gnarled tree positioned mainly in the upper-right area of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 2,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 8
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.9128709291752769
+      }
+    }
+  },
+  {
+    "rowIndex": 33,
+    "uuid": "c77f8b64-98a2-4b3c-b270-1863ece147c5",
+    "imageFilename": "sample_c77f8b64-98a2-4b3c-b270-1863ece147c5.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7607,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A rectangular stone coffin spans the lower center of the image. Above and slightly right of the coffin, a woman rises amid billowing brown clouds. Ten nude, babyish putti surround her: several cluster around her lower body, others float to the upper left and upper right, and a few appear along the lower left and lower right near the coffin. The brown clouds fill much of the upper and central space, wrapping around the woman and the putti.",
+      "spatial": "At the bottom center stretches a rectangular stone coffin, partly draped with a white cloth. Rising above it and slightly to the right, a seated woman in pink and deep blue robes looks upward into the sky. Below and around her lower drapery cluster ten nude, baby-like putti, some reaching and tumbling through the air. Just to the woman’s left, another small putto lifts an arm as if pointing upward. Overhead and extending across the upper portion of the scene, billowing brownish clouds surround the figures and open into patches of blue sky.",
+      "semantic": "In the upper portion of the painting, billowing brown and gray clouds swirl across the sky, framing the celestial scene. Below them, a woman in a flowing blue robe is depicted ascending, her gaze directed upward. Surrounding her are ten nude, babyish putti, their small bodies tumbling and reaching in dynamic motion around her form. Beneath this heavenly group, a rectangular stone coffin rests in the lower center of the composition, draped with a white, bunched cloth that pools around its base and spills onto the ground.",
+      "spatial2d": "At the lower center of the painting, a white bunched cloth hangs over the front edge of a tomb-like structure and spills downward in heavy folds. Extending behind and to the right of it across the lower half of the canvas is a rectangular stone coffin, long and pale, set between tall architectural columns. Above this, slightly right of center, a woman in pink and deep blue robes rises upward, looking toward the sky with one hand lifted. Around her lower body and continuing downward through the center are ten nude, babyish putti, clustered in motion as they support or surround her among the clouds. Spreading above and around them across the upper half of the painting are billowing brown clouds, framing the heavenly scene and opening to patches of blue sky."
+    },
+    "audio": {},
+    "targetElements": [
+      "rectangular stone coffin",
+      "Another",
+      "woman",
+      "billowing brown seem clouds",
+      "Ten nude like babyish putti"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_33_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the woman positioned above the rectangular stone coffin?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_33_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Were the putti positioned around the woman?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_33_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the rectangular stone coffin positioned near the bottom center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_33_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the billowing brown clouds concentrated in the upper and central areas of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 3,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.8366600265340756
+      }
+    }
+  },
+  {
+    "rowIndex": 48,
+    "uuid": "d25ae4f0-6e09-4ae3-9229-5d45ca3dec56",
+    "imageFilename": "sample_d25ae4f0-6e09-4ae3-9229-5d45ca3dec56.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.6993,
+    "descriptions": {
+      "baseline": "White and gray drift clouds fill the upper frame. Below them, a grassy hill rises along the left side, with a stone wall at the lower left edge. Water stretches across the lower middle and right. The closest two painted people stand near the bottom center on the shore, positioned in front of the water and to the right of the stone wall.",
+      "spatial": "At the lower foreground, two small painted figures stand on a rocky shore near the water’s edge. Just behind and around them, calm greenish-blue water stretches horizontally across the harbor. Moving leftward along the waterfront, a low stone wall and blocky building forms sit at the base of the scene. Rising above that wall, a dark grassy hill slopes steeply upward from left to right, leading the eye toward the open sky. Over the hill and across the upper expanse, broad white-gray drift clouds spread through pale blue sky in soft, brushed layers.",
+      "semantic": "Near the lower center of the painting, two small painted people stand on a rocky shore in the foreground. Just beyond them, calm water stretches horizontally across the lower half of the canvas toward the distant harbor. Moving left along the shoreline, a blocky stone wall rises in the lower left, marking the edge of the built waterfront. Above it and across most of the upper canvas, broad white-gray drift clouds sweep through a pale blue sky. From the lower left edge, a dark grassy hill slopes upward and inward, framing the harbor scene below.",
+      "spatial2d": "Near the lower center of the painting, two small painted figures stand among pale rocks on the shore. Just above and around them, calm water stretches horizontally across the lower half of the scene, reflecting muted greens, grays, and browns. Farther back along the lower left edge, a low stone wall and blocky buildings sit at the water’s edge. Rising behind that wall, a dark grassy hill slopes upward from the lower left toward the middle of the canvas. Above the hillside and harbor, white-gray drift clouds spread across most of the upper frame, broken by patches of pale blue sky."
+    },
+    "targetElements": [
+      "white gray drift clouds",
+      "grassy hill",
+      "stone wall",
+      "water",
+      "Closest two painted people"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_48_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the two painted people positioned to the right of the stone wall?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_48_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the grassy hill positioned above the stone wall?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_48_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Were the two painted people positioned near the bottom center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_48_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the white-gray clouds positioned across the upper portion of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "role": "pilot",
+    "imageSet": "pilot",
+    "audio": {},
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 4,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 8,
+        "kendallTau": 0.9486832980505137
+      }
+    }
+  },
+  {
+    "rowIndex": 28,
+    "uuid": "c1059816-1dc7-4af1-a5b3-26772de84b08",
+    "imageFilename": "sample_c1059816-1dc7-4af1-a5b3-26772de84b08.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.6909,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A columned, domed white marble U.S. building fills the upper right and middle background. Below it near the lower center, Abraham Lincoln appears among figures. Across the lower foreground, two white horses move from right to left, with another horse partly visible beside them. On the far right, a woman stands above the horses.",
+      "spatial": "At the lower center, a single white horse charges forward amid a crowded procession. Just beside and extending to the right of it, two white horses pull the scene’s motion across the foreground. Above and slightly right of these horses stands Abraham Lincoln in a dark suit, positioned among the riders. Farther to the right, a woman in white rides or stands prominently near an American flag, raising one arm as she faces forward. Behind all of them, spanning the upper background, a columned, domed white marble U.S. building rises over the crowd, with its large dome centered high in the sky.",
+      "semantic": "In the right-center foreground, Abraham Lincoln appears as a bearded man in a black suit standing amid the procession. Just to the right of him, a robed woman with long dark hair rides forward, raising one arm while seated among the horses and flags. Moving leftward across the lower middle of the painting, a white horse in harness charges through the crowd, its head and body prominent among other horses. Above this action, deep in the background across the upper middle and right side of the canvas, a vast white marble U.S. building with columns, pediments, and a tall domed roof rises against a cloudy blue sky. Farther to the right edge of the foreground, the next man stands near an American flag, wearing a dark uniform and hat beside the mounted figures.",
+      "spatial2d": "In the lower center of the painting, a white horse charges forward with raised legs and a flowing mane amid harnesses and other horses. Moving to the right side of the canvas, Abraham Lincoln appears standing in a dark suit and tall black hat among the figures and horses. Farther right, near the American flag, another man in a dark uniform and hat stands upright beside the procession. Just to his left and slightly lower, a woman in a white classical robe rides prominently, holding a banner and framed by sweeping fabric and reins. Rising behind all of these figures across the upper half of the painting is a large white marble U.S. building with rows of columns, triangular pediments, and a tall domed roof set against a cloudy blue sky."
+    },
+    "audio": {},
+    "targetElements": [
+      "woman",
+      "two white horses",
+      "horse",
+      "Abraham Lincoln",
+      "columned domed white marble US building"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_28_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the horses positioned in front of the domed U.S. building?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_28_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the woman positioned to the right of the horses?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_28_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the domed U.S. building positioned in the upper background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_28_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the horses positioned across the lower foreground of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 5,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.8366600265340756
+      }
+    }
+  },
+  {
+    "rowIndex": 15,
+    "uuid": "823405e0-599f-4fd8-ae71-4d901edc36b0",
+    "imageFilename": "sample_823405e0-599f-4fd8-ae71-4d901edc36b0.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.6968,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A glimmering river fills the lower half of the scene. Along the horizon line near the middle, a bridge stretches horizontally across the frame. A brown, boxy, long rectangular flat-topped building sits on the right side above the river, with its reflection shimmering below. Small boats appear across the lower river area, especially toward the center and right.",
+      "spatial": "A glimmering river fills the lower half of the painting, its pale blue and gray water broken by shimmering reflections. Resting on this water are several small boats, clustered from the lower left toward the lower right. Just above and to the right of the boats stands a brown, boxy, long rectangular building with a flat top, set along the riverside. Extending behind and across the middle of the scene is a bridge, stretching horizontally over the water and connecting the built-up banks. Far above it, the horizon line runs across the upper portion of the painting beneath a broad, cloudy sky.",
+      "semantic": "Small boats cluster across the lower half of the painting, with several dark and reddish hulls floating near the bottom center and lower right. Just above and around them, the river glimmers with pale blue, gray, and silvery reflections spreading across the middle and lower portions of the canvas. To the right of this reflective water, a brown, boxy, long rectangular building with a flat top occupies the lower-right area, its warm ocher walls mirrored faintly in the river below. Far above the boats, water, and building, a broad horizon line runs across the upper third of the painting beneath a cloudy, gray-blue sky. Along the bottom edge and especially toward the lower center and lower right, patches of green grass frame the riverbank in the foreground.",
+      "spatial2d": "Along the lower center of the painting, a patch of green grass curves across the riverbank, leading upward into the glimmering river below it, where pale blue, gray, and white brushstrokes suggest shimmering water. Across this water in the lower half of the canvas, several small boats sit scattered from left to right. Just above and to the right of the boats, a brown, boxy, long rectangular building with a flat top occupies the middle-right area near the waterfront. Beyond it, the scene opens upward to a broad, hazy horizon line stretching across the upper portion of the painting beneath a cloudy sky."
+    },
+    "audio": {},
+    "targetElements": [
+      "brown boxy long rectangular flat topped building",
+      "glimmering below river",
+      "horizon line",
+      "bridge",
+      "small boats"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_15_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the small boats positioned in front of the bridge?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_15_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the rectangular building positioned above and to the right of the boats?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_15_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the glimmering river positioned in the lower half of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_15_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the horizon line positioned in the upper portion of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 6,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 8,
+        "kendallTau": 0.9486832980505137
+      }
+    }
+  },
+  {
+    "rowIndex": 52,
+    "uuid": "d37bc3dc-c3e0-4019-9725-f33404d7d5bc",
+    "imageFilename": "sample_d37bc3dc-c3e0-4019-9725-f33404d7d5bc.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7506,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A canal angles from the lower center toward the right distance, bordered by multi-story buildings on both sides. A stepped bridge crosses the canal in the mid-right foreground, with a long narrow boat below and another along the lower canal. The buildings rise above the water to the left and right, while the horizon sits low in the background beyond the canal.",
+      "spatial": "In the lower foreground, a long, narrow boat sits across the canal, with figures standing at either end and an oar extending into the water. From this boat, the canal recedes diagonally up and to the right, narrowing as it passes between stone embankments and moored gondolas. Along the left side of this waterway, multi-story buildings rise closely together, their arched windows, balconies, and pale façades stacking upward beside the canal. Farther to the right, a stepped bridge crosses over the canal, lifting pedestrians above the water and linking the busy walkway to the buildings beyond. Above all of this, the scene opens into a broad blue sky, with the horizon suggested low in the distance between the rooftops and church façades.",
+      "semantic": "On the left side of the painting, tall story buildings rise along the canal, their arched windows and pale façades leading the eye downward into the city scene. Moving rightward toward the lower middle, a stepped bridge crosses the water, connecting the clustered buildings on the left with the open paved area on the right. Farther to the lower right, small people appear walking and standing on the sunlit pavement, scattered near the edge of the square. Just to their left and across the bottom center, the canal angles to the right, filled with dark gondolas and reflections beneath the bridge. Above all of this, the horizon stretches across the upper portion of the painting, where the buildings and church towers meet a broad blue sky with soft clouds.",
+      "spatial2d": "In the lower right of the painting, small groups of people walk and gather on a sunlit paved square, their figures scattered near the canal’s edge. Moving leftward from them, the canal cuts diagonally through the lower center of the scene, with gondolas and boats clustered along its right-angled bend. Above and to the left, tall multi-story buildings line the canal, their arched windows, pale façades, and brick walls rising along both sides of the waterway. Farther back near the middle-right, a stepped bridge crosses over the canal, leading the eye deeper into the city. Above all of this, the horizon opens into a broad expanse of pale blue sky across the upper part of the canvas, with low clouds and distant rooftops marking the background."
+    },
+    "audio": {},
+    "targetElements": [
+      "angles right canal",
+      "stepped bridge",
+      "story buildings",
+      "long narrow boat",
+      "horizon"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_52_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Were the multi-story buildings positioned alongside the canal?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_52_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the stepped bridge positioned to the right of the long narrow boat?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_52_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the long narrow boat positioned in the lower foreground of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_52_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the horizon positioned low in the background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 7,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 10
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.9486832980505137
+      }
+    }
+  },
+  {
+    "rowIndex": 22,
+    "uuid": "bf9843af-1922-483f-8b6b-ccfa852de356",
+    "imageFilename": "sample_bf9843af-1922-483f-8b6b-ccfa852de356.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7577,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A woman near the left-center reaches out beside a man standing to her left. Two dogs are below them near the bottom center: a small furry brown dog sits in the foreground, while another dog stands just behind it. Trees frame the scene along the left side and extend into the upper right background.",
+      "spatial": "At the lower right, a small furry brown dog sits beside the legs of the surrounding crowd. Just above and slightly to the right of the dog stands a man in dark clothing, facing inward toward the busy scene. Moving leftward from him, a young woman in a pale dress reaches out toward another woman amid the gathering. Farther left near the lower center, two dogs stand close together on the ground beneath the figures. From there, the view rises and spreads outward to the trees, whose dark foliage frames the left side and stretches across the upper background behind the buildings and crowd.",
+      "semantic": "In the lower right of the painting, a young woman in a pale dress and white head covering reaches outward through the surrounding crowd. Just below and slightly to the right of her, near the bottom edge, a small furry brown dog sits facing forward. Moving leftward along the lower center of the canvas, two dogs stand close together in the open street. Farther back toward the right side, a man in dark clothing stands among the figures. Behind him, stretching across the middle and upper right of the scene, a high wall forms the background boundary of the crowded street.",
+      "spatial2d": "At the lower right of the painting, a small furry brown dog sits on the ground beside the crowd. Just above and slightly to the right, a man in dark clothing stands among the figures. Moving leftward from him, a young woman in a pale dress reaches out through the busy gathering. Farther left along the bottom center, two dogs stand close together near people’s legs. Behind them, stretching across the middle of the scene from the center toward the right, a high wall forms the backdrop to the crowded street."
+    },
+    "audio": {},
+    "targetElements": [
+      "young reaches out woman",
+      "Two dogs",
+      "man",
+      "small furry brown sits dog",
+      "Trees"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_22_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the man positioned above the small furry brown dog?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_22_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the small furry brown dog positioned to the right of the other two dogs?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_22_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the small furry brown dog positioned in the lower-right area of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_22_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Did the trees extend across the upper background of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 8,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 8
+      },
+      "spatial": {
+        "spatialExpressionCount": 10,
+        "kendallTau": 0.5270462766947298
+      }
+    }
+  },
+  {
+    "rowIndex": 55,
+    "uuid": "00209fb1-64a2-4961-9ccc-8c6c06117df2",
+    "imageFilename": "sample_00209fb1-64a2-4961-9ccc-8c6c06117df2.png",
+    "complexityLevel": "medium",
+    "complexityScore": 0.7056,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A garden stretches across the lower part of the scene, with three people near the lower right. A tall pine tree stands closer in the center foreground, rising upward into the vivid blue sky above. Farther back on the right, a manor-like house appears behind the garden.",
+      "spatial": "A dark, earthy garden stretches across the lower foreground, with paths, low vegetation, and shaded ground. Rising just to the left of center from this garden is a tall, close pine tree, its trunk and layered branches extending upward through much of the scene. At the base of the pine and slightly to the left, three small people stand or walk along the path, partly absorbed into the shadowed landscape. Farther back to the right of the pine, a manor house appears among the trees, its pale façade and roof set behind the garden. Above all of this, the upper portion opens into a vivid blue sky, broken by broad gray and white clouds that span across the scene.",
+      "semantic": "In the lower right of the painting, a pale manor house appears among dark trees, set back in the landscape. Moving downward and slightly right across the bottom portion of the canvas, the scene opens into a shadowy garden area with small figures and paths. Above this, filling the upper left and stretching across much of the top of the painting, vivid blue sky shows through large gray and white clouds. Returning to the lower center, a yellowed pine tree or brushy fallen bough lies across the foreground. Rising from just behind it near the center of the canvas, a closer tall pine tree dominates the scene, its dark trunk and layered branches extending upward into the cloudy sky.",
+      "spatial2d": "In the lower center foreground, a yellowed pine tree or fallen piney brush lies across the dark earth. Moving to the lower right of the painting, the garden opens into a shadowed path with small figures and patches of grass. Rising just left of center, a tall pine tree stands close in the foreground, its dark trunk and layered branches reaching upward. Farther back in the upper-right middle distance, a manor house appears among the trees, with a pale facade and green roof. Above it all, across the upper half of the canvas, a vivid blue sky is broken by broad gray and white clouds."
+    },
+    "audio": {},
+    "targetElements": [
+      "Three people",
+      "garden",
+      "pine closer tree",
+      "manor appears house",
+      "vivid blue above sky"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_55_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the pine tree positioned in front of the manor house?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_55_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Were the three people positioned near the base of the pine tree?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_55_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the garden positioned across the lower portion of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_55_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the vivid blue sky positioned across the upper portion of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 9,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 8
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.9486832980505137
+      }
+    }
+  },
+  {
+    "rowIndex": 41,
+    "uuid": "cd382af4-5334-485a-8121-c52ce7abf13a",
+    "imageFilename": "sample_cd382af4-5334-485a-8121-c52ce7abf13a.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7458,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A thin nude man is centered on a dark wooden cross, his arms stretched horizontally along the crossbeam. At the top center of the cross, above his head, a plaque reads “INRI.” Blood runs from both hands at the far left and far right ends of the crossbeam, from the side of his torso, and down from his feet near the lower center. Directly below his feet, at the base of the vertical cross, a skull is positioned near the bottom center.",
+      "spatial": "At the bottom center of the crucifixion scene, a skull rests at the base of the cross. Just above it, blood runs down from Christ’s nailed feet along the vertical beam. Continuing upward, the nude, thin man hangs on the cross with his legs together, a white cloth around his waist, his torso stretched, and his arms extended horizontally. Behind his body and arms, the dark wooden cross forms a long horizontal bar and a vertical support rising above his head. At the very top of the cross, above Christ’s head, a small plaque bears the inscription “INRI.”",
+      "semantic": "At the lower center of the painting, blood trickles from the nailed feet of a nude, thin man whose body rises vertically through the center of the canvas with arms stretched wide. Above his bowed head near the top center, the inscription “INRI” appears on a small plaque. Behind and around him, a dark wooden cross spans horizontally across the upper portion and continues downward through the center. At the base of the cross near the bottom center, directly below the feet, a skull rests on the ground.",
+      "spatial2d": "At the lower center of the painting, a skull sits at the base of the crucifix near the bottom edge. Just above it, blood runs down from the nailed feet of the crucified figure. Rising upward through the center of the canvas is the nude, thin man, shown with an emaciated torso, outstretched arms, and a bowed head under a crown of thorns. Behind him, a dark wooden cross spans horizontally across the upper middle and continues vertically down the center. At the very top center, above the crossbeam, a small inscription reads “INRI.”"
+    },
+    "audio": {},
+    "targetElements": [
+      "nude thin man",
+      "skull",
+      "wooden cross",
+      "INRI",
+      "Blood"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_41_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the skull positioned below the thin man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_41_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the “INRI” plaque positioned above the thin man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_41_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the skull positioned near the bottom center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_41_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the wooden cross centered in the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 10,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 9
+      },
+      "spatial": {
+        "spatialExpressionCount": 8,
+        "kendallTau": 0.6324555320336759
+      }
+    }
+  },
+  {
+    "rowIndex": 57,
+    "uuid": "03da43fa-743f-49d5-92ad-d521accc5759",
+    "imageFilename": "sample_03da43fa-743f-49d5-92ad-d521accc5759.png",
+    "complexityLevel": "low",
+    "complexityScore": 0.6108,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A clean-shaven man stands near the center, facing right, holding a long decorated banner that rises above him and leans slightly left. On the right side, a nude woman sits upright on a hammock, with her body angled toward the center. Near the upper right, a small animal, perhaps a monkey, appears among the branches above and to the right of the man.",
+      "spatial": "A long decorated banner hangs near the upper left-center of the scene, draping downward from a pole with a cross-shaped finial and patterned panels. Just below and to the right of it stands a clean-shaven man in profile, wearing a cap and long robe while holding the banner pole upright. Farther to the right, a nude woman sits up in the foreground, her body turned toward the center of the image and her head covered with a patterned headdress. Slightly left of her and closer to the central man, a small figure that appears perhaps to be a monkey clings near the pole or tree area. Beneath and beside the seated woman, a hammock stretches diagonally across the lower right, its woven surface supporting the reclining figures.",
+      "semantic": "In the lower right of the print, a woven hammock stretches diagonally across the foreground. Just above and to the right of it, a nude woman sits upright, partially framed by the scene’s right side. Moving upward and leftward, two tall trees rise through the middle and right side of the composition, their trunks and broad leaves filling much of the upper half. Near the center of the image, beside the trees, a clean-shaven man stands in profile holding a long pole. Extending above him toward the upper left, a long decorated banner hangs vertically, marked with stars and a cross-shaped finial at the top.",
+      "spatial2d": "A long decorated banner hangs in the upper center-left of the engraving, draping downward beside the trees and marked with small stars and a cross-like finial at the top. Below and slightly to the right, near the center of the frame, a clean-shaven man in a cap and long garment stands holding a vertical staff. Farther to the right, in the lower-right portion of the scene, a nude woman sits upright, turned toward the left with one arm raised. Above and around these figures, two large trees rise through the composition, their trunks and leafy branches spreading across the upper half of the image. Beneath the trees in the lower right, a hammock stretches diagonally across the foreground, supporting a reclining figure."
+    },
+    "audio": {},
+    "targetElements": [
+      "hammock",
+      "nude sits up woman",
+      "perhaps monkey",
+      "clean shaven man",
+      "long decorated banner"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_57_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the nude woman positioned to the right of the clean-shaven man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_57_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the hammock positioned beneath the seated woman?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_57_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the long decorated banner positioned near the upper left-center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_57_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the nude woman positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 11,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 7
+      },
+      "spatial": {
+        "spatialExpressionCount": 9,
+        "kendallTau": 0.6708203932499368
+      }
+    }
+  },
+  {
+    "rowIndex": 85,
+    "uuid": "25c98bc8-af28-4194-a056-daeae1f0a001",
+    "imageFilename": "sample_25c98bc8-af28-4194-a056-daeae1f0a001.png",
+    "complexityLevel": "low",
+    "complexityScore": 0.6166,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "A long table spans the lower foreground from left to right. Behind the table near the center-left sits a bearded man, with a woman positioned to his left. To the bearded man’s right stands or leans a man holding a bowl. Farther right, a young cleanshaven man in red is beside another woman at the right edge of the table.",
+      "spatial": "A long banquet table stretches horizontally across the lower part of the painting, covered with a white cloth, small round loaves or plates, a large platter, cups, and serving vessels along its front edge. Just behind the table near the center-left sits a bearded man with long brown hair, his head lowered and one hand raised in a gentle gesture. To his left, at the same table, a woman in a white head covering and dark cloak bows her face downward with her hands clasped in prayer. Moving rightward from the bearded man, a young cleanshaven man in a red robe and soft red cap sits upright, his pale fur-trimmed collar framing his downcast face. Between the bearded man and this young figure, slightly to the right of center, another man in a blue cap and green robe leans forward, holding out a small bowl as he looks downward.",
+      "semantic": "In the lower center-left of the painting, a bearded man with long hair and a lowered gaze raises one hand in a gesture of blessing. Immediately to the right, near the lower center, a man in a cap leans forward while holding out a shallow bowl. Across the bottom of the scene, a long white table stretches from the lower left toward the lower right, set with plates, cups, and serving dishes. Moving back to the left side of the table, a woman in a white head covering clasps her hands in prayer and looks downward. Farther to the right, along the lower right portion of the painting, a young cleanshaven man in a red robe and cap sits with his eyes lowered beside the richly patterned wall hanging.",
+      "spatial2d": "A long banquet table stretches across the lower portion of the painting, covered with a white cloth, small round loaves, plates, cups, and decorative fringe along its front edge. Just above the table near the lower center-left sits a bearded man with long hair and a calm, downcast face, one hand raised in a gesture. To the left of him, along the lower left side of the canvas, a woman in a white head covering bows her head with her hands clasped in prayer. Moving rightward past the bearded man, a young cleanshaven man appears in the lower right-center, wearing a red robe and a red-and-white cap, his eyes lowered. Slightly to the left of this young man, in the lower center-right, another man leans forward in a blue cap and green garment, holding a shallow bowl as he looks downward."
+    },
+    "audio": {},
+    "targetElements": [
+      "long table",
+      "bearded man",
+      "man",
+      "young cleanshaven man",
+      "woman"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_85_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the woman in a white head covering positioned to the left of the bearded man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_85_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the young clean-shaven man positioned to the right of the bearded man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_85_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Did the long table stretch across the lower part of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_85_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the bearded man positioned near the center-left of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 12,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 8
+      },
+      "spatial": {
+        "spatialExpressionCount": 7,
+        "kendallTau": 0.9999999999999999
+      }
+    }
+  },
+  {
+    "rowIndex": 38,
+    "uuid": "c9c0f26e-a559-43ab-b517-0384e347ade8",
+    "imageFilename": "sample_c9c0f26e-a559-43ab-b517-0384e347ade8.png",
+    "complexityLevel": "high",
+    "complexityScore": 0.7647,
+    "role": "pilot",
+    "imageSet": "pilot",
+    "descriptions": {
+      "baseline": "Against a shimmering gold background, steps rise across the lower center toward the right. An older bearded man stands on the steps near the center-right, with a young girl positioned lower and to his left. Another bearded man stands at the lower left, facing toward the steps and the figures on the right.",
+      "spatial": "At the lower center, broad reddish steps rise diagonally toward the right into an architectural interior. Just above and slightly left of the steps stands a young girl with a halo, wearing a pink patterned robe and holding a small book. To her left, an older man with gray hair and a beard appears in profile beside a veiled woman, both set against a golden haloed area. Moving rightward and upward from them, a bearded standing man in a red cloak and ornate crown occupies the central architectural space, framed by tall pale columns and arches. Behind all of these figures, a shimmering gold background fills the upper and left portions of the painting, mottled with reddish worn patches and surrounding the decorated building.",
+      "semantic": "At the lower center of the painting, broad reddish steps lead upward toward a pale architectural platform. Just above and slightly to the right of these steps stands a bearded man in ornate robes, wearing a crown-like headdress and a red mantle over a white garment. Moving leftward across the lower part of the scene, an older bearded man with a halo appears among the gathered figures. Near the lower middle, slightly to his right, a young girl with a gold halo wears a pink patterned dress and holds a small book. Behind and around all of these figures, a shimmering gold background fills much of the upper and left portions of the painting, mottled with reddish wear and texture.",
+      "spatial2d": "At the lower center of the painting, broad reddish steps lead upward into an architectural setting. Just above and slightly left of these steps stands a young girl in a pinkish-red patterned dress, holding a small book and framed by a gold halo. To her left, near the lower-left portion of the canvas, an older man with gray hair and a beard appears beside another haloed figure. Moving rightward from him, a bearded standing man in a crown and red cloak occupies the middle-right of the painting beneath tall arches. Behind all of these figures and extending across the upper and left areas of the canvas is a shimmering gold background, worn and mottled with reddish patches."
+    },
+    "audio": {},
+    "targetElements": [
+      "shimmering gold background",
+      "bearded stands man",
+      "steps",
+      "older man",
+      "young girl"
+    ],
+    "spatialQuestions": [
+      {
+        "id": "pilot_38_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the young girl positioned to the left of the bearded standing man?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_38_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the older man positioned to the left of the young girl?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_38_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Were the steps positioned near the lower center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "pilot_38_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Did the shimmering gold background fill much of the upper and left portions of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      }
+    ],
+    "gistQuestion": {
+      "question": "What kind of scene or main subject was described?",
+      "expectedAnswer": "Open-ended response, code after study."
+    },
+    "pilotIndex": 13,
+    "descriptionMetrics": {
+      "baseline": {
+        "spatialExpressionCount": 7
+      },
+      "spatial": {
+        "spatialExpressionCount": 10,
+        "kendallTau": 0.7378647873726218
+      }
     }
   }
 ]

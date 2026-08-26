@@ -12,10 +12,12 @@ export type StudyPhase =
 
 export type SequenceGroup = "A" | "B";
 export type Condition = "baseline" | "spatial";
+export type StudyMode = "pilot-preference";
 export type ComplexityLevel = "low" | "medium" | "high";
-export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference";
-export type StimulusRole = "comprehension" | "preference" | "reserve";
+export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference" | "pilot";
+export type StimulusRole = "comprehension" | "preference" | "reserve" | "pilot";
 export type DescriptionLabel = "A" | "B";
+export type PreferenceChoice = DescriptionLabel | "none";
 export type SpatialObjectFocus = "main" | "secondary";
 
 export type ParticipantProfile = {
@@ -50,8 +52,16 @@ export type GistQuestion = {
   options?: string[];
 };
 
+export type DescriptionMetric = {
+  spatialExpressionCount?: number;
+  kendallTau?: number;
+};
+
+export type DescriptionMetrics = Partial<Record<Condition, DescriptionMetric>>;
+
 export type Stimulus = {
   role: StimulusRole;
+  pilotIndex?: number;
   rowIndex: number;
   uuid: string;
   imageFilename: string;
@@ -74,6 +84,8 @@ export type Stimulus = {
   targetElements: string[];
   spatialQuestions: SpatialQuestion[];
   gistQuestion?: GistQuestion;
+  preferenceConditions?: Condition[];
+  descriptionMetrics?: DescriptionMetrics;
 };
 
 export type LikertResponse = {
@@ -93,6 +105,16 @@ export type AudioPlayEvent = {
   isReplay: boolean;
 };
 
+export type OrderedAudioPlayEvent = AudioPlayEvent & {
+  eventSequence: number;
+};
+
+export type AccuracySummary = {
+  correct: number;
+  eligible: number;
+  proportion: number | null;
+};
+
 export type SpatialAnswer = {
   questionId: string;
   frameOfReference: string;
@@ -107,6 +129,9 @@ export type SpatialAnswer = {
 
 export type TrialResponse = {
   participantId: string;
+  sessionId: string;
+  trialId: string;
+  studyMode: StudyMode;
   sequenceGroup: SequenceGroup;
   testMode: boolean;
   selectedAudioSpeed: number;
@@ -116,23 +141,34 @@ export type TrialResponse = {
   imageId: string;
   imageFilename: string;
   uuid: string;
+  role: "comprehension" | "pilot";
+  pilotIndex: number | null;
   rowIndex: number;
   complexityLevel: ComplexityLevel;
   imageSet: ImageSet;
   condition: Condition;
   descriptionText: string;
+  baselineSpatialExpressionCount: number | null;
+  spatialSpatialExpressionCount: number | null;
+  spatialKendallTau: number | null;
+  spatialExpressionCount: number | null;
+  presentedKendallTau: number | null;
   replayCount: number;
   replayed: boolean;
-  audioPlayEvents: AudioPlayEvent[];
+  audioPlayEvents: OrderedAudioPlayEvent[];
   startedAt: string;
   audioStartedAt?: string;
   audioEndedAt?: string;
   submittedAt: string;
+  responseTimeMs: number;
   freeRecallQuestion: string;
   freeRecall: string;
   spatialAnswers: SpatialAnswer[];
   spatialAccuracyScore: number;
   spatialEligibleQuestionCount: number;
+  spatialAccuracyProportion: number | null;
+  intrinsicAccuracy: AccuracySummary;
+  absoluteAccuracy: AccuracySummary;
   ratings: Ratings;
   ratingQuestions: Record<keyof Ratings, string>;
   workload: Pick<WorkloadResponse, "mentalDemand" | "frustration">;
@@ -164,6 +200,9 @@ export type PreferencePlaybackEvent = AudioPlayEvent & {
 
 export type PreferenceResponse = {
   participantId: string;
+  sessionId: string;
+  trialId: string;
+  studyMode: StudyMode;
   sequenceGroup: SequenceGroup;
   testMode: boolean;
   selectedAudioSpeed: number;
@@ -172,6 +211,8 @@ export type PreferenceResponse = {
   imageId: string;
   imageFilename: string;
   uuid: string;
+  role: "preference";
+  imageSet: "preference";
   rowIndex: number;
   complexityLevel: ComplexityLevel;
   randomizedOrder: {
@@ -179,11 +220,18 @@ export type PreferenceResponse = {
     displayPosition: number;
     condition: Condition;
     descriptionText: string;
+    spatialExpressionCount: number | null;
+    kendallTau: number | null;
   }[];
+  baselineSpatialExpressionCount: number | null;
+  spatialSpatialExpressionCount: number | null;
+  spatialKendallTau: number | null;
   playbackEvents: PreferencePlaybackEvent[];
   replayCounts: Record<DescriptionLabel, number>;
-  bestChoice: DescriptionLabel | "";
-  preferredCondition: Condition | "";
+  preferenceChoice: PreferenceChoice;
+  preferenceResponse: "Description A" | "Description B" | "No preference";
+  bestChoice: PreferenceChoice;
+  preferredCondition: Condition | "none";
   rankingQuestion: string;
   ranking: PreferenceRanking;
   explanationQuestion: string;
@@ -201,9 +249,11 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 7;
+  schemaVersion: 10;
   phase: StudyPhase;
   testMode: boolean;
+  studyMode: StudyMode;
+  sessionId: string;
   consent: ConsentRecord;
   participant: ParticipantProfile;
   selectedAudioSpeed: number;

@@ -42,12 +42,14 @@ export async function POST(request: NextRequest) {
     const resultToSave = {
       ...body,
       participantId,
-      schemaVersion: 7,
+      schemaVersion: 10,
       comprehensionOrder: Array.isArray(body?.comprehensionOrder)
         ? body.comprehensionOrder
         : [],
       responseSummary: {
         consentAccepted: true,
+        studyMode: typeof body?.studyMode === "string" ? body.studyMode : "unknown",
+        sessionId: typeof body?.sessionId === "string" ? body.sessionId : "",
         comprehensionCount: Array.isArray(body?.comprehensionResponses)
           ? body.comprehensionResponses.length
           : 0,
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
       },
       serverSubmittedAt: submittedAt,
       createdAt: FieldValue.serverTimestamp(),
-      appVersion: "blv-user-study-nextjs-v7"
+      appVersion: "blv-user-study-nextjs-v10"
     };
 
     await db.collection(collectionName).doc(documentId).set(resultToSave);

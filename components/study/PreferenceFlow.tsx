@@ -7,11 +7,11 @@ import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { QuestionAudioButton } from "@/components/QuestionAudioButton";
 import { RadioGroup } from "@/components/RadioGroup";
 import { SpeechAnswerInput } from "@/components/SpeechAnswerInput";
-import { STUDY_CONDITIONS } from "@/lib/config";
-import { preferenceStimuli } from "@/lib/stimuli";
+import { createStimulusTrialId, getPreferenceConditions, preferenceStimuli } from "@/lib/stimuli";
 import {
   Condition,
   DescriptionLabel,
+  PreferenceChoice,
   PreferencePlaybackEvent,
   PreferenceRanking,
   PreferenceResponse,
@@ -34,33 +34,32 @@ function shuffle(conditions: Condition[]) {
   return copy;
 }
 
-const rankingQuestion = "Which description did you prefer, A or B?";
-const explanationQuestion = "Why did you prefer that description?";
+const rankingQuestion = "Which description communicates the spatial arrangement more clearly?";
+const explanationQuestion = "What made the spatial arrangement clearer, or why did you have no preference?";
 
 export function PreferenceFlow({ state, updateState }: Props) {
   const stimulus = preferenceStimuli[state.preferenceIndex];
 
   const randomizedOrder = useMemo(
     () =>
-      shuffle(STUDY_CONDITIONS).map((condition, index) => ({
+      shuffle(getPreferenceConditions(stimulus)).map((condition, index) => ({
         label: ["A", "B"][index] as DescriptionLabel,
         displayPosition: index + 1,
         condition,
-        descriptionText: stimulus.descriptions[condition]
+        descriptionText: stimulus.descriptions[condition],
+        spatialExpressionCount: stimulus.descriptionMetrics?.[condition]?.spatialExpressionCount ?? null,
+        kendallTau: stimulus.descriptionMetrics?.[condition]?.kendallTau ?? null
       })),
     [stimulus]
   );
 
   const [playbackEvents, setPlaybackEvents] = useState<PreferencePlaybackEvent[]>([]);
   const [replayCounts, setReplayCounts] = useState<Record<DescriptionLabel, number>>({ A: 0, B: 0 });
-  const [ranking, setRanking] = useState<PreferenceRanking>({
-    first: "",
-    second: ""
-  });
+  const [choice, setChoice] = useState<PreferenceChoice | "">("");
   const [startedAt] = useState(new Date().toISOString());
   const [explanation, setExplanation] = useState("");
 
-  const complete = Boolean(ranking.first && ranking.second);
+  const complete = Boolean(choice);
   const playedLabels = new Set(playbackEvents.map((event) => event.label));
   const allDescriptionsPlayed = ["A", "B"].every((label) =>
     playedLabels.has(label as DescriptionLabel)
@@ -72,9 +71,21 @@ export function PreferenceFlow({ state, updateState }: Props) {
     if (!state.testMode && (!allDescriptionsPlayed || !complete)) return;
 
     const submittedAt = new Date().toISOString();
-    const bestChoice = ranking.first;
+    const preferenceChoice: PreferenceChoice = choice || "none";
+    const ranking: PreferenceRanking = preferenceChoice === "none"
+      ? { first: "", second: "" }
+      : {
+          first: preferenceChoice,
+          second: preferenceChoice === "A" ? "B" : "A"
+        };
+    const preferredCondition = preferenceChoice === "none"
+      ? "none"
+      : randomizedOrder.find((item) => item.label === preferenceChoice)?.condition ?? "none";
     const response: PreferenceResponse = {
       participantId: state.participant.participantId,
+      sessionId: state.sessionId,
+      trialId: createStimulusTrialId(stimulus),
+      studyMode: "pilot-preference",
       sequenceGroup: state.participant.sequenceGroup,
       testMode: state.testMode,
       selectedAudioSpeed: state.selectedAudioSpeed,
@@ -83,13 +94,20 @@ export function PreferenceFlow({ state, updateState }: Props) {
       imageId: stimulus.uuid,
       imageFilename: stimulus.imageFilename,
       uuid: stimulus.uuid,
+      role: "preference",
+      imageSet: "preference",
       rowIndex: stimulus.rowIndex,
       complexityLevel: stimulus.complexityLevel,
       randomizedOrder,
+      baselineSpatialExpressionCount: stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null,
+      spatialSpatialExpressionCount: stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null,
+      spatialKendallTau: stimulus.descriptionMetrics?.spatial?.kendallTau ?? null,
       playbackEvents,
       replayCounts,
-      bestChoice,
-      preferredCondition: randomizedOrder.find((item) => item.label === bestChoice)?.condition ?? "",
+      preferenceChoice,
+      preferenceResponse: preferenceChoice === "none" ? "No preference" : `Description ${preferenceChoice}`,
+      bestChoice: preferenceChoice,
+      preferredCondition,
       rankingQuestion,
       ranking,
       explanationQuestion,
@@ -160,22 +178,19 @@ export function PreferenceFlow({ state, updateState }: Props) {
       <section className="question-card">
         <h3>Preference</h3>
         <p>
-          Replay descriptions A and B as often as needed, then choose which one you preferred.
+          Replay descriptions A and B as often as needed, then choose which one communicates the spatial arrangement more clearly.
           Both descriptions must be played before the preference is saved.
         </p>
         <RadioGroup
           legend={rankingQuestion}
           name="preferred-description"
-          options={(["A", "B"] as DescriptionLabel[]).map((label) => ({
-            value: label,
-            label: `Description ${label}`,
-            aliases: [label]
-          }))}
-          value={ranking.first}
-          onChange={(value) => {
-            const first = value as DescriptionLabel;
-            setRanking({ first, second: first === "A" ? "B" : "A" });
-          }}
+          options={[
+            { value: "A", label: "Description A", aliases: ["A"] },
+            { value: "B", label: "Description B", aliases: ["B"] },
+            { value: "none", label: "No preference", aliases: ["none", "no preference", "equal"] }
+          ]}
+          value={choice}
+          onChange={(value) => setChoice(value as PreferenceChoice)}
           required={!state.testMode}
           audioSpeed={state.selectedAudioSpeed}
           voiceURI={state.selectedVoiceURI}

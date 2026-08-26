@@ -15,10 +15,14 @@ import {
   STORAGE_KEY,
   STUDY_SCHEMA_VERSION
 } from "@/lib/config";
-import { createRandomizedComprehensionOrder, preferenceStimuli } from "@/lib/stimuli";
+import { createRandomizedComprehensionOrder } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { createMockStudyData } from "@/lib/mockStudyData";
 import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
+
+function createSessionId() {
+  return globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
 
 const participant: ParticipantProfile = {
   participantId: "",
@@ -34,6 +38,8 @@ const initial: StudyState = {
   schemaVersion: STUDY_SCHEMA_VERSION,
   phase: "welcome",
   testMode: false,
+  studyMode: "pilot-preference",
+  sessionId: "",
   consent: {
     accepted: false,
     acceptedAt: "",
@@ -91,7 +97,6 @@ export function StudyApp() {
 
       const restoredPhase =
         saved.phase === "consent" || saved.phase === "declined" ? "welcome" : saved.phase;
-
       setState({
         ...initial,
         ...saved,
@@ -164,6 +169,7 @@ export function StudyApp() {
                   updateState({
                     phase: "setup",
                     testMode: false,
+                    sessionId: createSessionId(),
                     consent: {
                       accepted: true,
                       acceptedAt: startedAt,
@@ -181,6 +187,7 @@ export function StudyApp() {
                   updateState({
                     phase: "setup",
                     testMode: true,
+                    sessionId: createSessionId(),
                     consent: {
                       accepted: true,
                       acceptedAt: new Date().toISOString(),
@@ -530,15 +537,17 @@ function Practice({
       </div>
       <div className="button-row">
         <AccessibleButton
-          onClick={() =>
+          onClick={() => {
             updateState({
               phase: "comprehension",
               practiceResponse: practiceResponse.trim(),
               comprehensionIndex: 0,
               comprehensionOrder: createRandomizedComprehensionOrder(),
-              comprehensionResponses: []
-            })
-          }
+              comprehensionResponses: [],
+              preferenceIndex: 0,
+              preferenceResponses: []
+            });
+          }}
         >
           Start real study
         </AccessibleButton>
@@ -648,6 +657,8 @@ function Complete({
         Final interview answers: {state.interviewResponses.filter((response) => response.answer).length}
       </p>
       <p>Mode: {state.testMode ? "Test" : "Study"}</p>
+      <p>Study task: Pilot comprehension and preference</p>
+      <p>Session ID: {state.sessionId}</p>
       <div className="button-row">
         <AccessibleButton onClick={save}>Save result</AccessibleButton>
         <AccessibleButton variant="danger" onClick={reset}>
