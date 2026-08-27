@@ -386,8 +386,10 @@ test("analysis surfaces description metrics at aggregate and participant levels"
   assert.match(dashboard, /Trial-level description metrics/);
   assert.match(dashboard, /Mean spatial expressions/);
   assert.match(analysis, /bySpatialExpressionCount/);
-  assert.match(dashboard, /Analysis charts/);
-  assert.match(dashboard, /Accuracy by number of spatial expressions/);
+  assert.match(dashboard, /Relationship analysis/);
+  assert.match(dashboard, /Spatial expressions and accuracy/);
+  assert.match(dashboard, /Spatial expressions and experience ratings/);
+  assert.match(dashboard, /Spatial expressions and workload/);
 });
 
 test("expected speech interruptions do not display playback errors", async () => {

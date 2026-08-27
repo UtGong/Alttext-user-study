@@ -57,69 +57,111 @@ function SummaryCards({ analysis }: { analysis: StudyAnalysis }) {
   );
 }
 
-type ChartDatum = { label: string; value: number | null; detail?: string };
+type RelationshipSeries = {
+  label: string;
+  color: string;
+  values: { x: number; y: number | null; n: number }[];
+};
 
-function BarChart({
+function RelationshipChart({
   title,
   description,
-  data,
-  maximum,
-  suffix = ""
+  series,
+  yMinimum,
+  yMaximum,
+  yLabel,
+  ySuffix = ""
 }: {
   title: string;
   description: string;
-  data: ChartDatum[];
-  maximum: number;
-  suffix?: string;
+  series: RelationshipSeries[];
+  yMinimum: number;
+  yMaximum: number;
+  yLabel: string;
+  ySuffix?: string;
 }) {
+  const chartId = `${title.replace(/\W+/g, "-").toLowerCase()}-heading`;
+  const allPoints = series.flatMap((item) => item.values).filter((point) => point.y !== null);
+  const xValues = allPoints.map((point) => point.x);
+  const xMinimum = Math.min(...xValues);
+  const xMaximum = Math.max(...xValues);
+  const left = 58;
+  const right = 18;
+  const top = 18;
+  const bottom = 48;
+  const width = 560;
+  const height = 300;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const xPosition = (value: number) =>
+    left + ((value - xMinimum) / Math.max(1, xMaximum - xMinimum)) * plotWidth;
+  const yPosition = (value: number) =>
+    top + (1 - (value - yMinimum) / (yMaximum - yMinimum)) * plotHeight;
+  const yTicks = Array.from({ length: 5 }, (_, index) =>
+    yMinimum + ((yMaximum - yMinimum) * index) / 4
+  );
+  const xTicks = Array.from(new Set(xValues)).sort((a, b) => a - b);
+
   return (
-    <section className="analysis-chart" aria-labelledby={`${title.replace(/\W+/g, "-").toLowerCase()}-heading`}>
-      <h3 id={`${title.replace(/\W+/g, "-").toLowerCase()}-heading`}>{title}</h3>
+    <section className="analysis-chart" aria-labelledby={chartId}>
+      <h3 id={chartId}>{title}</h3>
       <p>{description}</p>
-      <div className="bar-chart" role="img" aria-label={`${title}. ${data.map((item) => `${item.label}: ${format(item.value, suffix)}`).join("; ")}`}>
-        {data.map((item) => {
-          const width = item.value === null ? 0 : Math.max(0, Math.min(100, (item.value / maximum) * 100));
-          return (
-            <div className="bar-chart-row" key={item.label}>
-              <span className="bar-chart-label">{item.label}</span>
-              <span className="bar-chart-track" aria-hidden="true">
-                <span className="bar-chart-fill" style={{ width: `${width}%` }} />
-              </span>
-              <strong>{format(item.value, suffix)}</strong>
-              {item.detail && <small>{item.detail}</small>}
-            </div>
-          );
-        })}
-      </div>
+      {allPoints.length > 0 ? <>
+        <svg
+          className="relationship-chart"
+          viewBox={`0 0 ${width} ${height}`}
+          role="img"
+          aria-label={`${title}. ${series.flatMap((item) => item.values.filter((point) => point.y !== null).map((point) => `${item.label}, ${point.x} spatial expressions: ${format(point.y, ySuffix)}, n=${point.n}`)).join("; ")}`}
+        >
+          {yTicks.map((tick) => (
+            <g key={tick}>
+              <line className="chart-grid-line" x1={left} x2={width - right} y1={yPosition(tick)} y2={yPosition(tick)} />
+              <text className="chart-tick" x={left - 8} y={yPosition(tick) + 4} textAnchor="end">{format(tick, ySuffix)}</text>
+            </g>
+          ))}
+          {xTicks.map((tick) => (
+            <text className="chart-tick" key={tick} x={xPosition(tick)} y={height - bottom + 22} textAnchor="middle">{tick}</text>
+          ))}
+          <line className="chart-axis" x1={left} x2={left} y1={top} y2={height - bottom} />
+          <line className="chart-axis" x1={left} x2={width - right} y1={height - bottom} y2={height - bottom} />
+          <text className="chart-axis-label" x={left + plotWidth / 2} y={height - 8} textAnchor="middle">Number of spatial expressions</text>
+          <text className="chart-axis-label" transform={`translate(15 ${top + plotHeight / 2}) rotate(-90)`} textAnchor="middle">{yLabel}</text>
+          {series.map((item) => {
+            const points = item.values.filter((point): point is { x: number; y: number; n: number } => point.y !== null);
+            return <g key={item.label}>
+              {points.length > 1 && <polyline className="chart-series-line" points={points.map((point) => `${xPosition(point.x)},${yPosition(point.y)}`).join(" ")} style={{ stroke: item.color }} />}
+              {points.map((point) => <circle key={`${item.label}-${point.x}`} cx={xPosition(point.x)} cy={yPosition(point.y)} r={Math.min(9, 4 + Math.sqrt(point.n))} fill={item.color}><title>{item.label}: {format(point.y, ySuffix)} at {point.x} expressions (n={point.n})</title></circle>)}
+            </g>;
+          })}
+        </svg>
+        <div className="chart-legend" aria-label="Chart legend">
+          {series.map((item) => <span key={item.label}><i style={{ background: item.color }} />{item.label}</span>)}
+        </div>
+      </> : <p className="help-text">No trials with recorded spatial-expression counts are available.</p>}
     </section>
   );
 }
 
 function AnalysisCharts({ analysis }: { analysis: StudyAnalysis }) {
-  const conditionAccuracy = analysis.byCondition.map((row) => ({
-    label: row.name,
-    value: row.spatialAccuracyPercent,
-    detail: `${row.spatialCorrect}/${row.spatialEligible} eligible answers`
-  }));
-  const preference = analysis.preference.map((row) => ({
-    label: row.condition,
-    value: row.firstChoicePercent,
-    detail: `${row.firstChoices}/${row.appearances} trials`
-  }));
-  const expressionAccuracy = analysis.bySpatialExpressionCount.map((row) => ({
-    label: row.name === "Missing" ? "Missing count" : `${row.name} expressions`,
-    value: row.spatialAccuracyPercent,
-    detail: `${row.trialCount} trial${row.trialCount === 1 ? "" : "s"}`
-  }));
+  const expressionRows = analysis.bySpatialExpressionCount.filter((row) => row.name !== "Missing");
+  const values = (getValue: (row: GroupSummary) => number | null) =>
+    expressionRows.map((row) => ({ x: Number(row.name), y: getValue(row), n: row.trialCount }));
 
   return (
     <section className="card" aria-labelledby="analysis-charts-heading">
-      <h2 id="analysis-charts-heading">Analysis charts</h2>
-      <p>Charts update with the selected participant records. Exact values remain available in the tables below.</p>
+      <h2 id="analysis-charts-heading">Relationship analysis</h2>
+      <p>These descriptive plots show how outcomes vary with the number of spatial expressions in the description presented. Connected points summarize count groups and do not imply causation.</p>
       <div className="analysis-chart-grid">
-        <BarChart title="Spatial accuracy by condition" description="Percent correct among eligible spatial answers." data={conditionAccuracy} maximum={100} suffix="%" />
-        <BarChart title="Preference by condition" description="Percent of appearances selected as the clearer spatial description." data={preference} maximum={100} suffix="%" />
-        <BarChart title="Accuracy by number of spatial expressions" description="Spatial accuracy grouped by the count in the description actually presented." data={expressionAccuracy} maximum={100} suffix="%" />
+        <RelationshipChart title="Spatial expressions and accuracy" description="Percent correct among eligible spatial answers at each expression count." series={[{ label: "Spatial accuracy", color: "#0b57d0", values: values((row) => row.spatialAccuracyPercent) }]} yMinimum={0} yMaximum={100} yLabel="Spatial accuracy" ySuffix="%" />
+        <RelationshipChart title="Spatial expressions and experience ratings" description="Mean participant ratings on the 1–5 scale at each expression count." series={[
+          { label: "Scene clarity", color: "#0b57d0", values: values((row) => row.overallSceneClarity.mean) },
+          { label: "Spatial confidence", color: "#8a3ffc", values: values((row) => row.spatialRelationsConfidence.mean) },
+          { label: "Comprehension", color: "#198038", values: values((row) => row.contentComprehension.mean) }
+        ]} yMinimum={1} yMaximum={5} yLabel="Mean rating (1–5)" />
+        <RelationshipChart title="Spatial expressions and workload" description="Mean workload ratings on the 1–5 scale at each expression count." series={[
+          { label: "Mental demand", color: "#d9480f", values: values((row) => row.mentalDemand.mean) },
+          { label: "Frustration", color: "#a2191f", values: values((row) => row.frustration.mean) }
+        ]} yMinimum={1} yMaximum={5} yLabel="Mean rating (1–5)" />
       </div>
     </section>
   );
