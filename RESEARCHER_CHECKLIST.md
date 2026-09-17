@@ -4,8 +4,8 @@
 
 - Open the study interface in a supported browser.
 - Confirm the participant ID format.
-- Confirm the combined pilot-comprehension and preference workflow is active.
-- Record sequence group A or B as participant metadata; it does not change the fixed pilot conditions.
+- Confirm the combined 20-trial comprehension and 4-trial preference workflow is active.
+- Select the two conditions for the session and record sequence group A or B for counterbalancing.
 - Confirm audio output device and volume.
 - Confirm every selected image loads from its Show image button.
 - Confirm microphone input and speech-to-text support if the participant wants to speak answers.
@@ -33,7 +33,7 @@
 - Export JSON.
 - Export CSV.
 - Verify the workload CSV contains one row per image with mental demand, frustration, condition, and display position.
-- Verify comprehension exports contain session/trial IDs, role, pilot index, canonical `spatialExpressionCount`, description metrics, total accuracy, and intrinsic/absolute accuracy.
+- Verify comprehension exports contain session/trial IDs, selected conditions, canonical `spatialExpressionCount`, description metrics, total accuracy, and intrinsic/absolute accuracy.
 - Verify preference exports contain A/B condition mappings, exact description text, metrics, selected condition or no preference, replay counts, and playback events.
 - Verify exported files are saved.
 - Clear session before the next participant.

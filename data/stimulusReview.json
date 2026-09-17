@@ -1,0 +1,101 @@
+{
+  "rejected": [
+    {
+      "uuid": "7583412c-fee6-496a-b316-467f8a495a40",
+      "imageFilename": "sample_7583412c-fee6-496a-b316-467f8a495a40.png",
+      "label": "Wrong description",
+      "reason": "The image contains three babies, but the ordered item set and descriptions identify only two children."
+    },
+    {
+      "uuid": "8175e345-711c-463c-9192-9814abaac5b6",
+      "imageFilename": "sample_8175e345-711c-463c-9192-9814abaac5b6.png",
+      "label": "Missing main item",
+      "reason": "A boat is an important part of the image but is absent from the ordered item set."
+    },
+    {
+      "uuid": "bf9843af-1922-483f-8b6b-ccfa852de356",
+      "imageFilename": "sample_bf9843af-1922-483f-8b6b-ccfa852de356.png",
+      "label": "Wrong description",
+      "reason": "The ordered item set is too unclear to support a reliable description."
+    },
+    {
+      "uuid": "08ce53a5-b87a-42e8-b7c2-c3dd21d05845",
+      "imageFilename": "sample_08ce53a5-b87a-42e8-b7c2-c3dd21d05845.png",
+      "label": "Wrong description / missing main items",
+      "reason": "Rejected during researcher review; no more specific reason was recorded."
+    },
+    {
+      "uuid": "25c98bc8-af28-4194-a056-daeae1f0a001",
+      "imageFilename": "sample_25c98bc8-af28-4194-a056-daeae1f0a001.png",
+      "label": "Wrong description / missing main items",
+      "reason": "Rejected during researcher review; no more specific reason was recorded."
+    }
+  ],
+  "potential": [
+    {
+      "uuid": "7ef08b06-e4ff-49e5-8c13-f79dd0b1a872",
+      "imageFilename": "sample_7ef08b06-e4ff-49e5-8c13-f79dd0b1a872.png",
+      "subject": "A group gathered around a baby",
+      "complexityLevel": "medium",
+      "complexityScore": 0.7136,
+      "sourceRow": 8,
+      "targetElements": [
+        "arched bridge",
+        "nude baby boy",
+        "six dressed light skinned men",
+        "six dressed light skinned people",
+        "woman"
+      ],
+      "cons": [
+        "Not selected because the ordered item labels for the group are unclear and may misstate the number or gender of the people shown."
+      ],
+      "passingConditions": [
+        "baseline",
+        "spatial",
+        "semantic",
+        "spatial2d"
+      ]
+    },
+    {
+      "uuid": "cfa9a6d7-f6eb-4912-a71b-8a27bf7b8d01",
+      "imageFilename": "sample_cfa9a6d7-f6eb-4912-a71b-8a27bf7b8d01.png",
+      "subject": "A buck leaping over a boulder",
+      "complexityLevel": "low",
+      "complexityScore": 0.273,
+      "sourceRow": 48,
+      "targetElements": [
+        "boulder",
+        "forested background",
+        "scissors buck"
+      ],
+      "cons": [
+        "Not selected because the label 'scissors buck' may be unclear and the image contains additional distant animals outside the ordered item set."
+      ],
+      "passingConditions": [
+        "baseline",
+        "spatial",
+        "semantic",
+        "spatial2d"
+      ]
+    },
+    {
+      "uuid": "cee66f21-05f2-4009-80e6-3e6b282966a9",
+      "imageFilename": "sample_cee66f21-05f2-4009-80e6-3e6b282966a9.png",
+      "subject": "A coastal landscape with cliffs, water, and a slender tree",
+      "complexityLevel": "low",
+      "complexityScore": 0.6458,
+      "sourceRow": 47,
+      "targetElements": [
+        "single slender tree",
+        "gray cliffs",
+        "water",
+        "horizon",
+        "toned yellow expanse"
+      ],
+      "cons": [
+        "No combination of all four descriptions satisfies the revised 3–7 spatial-expression range together with item coverage and the non-baseline Tau threshold."
+      ],
+      "passingConditions": []
+    }
+  ]
+}

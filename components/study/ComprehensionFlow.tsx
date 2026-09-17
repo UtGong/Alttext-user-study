@@ -34,8 +34,8 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   const studyMode = state.studyMode;
   const activeStimuli = getComprehensionStimuli();
   const stimulus = getComprehensionStimulus(state.comprehensionOrder, state.comprehensionIndex);
-  const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus);
-  const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus);
+  const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus, state.selectedConditions);
+  const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus, state.selectedConditions);
   const trialId = createStimulusTrialId(stimulus);
   const baselineSpatialExpressionCount = stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null;
   const spatialSpatialExpressionCount = stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null;
@@ -78,10 +78,10 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     updateState({
       comprehensionResponses: [...state.comprehensionResponses, {
         participantId: state.participant.participantId, sessionId: state.sessionId, trialId, studyMode,
-        sequenceGroup: state.participant.sequenceGroup, testMode: state.testMode,
+        sequenceGroup: state.participant.sequenceGroup, selectedConditions: state.selectedConditions, testMode: state.testMode,
         selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI, trialIndex: next, randomizedDisplayPosition: next,
         imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid, rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel, complexityScore: stimulus.complexityScore ?? null,
-        role: "pilot", imageSet: stimulus.imageSet,
+        role: "comprehension", imageSet: stimulus.imageSet,
         pilotIndex: stimulus.pilotIndex ?? null, condition, descriptionText,
         baselineSpatialExpressionCount, spatialSpatialExpressionCount, spatialKendallTau,
         spatialExpressionCount, presentedKendallTau,

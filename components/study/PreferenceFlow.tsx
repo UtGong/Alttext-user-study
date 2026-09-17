@@ -43,7 +43,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
   const randomizedOrder = useMemo(
     () =>
-      shuffle(getPreferenceConditions(stimulus)).map((condition, index) => ({
+      shuffle(getPreferenceConditions(stimulus, state.selectedConditions)).map((condition, index) => ({
         label: ["A", "B"][index] as DescriptionLabel,
         displayPosition: index + 1,
         condition,
@@ -51,7 +51,7 @@ export function PreferenceFlow({ state, updateState }: Props) {
         spatialExpressionCount: stimulus.descriptionMetrics?.[condition]?.spatialExpressionCount ?? null,
         kendallTau: stimulus.descriptionMetrics?.[condition]?.kendallTau ?? null
       })),
-    [stimulus]
+    [stimulus, state.selectedConditions]
   );
 
   const [playbackEvents, setPlaybackEvents] = useState<PreferencePlaybackEvent[]>([]);
@@ -86,8 +86,9 @@ export function PreferenceFlow({ state, updateState }: Props) {
       participantId: state.participant.participantId,
       sessionId: state.sessionId,
       trialId: createStimulusTrialId(stimulus),
-      studyMode: "pilot-preference",
+      studyMode: "full-study",
       sequenceGroup: state.participant.sequenceGroup,
+      selectedConditions: state.selectedConditions,
       testMode: state.testMode,
       selectedAudioSpeed: state.selectedAudioSpeed,
       selectedVoiceURI: state.selectedVoiceURI,

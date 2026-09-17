@@ -4,18 +4,20 @@ export const AUDIO_SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
 export const CONDITION_LABELS: Record<Condition, string> = {
   baseline: "No order",
-  spatial: "Spatial (Depth)"
+  spatial: "Spatial (Depth)",
+  semantic: "Semantic order",
+  spatial2d: "Spatial (2D)"
 };
 
 type LegacyComprehensionSet = Exclude<ImageSet, "preference" | "pilot">;
 
-export const LATIN_SQUARE: Record<SequenceGroup, Record<LegacyComprehensionSet, Condition>> = {
-  A: { set1: "baseline", set2: "spatial", set3: "baseline", set4: "spatial" },
-  B: { set1: "spatial", set2: "baseline", set3: "spatial", set4: "baseline" }
+export const LATIN_SQUARE: Record<SequenceGroup, Record<LegacyComprehensionSet, 0 | 1>> = {
+  A: { set1: 0, set2: 1, set3: 0, set4: 1 },
+  B: { set1: 1, set2: 0, set3: 1, set4: 0 }
 };
 
-export const STUDY_CONDITIONS: Condition[] = ["baseline", "spatial"];
+export const STUDY_CONDITIONS: Condition[] = ["baseline", "spatial", "semantic", "spatial2d"];
 
 export const STORAGE_KEY = "blv-user-study-state-v1";
-export const STUDY_SCHEMA_VERSION = 11 as const;
+export const STUDY_SCHEMA_VERSION = 12 as const;
 export const CONSENT_VERSION = "2026-08-12";

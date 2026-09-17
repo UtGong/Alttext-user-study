@@ -1,26 +1,12 @@
 import rawStimuli from "@/data/stimuli.json";
 import { LATIN_SQUARE } from "@/lib/config";
-import { Condition, SequenceGroup, Stimulus } from "@/types/study";
+import { Condition, ImageSet, SequenceGroup, Stimulus } from "@/types/study";
 
 export const stimuli = rawStimuli as Stimulus[];
 
 export const mainComprehensionStimuli = stimuli
   .filter((stimulus) => stimulus.role === "comprehension")
   .sort((a, b) => a.rowIndex - b.rowIndex);
-
-const canonicalQuestionsByUuid = new Map(
-  mainComprehensionStimuli.map((stimulus) => [stimulus.uuid, stimulus.spatialQuestions] as const)
-);
-
-export const pilotComprehensionStimuli = stimuli
-  .filter((stimulus) => stimulus.role === "pilot" && stimulus.imageSet === "pilot")
-  .map((stimulus) => ({
-    ...stimulus,
-    // The main comprehension records preserve the questions copied from the study document.
-    // Pilot copies share those exact questions so interface wording cannot drift.
-    spatialQuestions: canonicalQuestionsByUuid.get(stimulus.uuid) ?? stimulus.spatialQuestions
-  }))
-  .sort((a, b) => (a.pilotIndex ?? Number.MAX_SAFE_INTEGER) - (b.pilotIndex ?? Number.MAX_SAFE_INTEGER));
 
 export const preferenceStimuli = stimuli
   .filter((stimulus) => stimulus.role === "preference" && stimulus.imageSet === "preference");
@@ -31,7 +17,7 @@ export function createStimulusTrialId(stimulus: Stimulus): string {
 }
 
 export function getComprehensionStimuli(): Stimulus[] {
-  return pilotComprehensionStimuli;
+  return mainComprehensionStimuli;
 }
 
 export function createRandomizedComprehensionOrder(): string[] {
@@ -57,15 +43,15 @@ export function getComprehensionStimulus(
   );
 }
 
-export function getPreferenceConditions(stimulus: Stimulus): Condition[] {
-  const conditions = stimulus.preferenceConditions ?? [];
+export function getPreferenceConditions(stimulus: Stimulus, selectedConditions: Condition[]): Condition[] {
+  const conditions = selectedConditions;
 
   if (
     stimulus.role !== "preference" ||
     stimulus.imageSet !== "preference" ||
     conditions.length !== 2 ||
     new Set(conditions).size !== 2 ||
-    conditions.some((condition) => condition !== "baseline" && condition !== "spatial")
+    conditions.some((condition) => !(["baseline", "spatial", "semantic", "spatial2d"] as Condition[]).includes(condition))
   ) {
     throw new Error(`Preference stimulus ${createStimulusTrialId(stimulus)} has invalid preferenceConditions.`);
   }
@@ -73,22 +59,18 @@ export function getPreferenceConditions(stimulus: Stimulus): Condition[] {
   return [...conditions];
 }
 
-export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): Condition {
+export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus, selectedConditions: Condition[]): Condition {
   if (stimulus.imageSet === "preference") {
     throw new Error("Preference stimuli do not have an assigned comprehension condition.");
   }
 
-  if (stimulus.imageSet === "pilot") {
-    if (stimulus.pilotCondition !== "baseline" && stimulus.pilotCondition !== "spatial") {
-      throw new Error(`Pilot stimulus ${stimulus.uuid} is missing a valid fixed condition.`);
-    }
-    return stimulus.pilotCondition;
+  if (selectedConditions.length !== 2 || new Set(selectedConditions).size !== 2) {
+    throw new Error("Exactly two distinct study conditions must be selected.");
   }
-
-  return LATIN_SQUARE[sequenceGroup][stimulus.imageSet];
+  return selectedConditions[LATIN_SQUARE[sequenceGroup][stimulus.imageSet as Exclude<ImageSet, "preference" | "pilot">]];
 }
 
-export function getDescriptionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): string {
-  const condition = getConditionForStimulus(sequenceGroup, stimulus);
+export function getDescriptionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus, selectedConditions: Condition[]): string {
+  const condition = getConditionForStimulus(sequenceGroup, stimulus, selectedConditions);
   return stimulus.descriptions[condition];
 }

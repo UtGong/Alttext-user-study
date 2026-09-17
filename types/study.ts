@@ -11,8 +11,8 @@ export type StudyPhase =
   | "complete";
 
 export type SequenceGroup = "A" | "B";
-export type Condition = "baseline" | "spatial";
-export type StudyMode = "pilot-preference";
+export type Condition = "baseline" | "spatial" | "semantic" | "spatial2d";
+export type StudyMode = "full-study";
 export type ComplexityLevel = "low" | "medium" | "high";
 export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference" | "pilot";
 export type StimulusRole = "comprehension" | "preference" | "reserve" | "pilot";
@@ -59,6 +59,13 @@ export type DescriptionMetric = {
 
 export type DescriptionMetrics = Partial<Record<Condition, DescriptionMetric>>;
 
+export type GenerationMetadata = Partial<Record<Condition, {
+  model: string;
+  candidateIndex: number;
+  orderedItems: string[];
+  orderedIds: number[];
+}>>;
+
 export type Stimulus = {
   role: StimulusRole;
   pilotIndex?: number;
@@ -69,6 +76,11 @@ export type Stimulus = {
   imageUrl?: string;
   complexityLevel: ComplexityLevel;
   complexityScore?: number;
+  complexitySource?: {
+    spreadsheetId: string;
+    sheetName: string;
+    sourceRow: number;
+  };
   imageSet: ImageSet;
   descriptions: {
     baseline: string;
@@ -87,6 +99,7 @@ export type Stimulus = {
   gistQuestion?: GistQuestion;
   preferenceConditions?: Condition[];
   descriptionMetrics?: DescriptionMetrics;
+  generationMetadata?: GenerationMetadata;
 };
 
 export type LikertResponse = {
@@ -134,6 +147,7 @@ export type TrialResponse = {
   trialId: string;
   studyMode: StudyMode;
   sequenceGroup: SequenceGroup;
+  selectedConditions: Condition[];
   testMode: boolean;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
@@ -206,6 +220,7 @@ export type PreferenceResponse = {
   trialId: string;
   studyMode: StudyMode;
   sequenceGroup: SequenceGroup;
+  selectedConditions: Condition[];
   testMode: boolean;
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
@@ -252,13 +267,14 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 11;
+  schemaVersion: 12;
   phase: StudyPhase;
   testMode: boolean;
   studyMode: StudyMode;
   sessionId: string;
   consent: ConsentRecord;
   participant: ParticipantProfile;
+  selectedConditions: Condition[];
   selectedAudioSpeed: number;
   selectedVoiceURI: string;
   practiceQuestion: string;

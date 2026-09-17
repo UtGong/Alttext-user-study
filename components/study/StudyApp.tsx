@@ -11,14 +11,15 @@ import { ComprehensionFlow } from "@/components/study/ComprehensionFlow";
 import { PreferenceFlow } from "@/components/study/PreferenceFlow";
 import {
   AUDIO_SPEED_OPTIONS,
+  CONDITION_LABELS,
   CONSENT_VERSION,
   STORAGE_KEY,
   STUDY_SCHEMA_VERSION
 } from "@/lib/config";
-import { createRandomizedComprehensionOrder } from "@/lib/stimuli";
+import { createRandomizedComprehensionOrder, mainComprehensionStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { createMockStudyData } from "@/lib/mockStudyData";
-import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
+import { Condition, ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
 
 function createSessionId() {
   return globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -38,7 +39,7 @@ const initial: StudyState = {
   schemaVersion: STUDY_SCHEMA_VERSION,
   phase: "welcome",
   testMode: false,
-  studyMode: "pilot-preference",
+  studyMode: "full-study",
   sessionId: "",
   consent: {
     accepted: false,
@@ -46,6 +47,7 @@ const initial: StudyState = {
     version: CONSENT_VERSION
   },
   participant,
+  selectedConditions: ["baseline", "spatial"],
   selectedAudioSpeed: 1,
   selectedVoiceURI: "",
   practiceQuestion: "Please describe the scene in your own words.",
@@ -210,6 +212,7 @@ export function StudyApp() {
               </AccessibleButton>
             </div>
           </section>
+          <p><a href="/stimuli">View researcher stimulus catalog</a></p>
           <ResultsFetcher />
         </>
       )}
@@ -395,6 +398,15 @@ function Setup({
   updateState: (patch: Partial<StudyState>) => void;
 }) {
   const currentParticipant = state.participant;
+  const conditionPairs: Condition[][] = [
+    ["baseline", "spatial"],
+    ["baseline", "semantic"],
+    ["baseline", "spatial2d"],
+    ["spatial", "semantic"],
+    ["spatial", "spatial2d"],
+    ["semantic", "spatial2d"]
+  ];
+  const selectedPairValue = state.selectedConditions.join("+");
 
   const change = (patch: Partial<ParticipantProfile>) => {
     updateState({
@@ -425,6 +437,20 @@ function Setup({
           onChange={(participantId) => change({ participantId })}
         />
       </div>
+
+      <RadioGroup
+        legend="Conditions for this session"
+        name="conditionPair"
+        value={selectedPairValue}
+        onChange={(value) => updateState({ selectedConditions: value.split("+") as Condition[] })}
+        options={conditionPairs.map((conditions) => ({
+          value: conditions.join("+"),
+          label: conditions.map((condition) => CONDITION_LABELS[condition]).join(" and ")
+        }))}
+        required
+        audioSpeed={state.selectedAudioSpeed}
+        voiceURI={state.selectedVoiceURI}
+      />
 
       <RadioGroup
         legend="Researcher sequence group"
@@ -657,7 +683,8 @@ function Complete({
         Final interview answers: {state.interviewResponses.filter((response) => response.answer).length}
       </p>
       <p>Mode: {state.testMode ? "Test" : "Study"}</p>
-      <p>Study task: Pilot comprehension and preference</p>
+      <p>Study task: {mainComprehensionStimuli.length} comprehension trials and 4 preference trials</p>
+      <p>Session conditions: {state.selectedConditions.map((condition) => CONDITION_LABELS[condition]).join(" and ")}</p>
       <p>Session ID: {state.sessionId}</p>
       <div className="button-row">
         <AccessibleButton onClick={save}>Save result</AccessibleButton>

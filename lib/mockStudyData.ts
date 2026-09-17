@@ -27,7 +27,7 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
   const activeComprehensionStimuli = getComprehensionStimuli();
 
   const comprehensionResponses = activeComprehensionStimuli.map((stimulus, index) => {
-    const condition = getConditionForStimulus(participant.sequenceGroup, stimulus);
+    const condition = getConditionForStimulus(participant.sequenceGroup, stimulus, state.selectedConditions);
     const spatialAnswers = (stimulus.spatialQuestions ?? []).map((question) => ({
       questionId: question.id,
       frameOfReference: question.frameOfReference,
@@ -44,11 +44,11 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
     return {
       participantId, sessionId, trialId: createStimulusTrialId(stimulus),
       studyMode,
-      sequenceGroup: participant.sequenceGroup, testMode: true,
+      sequenceGroup: participant.sequenceGroup, selectedConditions: state.selectedConditions, testMode: true,
       selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI,
       trialIndex: index + 1, randomizedDisplayPosition: index + 1,
       imageId: stimulus.uuid, imageFilename: stimulus.imageFilename, uuid: stimulus.uuid,
-      role: "pilot" as const,
+      role: "comprehension" as const,
       pilotIndex: stimulus.pilotIndex ?? null,
       rowIndex: stimulus.rowIndex, complexityLevel: stimulus.complexityLevel, complexityScore: stimulus.complexityScore ?? null,
       imageSet: stimulus.imageSet, condition, descriptionText: stimulus.descriptions[condition],
@@ -74,7 +74,7 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
   });
 
   const preferenceResponses = preferenceStimuli.map((stimulus, index) => {
-    const conditions = getPreferenceConditions(stimulus);
+    const conditions = getPreferenceConditions(stimulus, state.selectedConditions);
     const orderedConditions = index % 2 === 0 ? conditions : [...conditions].reverse();
     const randomizedOrder = orderedConditions.map((condition, position) => ({
       label: labels[position], displayPosition: position + 1, condition,
@@ -86,7 +86,7 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
 
     return {
       participantId, sessionId, trialId: createStimulusTrialId(stimulus), studyMode,
-      sequenceGroup: participant.sequenceGroup, testMode: true,
+      sequenceGroup: participant.sequenceGroup, selectedConditions: state.selectedConditions, testMode: true,
       selectedAudioSpeed: state.selectedAudioSpeed, selectedVoiceURI: state.selectedVoiceURI,
       trialIndex: index + 1, imageId: stimulus.uuid, imageFilename: stimulus.imageFilename,
       uuid: stimulus.uuid, role: "preference" as const, imageSet: "preference" as const,

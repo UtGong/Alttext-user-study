@@ -1,21 +1,25 @@
 # BLV User Study Interface
 
-This is a Next.js + TypeScript prototype for a blind and low vision user study comparing two image-description ordering conditions:
+This is a Next.js + TypeScript interface for a blind and low vision user study with four image-description ordering conditions:
 
 1. No order: no explicit ordering constraint
 2. Spatial (Depth): front-to-background ordering
+3. Semantic order
+4. Spatial (2D)
+
+Researchers select exactly two conditions for each session on the setup page.
 
 The interface is designed to be screen-reader accessible, keyboard-first, audio-first, and easy for researchers to run locally.
 
 ## Features
 
 - Participant setup
-- One combined pilot-comprehension and preference workflow
-- Researcher sequence group metadata: A or B; it does not alter the fixed pilot conditions
+- One combined comprehension and preference workflow
+- Six selectable condition pairs and A/B counterbalancing within each pair
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 10 pilot comprehension trials followed by 3 preference trials
-- A Show image/Hide image control on every pilot and preference trial
+- 20 comprehension trials followed by 4 preference trials
+- A Show image/Hide image control on every comprehension and preference trial
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
 - Replay count logging
@@ -90,13 +94,12 @@ Each stimulus includes:
 - target elements
 - spatial questions
 - optional description metrics
-- role-specific fields such as `pilotIndex` or `preferenceConditions`
+- generation provenance, ordered items, ordered IDs, and condition-specific metrics
 
-The revised file contains 20 retained main comprehension records, 13 active pilot records, and
-3 active preference records. The main records and their drafted questions remain in the JSON for
-future use but are not offered as a study mode. Records are addressed by a composite trial ID
-built from role, image set, UUID, and pilot index where applicable; repeated UUIDs across roles
-are preserved.
+The file contains 20 active comprehension records and 4 disjoint preference records. Rejected
+images and unused alternatives are documented in `data/stimulusReview.json`. Every active record has
+all four descriptions so any pair selected at setup can be used. Records are addressed by a
+composite trial ID built from role, image set, and UUID.
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
 
@@ -106,17 +109,13 @@ local path. Images are hidden by default, and missing files produce a participan
 
 Open-ended answer fields also offer optional browser speech recognition. Starting speech input stops text-to-speech playback, requests microphone access, and inserts recognized text into the editable answer field. The website does not retain microphone audio. Browser speech-recognition support varies, so typing and operating-system dictation remain available fallbacks.
 
-## Fixed pilot condition groups
+## Per-session condition pairs
 
-The active comprehension task uses 10 records labeled `pilot`, divided into two fixed groups.
-Each group contains one low-, two medium-, and two high-complexity images. Five records use the
-`baseline` description (No order), and five use the `spatial` description (Spatial (Depth)). The
-assignment is stored in each record's `pilotCondition` and does not reverse between researcher
-sequence groups A and B.
-
-The three preference trials follow the pilot comprehension trials automatically. Each record
-supplies its two active conditions through `preferenceConditions`; their A/B labels are randomized
-without revealing condition names.
+The setup page offers every pair among No order, Spatial (Depth), Semantic order, and Spatial
+(2D). The 20 comprehension images are divided evenly between the selected pair. Sequence groups A
+and B reverse the condition assignment while preserving ten trials per condition. Four
+preference trials then compare the same selected pair; their A/B labels are randomized without
+revealing condition names.
 
 ## Audio behavior
 
@@ -151,10 +150,10 @@ During real trials:
 ## Data storage
 
 The full study state is autosaved in the browser and submitted to Firestore at completion.
-Version 10 records identify the combined workflow and include session and composite trial IDs,
-role and pilot metadata, exact presented text, optional description metrics, ordered playback
+Version 12 records identify the combined workflow and include the session condition pair,
+session and composite trial IDs, exact presented text, description metrics, ordered playback
 events, overall and intrinsic/absolute accuracy, response timing, workload responses, and complete
-preference mappings. Each pilot trial records `spatialExpressionCount` as the canonical count for
+preference mappings. Each comprehension trial records `spatialExpressionCount` as the canonical count for
 the description actually presented.
 Description metrics are exported as study metadata and are never shown to participants.
 
@@ -187,8 +186,8 @@ The UI avoids drag-and-drop, hover-only interaction, hidden custom widgets, and 
 Before running a real study, manually verify:
 
 1. Spatial questions are correct for each image.
-2. The 13 active pilot stimuli are final; the 20 inactive main records remain intact for future use.
-3. The 3 preference stimuli and their `preferenceConditions` are final.
+2. The 20 comprehension stimuli are final and have four validated descriptions each.
+3. The 4 preference stimuli and their four available conditions are final.
 4. The text-to-speech voice is acceptable, or replace TTS with recorded audio files.
 5. Exported JSON/CSV contains the fields needed for analysis.
 6. The interface has been tested with keyboard only and at least one screen reader.

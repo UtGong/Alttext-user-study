@@ -3,102 +3,77 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const stimuli = JSON.parse(await readFile(new URL("../data/stimuli.json", import.meta.url), "utf8"));
+const stimulusReview = JSON.parse(await readFile(new URL("../data/stimulusReview.json", import.meta.url), "utf8"));
 const comprehension = stimuli.filter((item) => item.role === "comprehension");
 const preference = stimuli.filter((item) => item.role === "preference");
-const pilot = stimuli.filter((item) => item.role === "pilot" && item.imageSet === "pilot");
-const reserve = stimuli.filter((item) => item.role === "reserve" && item.imageSet === "pilot");
-const activeConditions = ["baseline", "spatial"];
+const activeConditions = ["baseline", "spatial", "semantic", "spatial2d"];
+const excludedUuids = new Set([
+  "046abaf4-34ce-435d-baa3-a064e826ea63",
+  "0dde1c3c-6c08-431d-85e2-7288c2c93f26",
+  "73069488-cbc0-412b-a9fd-8094e24e2915",
+  "1bfc4f01-042a-4ece-8e47-134a96e99fac",
+  "243000de-3236-4cca-b4d5-6f4fe08b5ad7",
+  "1740093e-a916-4cd2-b8ab-0b1d2fc1c9f4",
+  "80b8e427-1f2c-4614-8fab-dce270763fc8",
+  "7583412c-fee6-496a-b316-467f8a495a40",
+  "8175e345-711c-463c-9192-9814abaac5b6",
+  "bf9843af-1922-483f-8b6b-ccfa852de356",
+  "08ce53a5-b87a-42e8-b7c2-c3dd21d05845",
+  "25c98bc8-af28-4194-a056-daeae1f0a001"
+]);
 
-test("the revised stimulus inventory contains 35 role-separated records", () => {
-  assert.equal(stimuli.length, 35);
+test("the study inventory contains 20 comprehension and 4 preference records", () => {
+  assert.equal(stimuli.length, 24);
   assert.equal(comprehension.length, 20);
-  assert.equal(pilot.length, 10);
-  assert.equal(preference.length, 3);
-  assert.equal(reserve.length, 2);
+  assert.equal(preference.length, 4);
+  assert.equal(new Set(stimuli.map((item) => item.uuid)).size, 24);
+  assert.ok(stimuli.every((item) => !excludedUuids.has(item.uuid)));
+  assert.ok(stimulusReview.rejected.every((item) => !stimuli.some((stimulus) => stimulus.uuid === item.uuid)));
 });
 
-test("all comprehension stimuli provide the two active descriptions", () => {
-  assert.equal(comprehension.length, 20);
-  for (const item of comprehension) {
-    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
+test("all selected stimuli satisfy the description metrics and item-set rules", () => {
+  const normalize = (word) => word.toLowerCase().replace(/[^a-z]/g, "").replace(/ies$/, "y").replace(/s$/, "");
+  for (const item of stimuli) {
+    const canonicalIds = [...item.generationMetadata.baseline.orderedIds].sort();
+    for (const condition of activeConditions) {
+      assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
+      const metric = item.descriptionMetrics[condition];
+      assert.ok(metric.spatialExpressionCount >= 3 && metric.spatialExpressionCount <= 7, `${item.uuid} ${condition} expression count`);
+      if (condition !== "baseline") assert.ok(metric.kendallTau > 0.3, `${item.uuid} ${condition} tau`);
+      assert.deepEqual([...item.generationMetadata[condition].orderedIds].sort(), canonicalIds, `${item.uuid} ${condition} item set`);
+      const descriptionWords = new Set(item.descriptions[condition].split(/\s+/).map(normalize));
+      for (const orderedItem of item.generationMetadata[condition].orderedItems) {
+        const head = normalize(orderedItem.trim().split(/\s+/).at(-1));
+        if (head !== "another") assert.ok(descriptionWords.has(head), `${item.uuid} ${condition} omits ${orderedItem}`);
+      }
+    }
   }
 });
 
-test("preference stimuli provide the two active descriptions", () => {
-  assert.equal(preference.length, 3);
+test("preference records expose all four conditions for session-level pairing", () => {
   for (const item of preference) {
     assert.equal(item.imageSet, "preference");
     assert.deepEqual(item.preferenceConditions, activeConditions);
-    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
   }
 });
 
-test("the pilot set contains exactly 10 consecutively indexed records", async () => {
-  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
-  assert.match(source, /stimulus\.role === "pilot" && stimulus\.imageSet === "pilot"/);
-  assert.equal(pilot.length, 10);
-  assert.deepEqual(pilot.map((item) => item.pilotIndex).sort((a, b) => a - b), Array.from({ length: 10 }, (_, index) => index + 1));
-  for (const item of pilot) {
-    for (const condition of activeConditions) assert.ok(item.descriptions[condition]?.trim(), `${item.uuid} lacks ${condition}`);
-  }
-  assert.doesNotMatch(flow, /descriptions\.(semantic|spatial2d)/);
+test("the researcher catalog shows every stimulus and spreadsheet-backed complexity", async () => {
+  const catalog = await readFile(new URL("../app/stimuli/page.tsx", import.meta.url), "utf8");
+  const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
+  assert.ok(stimuli.every((item) => item.complexitySource?.spreadsheetId === "1_OxnFR1GNHQGsg-k4A-Rgt4rKc-Vljjay0wFSStx2Dk"));
+  assert.deepEqual(Object.fromEntries(["low", "medium", "high"].map((level) => [level, stimuli.filter((item) => item.complexityLevel === level).length])), { low: 9, medium: 7, high: 8 });
+  assert.match(catalog, /Study Stimulus Catalog/);
+  assert.match(catalog, /STUDY_CONDITIONS\.map/);
+  assert.match(catalog, /Kendall&apost;s τ|Kendall&apos;s τ/);
+  assert.match(catalog, /Rejected images/);
+  assert.match(catalog, /Potential replacement images/);
+  assert.equal(stimulusReview.rejected.length, 5);
+  assert.ok(stimulusReview.potential.length >= 3);
+  assert.match(app, /href="\/stimuli"/);
 });
 
-test("the pilot set contains 2 low, 4 medium, and 4 high complexity images", () => {
-  const complexityCounts = Object.fromEntries(
-    ["low", "medium", "high"].map((level) => [level, pilot.filter((item) => item.complexityLevel === level).length])
-  );
-  assert.deepEqual(complexityCounts, { low: 2, medium: 4, high: 4 });
-  assert.deepEqual(
-    reserve.map((item) => item.uuid).sort(),
-    ["00209fb1-64a2-4961-9ccc-8c6c06117df2", "c1059816-1dc7-4af1-a5b3-26772de84b08"]
-  );
-  assert.ok(reserve.every((item) => item.pilotIndex === undefined));
-});
-
-test("fixed pilot conditions each contain 1 low, 2 medium, and 2 high complexity images", () => {
-  const expectedUuids = {
-    baseline: [
-      "03da43fa-743f-49d5-92ad-d521accc5759",
-      "bf9843af-1922-483f-8b6b-ccfa852de356",
-      "c50ee8c2-db92-4e58-a6b8-0243dfe829d8",
-      "c77f8b64-98a2-4b3c-b270-1863ece147c5",
-      "d25ae4f0-6e09-4ae3-9229-5d45ca3dec56"
-    ],
-    spatial: [
-      "25c98bc8-af28-4194-a056-daeae1f0a001",
-      "7ef08b06-e4ff-49e5-8c13-f79dd0b1a872",
-      "823405e0-599f-4fd8-ae71-4d901edc36b0",
-      "c9c0f26e-a559-43ab-b517-0384e347ade8",
-      "d37bc3dc-c3e0-4019-9725-f33404d7d5bc"
-    ]
-  };
-
-  for (const condition of activeConditions) {
-    const group = pilot.filter((item) => item.pilotCondition === condition);
-    assert.equal(group.length, 5);
-    assert.deepEqual(
-      Object.fromEntries(["low", "medium", "high"].map((level) => [level, group.filter((item) => item.complexityLevel === level).length])),
-      { low: 1, medium: 2, high: 2 }
-    );
-    assert.deepEqual(group.map((item) => item.uuid).sort(), expectedUuids[condition]);
-  }
-});
-
-test("the interface uses the document-backed main questions for pilot copies", async () => {
-  const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  assert.match(source, /canonicalQuestionsByUuid/);
-  assert.match(source, /spatialQuestions: canonicalQuestionsByUuid\.get\(stimulus\.uuid\)/);
-
-  const tree = comprehension.find((item) => item.uuid === "c50ee8c2-db92-4e58-a6b8-0243dfe829d8");
-  const dog = comprehension.find((item) => item.uuid === "bf9843af-1922-483f-8b6b-ccfa852de356");
-  assert.ok(tree.spatialQuestions.some((q) => q.question === "Was the gnarled tree positioned on the left side of the image?"));
-  assert.ok(dog.spatialQuestions.some((q) => q.question === "Was the brown dog positioned in the lower-right corner of the scene?"));
-});
-
-test("active pilot question sets contain two intrinsic and two absolute Yes/No questions", () => {
-  for (const item of pilot) {
+test("all comprehension records retain complete spatial question sets", () => {
+  for (const item of comprehension) {
     const questions = item.spatialQuestions ?? [];
     assert.equal(questions.length, 4, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "intrinsic").length, 2, item.uuid);
@@ -108,26 +83,23 @@ test("active pilot question sets contain two intrinsic and two absolute Yes/No q
   }
 });
 
-test("the shared image is reserved for the preference task", async () => {
+test("comprehension and preference images are disjoint", async () => {
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  const preferenceOnlyUuid = "cd382af4-5334-485a-8121-c52ce7abf13a";
-  assert.equal(preference.filter((item) => item.uuid === preferenceOnlyUuid).length, 1);
-  assert.equal(pilot.some((item) => item.uuid === preferenceOnlyUuid), false);
-  assert.equal(new Set([...pilot, ...preference].map((item) => item.imageFilename)).size, pilot.length + preference.length);
+  assert.equal(new Set(stimuli.map((item) => item.imageFilename)).size, stimuli.length);
   assert.match(source, /`\$\{stimulus\.role\}:\$\{stimulus\.imageSet\}:\$\{stimulus\.uuid\}`/);
   assert.match(source, /map\(createStimulusTrialId\)/);
   assert.doesNotMatch(source, /find\(\(stimulus\) => stimulus\.uuid ===/);
 });
 
-test("main records may omit description metrics without affecting loading", async () => {
+test("description metrics are available for every presented condition", async () => {
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
-  assert.ok(comprehension.some((item) => item.descriptionMetrics === undefined));
+  assert.ok(stimuli.every((item) => activeConditions.every((condition) => item.descriptionMetrics?.[condition])));
   assert.match(flow, /stimulus\.descriptionMetrics\?\.baseline\?\.spatialExpressionCount \?\? null/);
   assert.match(flow, /const spatialExpressionCount = stimulus\.descriptionMetrics\?\.\[condition\]\?\.spatialExpressionCount \?\? null/);
 });
 
-test("all stimuli have complete spatial question sets", () => {
-  for (const item of stimuli) assert.equal(item.spatialQuestions?.length, 4, item.uuid);
+test("preference stimuli do not require comprehension questions", () => {
+  assert.ok(preference.every((item) => Array.isArray(item.spatialQuestions)));
 });
 
 test("participant-facing Likert labels include numeric scale points", async () => {
@@ -290,36 +262,36 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 11/);
-  assert.match(types, /schemaVersion: 11/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 12/);
+  assert.match(types, /schemaVersion: 12/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
   assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
-test("pilot condition assignments are fixed across sequence groups", async () => {
+test("selected condition pairs are counterbalanced across sequence groups", async () => {
   const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
 
-  assert.doesNotMatch(config, /PILOT_LATIN_SQUARE/);
-  assert.match(source, /return stimulus\.pilotCondition/);
-  assert.doesNotMatch(source, /stimulus\.pilotIndex! % 2/);
-  assert.ok(pilot.every((item) => activeConditions.includes(item.pilotCondition)));
+  assert.match(config, /A: \{ set1: 0, set2: 1, set3: 0, set4: 1 \}/);
+  assert.match(config, /B: \{ set1: 1, set2: 0, set3: 1, set4: 0 \}/);
+  assert.match(source, /selectedConditions\[LATIN_SQUARE/);
+  assert.deepEqual(Object.fromEntries(["set1", "set2", "set3", "set4"].map((set) => [set, comprehension.filter((item) => item.imageSet === set).length])), { set1: 5, set2: 5, set3: 5, set4: 5 });
 });
 
-test("preference flow uses record conditions, ignores spatial questions, and logs randomized mappings", async () => {
+test("preference flow uses the session condition pair and logs randomized mappings", async () => {
   const source = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
   const stimuliSource = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  assert.match(source, /shuffle\(getPreferenceConditions\(stimulus\)\)/);
-  assert.match(stimuliSource, /stimulus\.preferenceConditions \?\? \[\]/);
+  assert.match(source, /shuffle\(getPreferenceConditions\(stimulus, state\.selectedConditions\)\)/);
+  assert.match(stimuliSource, /const conditions = selectedConditions/);
   assert.match(source, /randomizedOrder,/);
   assert.match(source, /condition: item\.condition/);
   assert.match(source, /preferredCondition/);
   assert.match(source, /\["A", "B"\]/);
   assert.doesNotMatch(source, /"C"|"D"/);
   assert.doesNotMatch(source, /spatialQuestions/);
-  assert.doesNotMatch(source, /descriptions\.(semantic|spatial2d)/);
+  assert.match(source, /stimulus\.descriptions\[condition\]/);
   assert.doesNotMatch(source, /Text of Description|description-text-block/);
 });
 
@@ -335,19 +307,19 @@ test("preference descriptions use one heading and a flat audio layout", async ()
   assert.equal((css.match(/\.audio-card\s*\{/g) ?? []).length, 1);
 });
 
-test("the only study flow combines pilot comprehension followed by preference", async () => {
+test("the study runs every active comprehension trial followed by 4 preference trials", async () => {
   const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
   const types = await readFile(new URL("../types/study.ts", import.meta.url), "utf8");
 
-  assert.match(types, /StudyMode = "pilot-preference"/);
-  assert.match(app, /studyMode: "pilot-preference"/);
-  assert.doesNotMatch(app, /Researcher study mode|Main comprehension \(20 images\)|Preference comparison \(3 images\)/);
+  assert.match(types, /StudyMode = "full-study"/);
+  assert.match(app, /studyMode: "full-study"/);
+  assert.match(app, /Conditions for this session/);
   assert.match(source, /stimulus\.role === "comprehension"/);
-  assert.match(source, /getComprehensionStimuli\(\): Stimulus\[\] \{[\s\S]*return pilotComprehensionStimuli/);
+  assert.match(source, /getComprehensionStimuli\(\): Stimulus\[\] \{[\s\S]*return mainComprehensionStimuli/);
   assert.match(flow, /preferenceStimuli\.length \? "preference" : "interview"/);
-  assert.match(app, /Study task: Pilot comprehension and preference/);
+  assert.match(app, /Study task: \{mainComprehensionStimuli\.length\} comprehension trials and 4 preference trials/);
 });
 
 test("exports include randomized order and verbal and internal Likert values", async () => {
@@ -379,7 +351,7 @@ test("analysis surfaces description metrics at aggregate and participant levels"
   assert.match(analysis, /spatialKendallTau: NumericSummary/);
   assert.match(analysis, /presentedKendallTau: NumericSummary/);
   assert.match(analysis, /trialMetrics: TrialMetricSummary\[\]/);
-  assert.match(analysis, /current-schema-v11-description-metrics/);
+  assert.match(analysis, /current-schema-v12-four-condition-pairs/);
   assert.match(dashboard, /Description metrics by condition/);
   assert.match(dashboard, /Baseline spatial expressions/);
   assert.match(dashboard, /Spatial-order Kendall’s τ/);
