@@ -43,26 +43,27 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
   const randomizedOrder = useMemo(
     () =>
-      shuffle(getPreferenceConditions(stimulus, state.selectedConditions)).map((condition, index) => ({
-        label: ["A", "B"][index] as DescriptionLabel,
+      shuffle(getPreferenceConditions(stimulus)).map((condition, index) => ({
+        label: ["A", "B", "C"][index] as DescriptionLabel,
         displayPosition: index + 1,
         condition,
         descriptionText: stimulus.descriptions[condition],
         spatialExpressionCount: stimulus.descriptionMetrics?.[condition]?.spatialExpressionCount ?? null,
         kendallTau: stimulus.descriptionMetrics?.[condition]?.kendallTau ?? null
       })),
-    [stimulus, state.selectedConditions]
+    [stimulus]
   );
 
   const [playbackEvents, setPlaybackEvents] = useState<PreferencePlaybackEvent[]>([]);
-  const [replayCounts, setReplayCounts] = useState<Record<DescriptionLabel, number>>({ A: 0, B: 0 });
+  const [replayCounts, setReplayCounts] = useState<Record<DescriptionLabel, number>>({ A: 0, B: 0, C: 0 });
   const [choice, setChoice] = useState<PreferenceChoice | "">("");
+  const [secondChoice, setSecondChoice] = useState<DescriptionLabel | "">("");
   const [startedAt] = useState(new Date().toISOString());
   const [explanation, setExplanation] = useState("");
 
-  const complete = Boolean(choice);
+  const complete = Boolean(choice) && (choice === "none" || Boolean(secondChoice));
   const playedLabels = new Set(playbackEvents.map((event) => event.label));
-  const allDescriptionsPlayed = ["A", "B"].every((label) =>
+  const allDescriptionsPlayed = ["A", "B", "C"].every((label) =>
     playedLabels.has(label as DescriptionLabel)
   );
 
@@ -73,12 +74,12 @@ export function PreferenceFlow({ state, updateState }: Props) {
 
     const submittedAt = new Date().toISOString();
     const preferenceChoice: PreferenceChoice = choice || "none";
+    const remainingLabel = (["A", "B", "C"] as DescriptionLabel[]).find(
+      (label) => label !== preferenceChoice && label !== secondChoice
+    ) ?? "";
     const ranking: PreferenceRanking = preferenceChoice === "none"
-      ? { first: "", second: "" }
-      : {
-          first: preferenceChoice,
-          second: preferenceChoice === "A" ? "B" : "A"
-        };
+      ? { first: "", second: "", third: "" }
+      : { first: preferenceChoice, second: secondChoice, third: remainingLabel };
     const preferredCondition = preferenceChoice === "none"
       ? "none"
       : randomizedOrder.find((item) => item.label === preferenceChoice)?.condition ?? "none";
@@ -143,8 +144,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
         imageUrl={stimulus.imageUrl}
       />
       <p>
-        Listen to the two descriptions. You may play them in any order and replay them as
-        needed.
+        Listen to all three descriptions. You may play them in any order and replay them as
+        needed, then provide your feedback.
       </p>
 
       {state.testMode && (
@@ -190,8 +191,8 @@ export function PreferenceFlow({ state, updateState }: Props) {
       <section className="question-card">
         <h3>Preference</h3>
         <p>
-          Replay descriptions A and B as often as needed, then choose which one communicates the spatial arrangement more clearly.
-          Both descriptions must be played before the preference is saved.
+          Play descriptions A, B, and C, then choose which one communicates the spatial
+          arrangement most clearly. All three must be played before the response is saved.
         </p>
         <RadioGroup
           legend={rankingQuestion}
@@ -199,17 +200,36 @@ export function PreferenceFlow({ state, updateState }: Props) {
           options={[
             { value: "A", label: "Description A", aliases: ["A"] },
             { value: "B", label: "Description B", aliases: ["B"] },
+            { value: "C", label: "Description C", aliases: ["C"] },
             { value: "none", label: "No preference", aliases: ["none", "no preference", "equal"] }
           ]}
           value={choice}
-          onChange={(value) => setChoice(value as PreferenceChoice)}
+          onChange={(value) => {
+            const nextChoice = value as PreferenceChoice;
+            setChoice(nextChoice);
+            if (nextChoice === "none" || nextChoice === secondChoice) setSecondChoice("");
+          }}
           required={!state.testMode}
           audioSpeed={state.selectedAudioSpeed}
           voiceURI={state.selectedVoiceURI}
         />
+        {choice && choice !== "none" && (
+          <RadioGroup
+            legend="Which description is your second choice?"
+            name="second-choice"
+            options={(["A", "B", "C"] as DescriptionLabel[])
+              .filter((label) => label !== choice)
+              .map((label) => ({ value: label, label: `Description ${label}`, aliases: [label] }))}
+            value={secondChoice}
+            onChange={(value) => setSecondChoice(value as DescriptionLabel)}
+            required={!state.testMode}
+            audioSpeed={state.selectedAudioSpeed}
+            voiceURI={state.selectedVoiceURI}
+          />
+        )}
         {!allDescriptionsPlayed && !state.testMode && (
           <p className="help-text" role="status">
-            Listen to both descriptions before submitting your preference.
+            Listen to all three descriptions before submitting your response.
           </p>
         )}
 

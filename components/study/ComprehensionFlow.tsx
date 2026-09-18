@@ -34,8 +34,8 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   const studyMode = state.studyMode;
   const activeStimuli = getComprehensionStimuli();
   const stimulus = getComprehensionStimulus(state.comprehensionOrder, state.comprehensionIndex);
-  const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus, state.selectedConditions);
-  const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus, state.selectedConditions);
+  const condition = getConditionForStimulus(state.participant.sequenceGroup, stimulus);
+  const descriptionText = getDescriptionForStimulus(state.participant.sequenceGroup, stimulus);
   const trialId = createStimulusTrialId(stimulus);
   const baselineSpatialExpressionCount = stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null;
   const spatialSpatialExpressionCount = stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null;

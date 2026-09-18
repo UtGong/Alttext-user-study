@@ -482,7 +482,7 @@ function participantAnalysis(record: StudyRecord): ParticipantAnalysis {
     flags.push("One or more trials are missing a complexity score.");
   }
   const conditions = new Set(trials.map((trial) => asString(trial.condition)).filter(Boolean));
-  if (conditions.size > 2) flags.push("Session contains more than two comprehension conditions.");
+  if (conditions.size !== 3) flags.push("Session does not contain all three comprehension conditions.");
 
   return {
     participantId,
@@ -524,7 +524,7 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
 
   return {
     generatedAt: new Date().toISOString(),
-    planVersion: "current-schema-v12-four-condition-pairs-2026-09",
+    planVersion: "current-schema-v13-three-condition-within-session-2026-09",
     includedRecordCount: included.length,
     excludedTestRecordCount: records.length - included.length,
     participantCount: new Set(included.map(participantIdFor)).size,
@@ -561,7 +561,7 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
       "Test-mode records are excluded from aggregate results.",
       "Not sure responses are counted as uncertainty and excluded from eligible spatial-accuracy denominators when the stored eligible count is unavailable.",
       "Free recall and interview responses are displayed for manual qualitative coding; the app does not invent automated semantic-gist or recall scores.",
-      "Current schema v12 offers four conditions, selects two per session, and runs 20 comprehension trials followed by 4 preference trials.",
+      "Current schema v13 fixes three active conditions within each session and uses A/B/C sequence-group counterbalancing while retaining the existing stimulus inventory.",
       "Description-metric summaries use stored spatial-expression counts, Kendall's tau, and complexity scores; missing values are backfilled only when a saved image identifier matches the current stimuli file.",
       "Legacy pilot records with additional conditions, effort ratings, or longer rankings remain readable and are labeled by their stored condition names.",
       "The dashboard provides descriptive statistics. Confirm assumptions and use participant/image-aware models or corrected paired tests in the final statistical workflow."

@@ -8,7 +8,7 @@ import {
 } from "@/lib/stimuli";
 import { DescriptionLabel, LikertResponse, StudyState } from "@/types/study";
 
-const labels: DescriptionLabel[] = ["A", "B"];
+const labels: DescriptionLabel[] = ["A", "B", "C"];
 const agreement: LikertResponse = { value: 4, label: "Very" };
 const workload: LikertResponse = { value: 2, label: "Low" };
 
@@ -27,7 +27,7 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
   const activeComprehensionStimuli = getComprehensionStimuli();
 
   const comprehensionResponses = activeComprehensionStimuli.map((stimulus, index) => {
-    const condition = getConditionForStimulus(participant.sequenceGroup, stimulus, state.selectedConditions);
+    const condition = getConditionForStimulus(participant.sequenceGroup, stimulus);
     const spatialAnswers = (stimulus.spatialQuestions ?? []).map((question) => ({
       questionId: question.id,
       frameOfReference: question.frameOfReference,
@@ -74,7 +74,7 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
   });
 
   const preferenceResponses = preferenceStimuli.map((stimulus, index) => {
-    const conditions = getPreferenceConditions(stimulus, state.selectedConditions);
+    const conditions = getPreferenceConditions(stimulus);
     const orderedConditions = index % 2 === 0 ? conditions : [...conditions].reverse();
     const randomizedOrder = orderedConditions.map((condition, position) => ({
       label: labels[position], displayPosition: position + 1, condition,
@@ -95,11 +95,11 @@ export function createMockStudyData(state: StudyState): Partial<StudyState> {
       baselineSpatialExpressionCount: stimulus.descriptionMetrics?.baseline?.spatialExpressionCount ?? null,
       spatialSpatialExpressionCount: stimulus.descriptionMetrics?.spatial?.spatialExpressionCount ?? null,
       spatialKendallTau: stimulus.descriptionMetrics?.spatial?.kendallTau ?? null,
-      playbackEvents: [], replayCounts: { A: 0, B: 0 },
+      playbackEvents: [], replayCounts: { A: 0, B: 0, C: 0 },
       preferenceChoice: "A" as const, preferenceResponse: "Description A" as const,
       bestChoice: "A" as const, preferredCondition,
       rankingQuestion: "Which description communicates the spatial arrangement more clearly?",
-      ranking: { first: "A" as const, second: "B" as const },
+      ranking: { first: "A" as const, second: "B" as const, third: "C" as const },
       explanationQuestion: "What made the spatial arrangement clearer, or why did you have no preference?",
       explanation: "Mock preference explanation.", startedAt: now, responseTimeMs: 0, submittedAt: now
     };

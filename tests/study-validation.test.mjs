@@ -72,15 +72,30 @@ test("the researcher catalog shows every stimulus and spreadsheet-backed complex
   assert.match(app, /href="\/stimuli"/);
 });
 
-test("all comprehension records retain complete spatial question sets", () => {
+test("drafted spatial questions remain verbatim and new stimuli keep questions blank", () => {
+  const newlySelected = new Set([
+    "bfd3764c-8711-4b04-9f02-ed6b07995d40",
+    "c5f5cfa6-6150-435a-bf5d-a0a7a55c52f7",
+    "c986c2b3-cb9f-4c57-a888-217eedc8330a",
+    "ce4d7f93-8bcf-4f88-a9c1-bea5c5a9b425",
+    "1a761edd-c52e-47c0-b422-df074e14c803"
+  ]);
   for (const item of comprehension) {
     const questions = item.spatialQuestions ?? [];
+    if (newlySelected.has(item.uuid)) {
+      assert.deepEqual(questions, [], item.uuid);
+      continue;
+    }
     assert.equal(questions.length, 4, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "intrinsic").length, 2, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "absolute").length, 2, item.uuid);
     assert.ok(questions.every((q) => JSON.stringify(q.options) === JSON.stringify(["Yes", "No"])), item.uuid);
     assert.ok(questions.every((q) => q.correctAnswer === "Yes" || q.correctAnswer === "No"), item.uuid);
   }
+  const byUuid = Object.fromEntries(comprehension.map((item) => [item.uuid, item]));
+  assert.equal(byUuid["03da43fa-743f-49d5-92ad-d521accc5759"].spatialQuestions[0].question, "Was the nude woman positioned to the right of the standing man? ");
+  assert.equal(byUuid["d24bdec0-5069-4768-96bd-583ca9629c0f"].spatialQuestions[0].question, "Were the dark green trees positioned to the left of the ruined building?");
+  assert.equal(byUuid["17b4aa42-79e9-4356-8231-9299f1c3a279"].spatialQuestions[1].question, "Was the young man holding a fish in his right hand?");
 });
 
 test("comprehension and preference images are disjoint", async () => {
@@ -262,34 +277,36 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 12/);
-  assert.match(types, /schemaVersion: 12/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 13/);
+  assert.match(types, /schemaVersion: 13/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
   assert.match(exportSource, /exportInterviewCsv\(state\)/);
 });
 
-test("selected condition pairs are counterbalanced across sequence groups", async () => {
+test("three fixed conditions are counterbalanced across sequence groups", async () => {
   const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
 
-  assert.match(config, /A: \{ set1: 0, set2: 1, set3: 0, set4: 1 \}/);
-  assert.match(config, /B: \{ set1: 1, set2: 0, set3: 1, set4: 0 \}/);
-  assert.match(source, /selectedConditions\[LATIN_SQUARE/);
+  assert.match(config, /A: \{ set1: 0, set2: 1, set3: 2, set4: 0 \}/);
+  assert.match(config, /B: \{ set1: 1, set2: 2, set3: 0, set4: 1 \}/);
+  assert.match(config, /C: \{ set1: 2, set2: 0, set3: 1, set4: 2 \}/);
+  assert.match(config, /STUDY_CONDITIONS(?:: Condition\[\])? = \["baseline", "spatial", "spatial2d"\]/);
+  assert.match(source, /STUDY_CONDITIONS\[LATIN_SQUARE/);
   assert.deepEqual(Object.fromEntries(["set1", "set2", "set3", "set4"].map((set) => [set, comprehension.filter((item) => item.imageSet === set).length])), { set1: 5, set2: 5, set3: 5, set4: 5 });
 });
 
-test("preference flow uses the session condition pair and logs randomized mappings", async () => {
+test("preference flow uses all fixed conditions and logs randomized mappings", async () => {
   const source = await readFile(new URL("../components/study/PreferenceFlow.tsx", import.meta.url), "utf8");
   const stimuliSource = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
-  assert.match(source, /shuffle\(getPreferenceConditions\(stimulus, state\.selectedConditions\)\)/);
-  assert.match(stimuliSource, /const conditions = selectedConditions/);
+  assert.match(source, /shuffle\(getPreferenceConditions\(stimulus\)\)/);
+  assert.match(stimuliSource, /return \[\.\.\.STUDY_CONDITIONS\]/);
   assert.match(source, /randomizedOrder,/);
   assert.match(source, /condition: item\.condition/);
   assert.match(source, /preferredCondition/);
-  assert.match(source, /\["A", "B"\]/);
-  assert.doesNotMatch(source, /"C"|"D"/);
+  assert.match(source, /\["A", "B", "C"\]/);
+  assert.doesNotMatch(source, /"D"/);
   assert.doesNotMatch(source, /spatialQuestions/);
   assert.match(source, /stimulus\.descriptions\[condition\]/);
   assert.doesNotMatch(source, /Text of Description|description-text-block/);
@@ -315,11 +332,12 @@ test("the study runs every active comprehension trial followed by 4 preference t
 
   assert.match(types, /StudyMode = "full-study"/);
   assert.match(app, /studyMode: "full-study"/);
-  assert.match(app, /Conditions for this session/);
+  assert.doesNotMatch(app, /Conditions for this session/);
+  assert.match(app, /\["A", "B", "C"\]/);
   assert.match(source, /stimulus\.role === "comprehension"/);
   assert.match(source, /getComprehensionStimuli\(\): Stimulus\[\] \{[\s\S]*return mainComprehensionStimuli/);
   assert.match(flow, /preferenceStimuli\.length \? "preference" : "interview"/);
-  assert.match(app, /Study task: \{mainComprehensionStimuli\.length\} comprehension trials and 4 preference trials/);
+  assert.match(app, /Study task: \{mainComprehensionStimuli\.length\} comprehension trials and \{preferenceStimuli\.length\} preference trials/);
 });
 
 test("exports include randomized order and verbal and internal Likert values", async () => {
@@ -339,6 +357,8 @@ test("exports include randomized order and verbal and internal Likert values", a
   assert.match(source, /"complexityScore"/);
   assert.match(source, /complexityScore: response\.complexityScore/);
   assert.match(source, /descriptionACondition/);
+  assert.match(source, /descriptionCCondition/);
+  assert.match(source, /rankingThird/);
   assert.match(source, /playbackEventsJson/);
 });
 
@@ -351,7 +371,7 @@ test("analysis surfaces description metrics at aggregate and participant levels"
   assert.match(analysis, /spatialKendallTau: NumericSummary/);
   assert.match(analysis, /presentedKendallTau: NumericSummary/);
   assert.match(analysis, /trialMetrics: TrialMetricSummary\[\]/);
-  assert.match(analysis, /current-schema-v12-four-condition-pairs/);
+  assert.match(analysis, /current-schema-v13-three-condition-within-session/);
   assert.match(dashboard, /Description metrics by condition/);
   assert.match(dashboard, /Baseline spatial expressions/);
   assert.match(dashboard, /Spatial-order Kendall’s τ/);

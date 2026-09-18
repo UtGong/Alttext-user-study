@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "kind": "google-docs-trusted-read-context",
+  "target": {
+    "documentId": "17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "title": "User Study",
+    "revisionId": "ANLCKQmcs3Fvm12dXMSqL3ac6sYxz9pQj55khDAY3zIcscthPdEBJovUkZ4R9GY3ERUL7vfhq57OhvOrlPbEkJPei7rCcl2YQvnHKbi7aA",
+    "documentUrl": "https://docs.google.com/document/d/17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "selectedTabId": null
+  },
+  "dropdownMetadata": {
+    "status": "unavailable",
+    "resolvedTool": null,
+    "authoritative": false,
+    "count": 0
+  },
+  "derivedControlInventory": {
+    "hasProtectedControls": false,
+    "authoritativeDropdownCount": 0,
+    "opaqueControlCount": 0,
+    "nativeElementCounts": {
+      "horizontalRule": 4,
+      "inlineObjectElement": 3
+    },
+    "tabsScanned": [
+      "t.ai03zlqxc07q",
+      "t.0",
+      "t.62w30lbg4vc3",
+      "t.cjsdjgpmtjw",
+      "t.ptrsbtusz15v",
+      "t.utxobzu22k23",
+      "t.jnbeyccwrwf9",
+      "t.n11g4to39luu"
+    ],
+    "controls": [],
+    "nativeElements": [
+      {
+        "type": "horizontalRule",
+        "startIndex": 6222,
+        "endIndex": 6223,
+        "tabId": "t.62w30lbg4vc3",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[2].body.content[113]",
+          "tabId": "t.62w30lbg4vc3",
+          "segmentId": null,
+          "startIndex": 6222,
+          "endIndex": 6224,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": null
+      },
+      {
+        "type": "inlineObjectElement",
+        "startIndex": 15700,
+        "endIndex": 15701,
+        "tabId": "t.62w30lbg4vc3",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[2].body.content[200]",
+          "tabId": "t.62w30lbg4vc3",
+          "segmentId": null,
+          "startIndex": 15700,
+          "endIndex": 15702,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": {
+          "inlineObjectId": "kix.7qb5aljq0chn",
+          "textStyle": {
+            "bold": true
+          }
+        }
+      },
+      {
+        "type": "inlineObjectElement",
+        "startIndex": 16621,
+        "endIndex": 16622,
+        "tabId": "t.62w30lbg4vc3",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[2].body.content[208]",
+          "tabId": "t.62w30lbg4vc3",
+          "segmentId": null,
+          "startIndex": 16621,
+          "endIndex": 16623,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": {
+          "inlineObjectId": "kix.ip1glq9uqxog",
+          "textStyle": {
+            "bold": true
+          }
+        }
+      },
+      {
+        "type": "horizontalRule",
+        "startIndex": 479,
+        "endIndex": 480,
+        "tabId": "t.cjsdjgpmtjw",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[3].body.content[6]",
+          "tabId": "t.cjsdjgpmtjw",
+          "segmentId": null,
+          "startIndex": 479,
+          "endIndex": 481,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": null
+      },
+      {
+        "type": "horizontalRule",
+        "startIndex": 951,
+        "endIndex": 952,
+        "tabId": "t.cjsdjgpmtjw",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[3].body.content[10]",
+          "tabId": "t.cjsdjgpmtjw",
+          "segmentId": null,
+          "startIndex": 951,
+          "endIndex": 953,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": null
+      },
+      {
+        "type": "horizontalRule",
+        "startIndex": 239,
+        "endIndex": 240,
+        "tabId": "t.ptrsbtusz15v",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[4].body.content[5]",
+          "tabId": "t.ptrsbtusz15v",
+          "segmentId": null,
+          "startIndex": 239,
+          "endIndex": 241,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": null
+      },
+      {
+        "type": "inlineObjectElement",
+        "startIndex": 1083,
+        "endIndex": 1084,
+        "tabId": "t.jnbeyccwrwf9",
+        "segmentId": null,
+        "container": {
+          "kind": "paragraph",
+          "path": "root.tabs[6].body.content[14]",
+          "tabId": "t.jnbeyccwrwf9",
+          "segmentId": null,
+          "startIndex": 1083,
+          "endIndex": 1085,
+          "namedStyleType": "NORMAL_TEXT",
+          "listId": null,
+          "nestingLevel": null,
+          "table": null
+        },
+        "properties": {
+          "inlineObjectId": "kix.eo95clksnzw0",
+          "textStyle": {
+            "foregroundColor": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.11372549,
+                  "green": 0.10980392,
+                  "blue": 0.11372549
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "editGuidance": {
+    "advisoryOnly": true,
+    "requiresTargetedPreservation": false,
+    "recommendedBehavior": "No protected controls were detected in the scanned scope.",
+    "warnings": []
+  }
+}

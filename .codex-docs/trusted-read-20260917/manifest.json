@@ -1,0 +1,60 @@
+{
+  "bridgeVersion": "3.6",
+  "kind": "google-docs-trusted-read",
+  "status": "complete",
+  "outputDir": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917",
+  "target": {
+    "documentId": "17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "title": "User Study",
+    "revisionId": "ANLCKQmcs3Fvm12dXMSqL3ac6sYxz9pQj55khDAY3zIcscthPdEBJovUkZ4R9GY3ERUL7vfhq57OhvOrlPbEkJPei7rCcl2YQvnHKbi7aA",
+    "documentUrl": "https://docs.google.com/document/d/17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "selectedTabId": null
+  },
+  "dropdownMetadata": {
+    "status": "unavailable",
+    "resolvedTool": null,
+    "authoritative": false,
+    "count": 0
+  },
+  "controlAwareness": {
+    "hasProtectedControls": false,
+    "authoritativeDropdownCount": 0,
+    "opaqueControlCount": 0,
+    "affectedParagraphCount": 0,
+    "nativeElementCounts": {
+      "horizontalRule": 4,
+      "inlineObjectElement": 3
+    },
+    "preservationRequired": false,
+    "recommendedBehavior": "No protected controls were detected in the scanned scope."
+  },
+  "warnings": [],
+  "files": {
+    "document_result": {
+      "path": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917/document-result.json",
+      "bytes": 2757915,
+      "sha256": "9a58c43d4117e50e1a5c101e2ee6bd116a2f330619b9d64acdac72b5ad3a47ae"
+    },
+    "control_inventory": {
+      "path": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917/control-inventory.json",
+      "bytes": 5744,
+      "sha256": "c9a1cff634eb731f0fa3b2a2e4ee9a0eec3f5acb3e348e8816de9daaf4ec21b4"
+    },
+    "document_outline": {
+      "path": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917/document-outline.json",
+      "bytes": 620064,
+      "sha256": "1612a320c94e4da7d337b68582790a2743978ce54defcf82a27ad78b5e302a20"
+    },
+    "document_text": {
+      "path": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917/document-text.md",
+      "bytes": 110491,
+      "sha256": "515e9e70f071dd523593bd58cedf70515bbc689bc77e0c44763a8969a69b905d"
+    },
+    "receipt": {
+      "path": "/Users/jojog/Desktop/research/image-access/Alttext-user-study/.codex-docs/trusted-read-20260917/receipt.json",
+      "bytes": 1008,
+      "sha256": "c891b245e72aa280fd4924d26ea1d3f03371ba64e0912505e2d0d5ebc838003a"
+    }
+  },
+  "error": null
+}

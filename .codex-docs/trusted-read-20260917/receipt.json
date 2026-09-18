@@ -1,0 +1,32 @@
+{
+  "bridgeVersion": "3.6",
+  "kind": "google-docs-trusted-read-receipt",
+  "status": "complete",
+  "target": {
+    "documentId": "17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "title": "User Study",
+    "revisionId": "ANLCKQmcs3Fvm12dXMSqL3ac6sYxz9pQj55khDAY3zIcscthPdEBJovUkZ4R9GY3ERUL7vfhq57OhvOrlPbEkJPei7rCcl2YQvnHKbi7aA",
+    "documentUrl": "https://docs.google.com/document/d/17evXNudLYIJUEA7I-_jm1LN_aSO9k7VSv12ThrQcIH8",
+    "selectedTabId": null
+  },
+  "dropdownMetadata": {
+    "status": "unavailable",
+    "resolvedTool": null,
+    "authoritative": false,
+    "count": 0
+  },
+  "controlAwareness": {
+    "hasProtectedControls": false,
+    "authoritativeDropdownCount": 0,
+    "opaqueControlCount": 0,
+    "affectedParagraphCount": 0,
+    "nativeElementCounts": {
+      "horizontalRule": 4,
+      "inlineObjectElement": 3
+    },
+    "preservationRequired": false,
+    "recommendedBehavior": "No protected controls were detected in the scanned scope."
+  },
+  "warnings": [],
+  "error": null
+}

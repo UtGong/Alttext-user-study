@@ -10,13 +10,13 @@ export type StudyPhase =
   | "interview"
   | "complete";
 
-export type SequenceGroup = "A" | "B";
+export type SequenceGroup = "A" | "B" | "C";
 export type Condition = "baseline" | "spatial" | "semantic" | "spatial2d";
 export type StudyMode = "full-study";
 export type ComplexityLevel = "low" | "medium" | "high";
 export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference" | "pilot";
 export type StimulusRole = "comprehension" | "preference" | "reserve" | "pilot";
-export type DescriptionLabel = "A" | "B";
+export type DescriptionLabel = "A" | "B" | "C";
 export type PreferenceChoice = DescriptionLabel | "none";
 export type SpatialObjectFocus = "main" | "secondary";
 
@@ -206,6 +206,7 @@ export type WorkloadResponse = {
 export type PreferenceRanking = {
   first: DescriptionLabel | "";
   second: DescriptionLabel | "";
+  third: DescriptionLabel | "";
 };
 
 export type PreferencePlaybackEvent = AudioPlayEvent & {
@@ -247,7 +248,7 @@ export type PreferenceResponse = {
   playbackEvents: PreferencePlaybackEvent[];
   replayCounts: Record<DescriptionLabel, number>;
   preferenceChoice: PreferenceChoice;
-  preferenceResponse: "Description A" | "Description B" | "No preference";
+  preferenceResponse: "Description A" | "Description B" | "Description C" | "No preference";
   bestChoice: PreferenceChoice;
   preferredCondition: Condition | "none";
   rankingQuestion: string;
@@ -267,7 +268,7 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 12;
+  schemaVersion: 13;
   phase: StudyPhase;
   testMode: boolean;
   studyMode: StudyMode;
