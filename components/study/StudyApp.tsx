@@ -11,15 +11,14 @@ import { ComprehensionFlow } from "@/components/study/ComprehensionFlow";
 import { PreferenceFlow } from "@/components/study/PreferenceFlow";
 import {
   AUDIO_SPEED_OPTIONS,
-  CONDITION_LABELS,
   CONSENT_VERSION,
   STORAGE_KEY,
   STUDY_SCHEMA_VERSION
 } from "@/lib/config";
-import { createRandomizedComprehensionOrder, mainComprehensionStimuli } from "@/lib/stimuli";
+import { createRandomizedComprehensionOrder, mainComprehensionStimuli, preferenceStimuli } from "@/lib/stimuli";
 import { saveResultToFirebase } from "@/lib/saveResult";
 import { createMockStudyData } from "@/lib/mockStudyData";
-import { Condition, ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
+import { ParticipantProfile, SequenceGroup, StudyState } from "@/types/study";
 
 function createSessionId() {
   return globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -47,7 +46,7 @@ const initial: StudyState = {
     version: CONSENT_VERSION
   },
   participant,
-  selectedConditions: ["baseline", "spatial"],
+  selectedConditions: ["baseline", "spatial", "spatial2d"],
   selectedAudioSpeed: 1,
   selectedVoiceURI: "",
   practiceQuestion: "Please describe the scene in your own words.",
@@ -67,7 +66,7 @@ const sample =
 const consentPlaybackText = [
   "Consent to Participate.",
   "Please read this information before deciding whether to participate. Ask the researcher any questions you have before continuing.",
-  "Purpose and activities. This study examines how blind and low-vision users understand different forms of image description. You will listen to descriptions, answer comprehension and workload questions, compare descriptions, and take part in final interview questions.",
+  "Purpose and activities. This study examines how blind and low-vision users understand image descriptions. You will listen to image descriptions, answer comprehension and workload questions, provide feedback, and take part in final interview questions.",
   "Voluntary participation and withdrawal. Participation is voluntary. You may pause between sections or stop at any time, for any reason, without penalty or loss of benefits. Closing the page stops the study. Selecting Decline and leave study clears this browser session and does not submit a study record.",
   "Potential risks or discomforts. Possible discomforts include fatigue, mental effort, frustration, or discomfort from listening to repeated audio. Some descriptions may mention nudity, religious imagery, death, skulls, or injury. You may stop immediately if you feel uncomfortable.",
   "Potential benefits. There may be no direct personal benefit. Your responses may help researchers improve accessible image descriptions.",
@@ -158,8 +157,8 @@ export function StudyApp() {
           <section className="panel">
             <h2>Welcome</h2>
             <p>
-              Listen to image descriptions and answer questions about what you understood. Later,
-              compare two descriptions of the same image.
+              Listen to image descriptions, answer questions about what you understood, and
+              provide feedback about your experience.
             </p>
             <p className="help-text">
               Consent and participant background questions are completed before the study session.
@@ -298,9 +297,9 @@ function Consent({
 
       <h3>Purpose and activities</h3>
       <p>
-        This study examines how blind and low-vision users understand different forms of image
-        description. You will listen to descriptions, answer comprehension and workload
-        questions, compare descriptions, and take part in final interview questions.
+        This study examines how blind and low-vision users understand image descriptions. You
+        will listen to image descriptions, answer comprehension and workload questions, provide
+        feedback, and take part in final interview questions.
       </p>
 
       <h3>Voluntary participation and withdrawal</h3>
@@ -398,16 +397,6 @@ function Setup({
   updateState: (patch: Partial<StudyState>) => void;
 }) {
   const currentParticipant = state.participant;
-  const conditionPairs: Condition[][] = [
-    ["baseline", "spatial"],
-    ["baseline", "semantic"],
-    ["baseline", "spatial2d"],
-    ["spatial", "semantic"],
-    ["spatial", "spatial2d"],
-    ["semantic", "spatial2d"]
-  ];
-  const selectedPairValue = state.selectedConditions.join("+");
-
   const change = (patch: Partial<ParticipantProfile>) => {
     updateState({
       participant: {
@@ -439,27 +428,13 @@ function Setup({
       </div>
 
       <RadioGroup
-        legend="Conditions for this session"
-        name="conditionPair"
-        value={selectedPairValue}
-        onChange={(value) => updateState({ selectedConditions: value.split("+") as Condition[] })}
-        options={conditionPairs.map((conditions) => ({
-          value: conditions.join("+"),
-          label: conditions.map((condition) => CONDITION_LABELS[condition]).join(" and ")
-        }))}
-        required
-        audioSpeed={state.selectedAudioSpeed}
-        voiceURI={state.selectedVoiceURI}
-      />
-
-      <RadioGroup
         legend="Researcher sequence group"
         name="sequenceGroup"
         value={currentParticipant.sequenceGroup}
         onChange={(value) =>
           change({ sequenceGroup: value as SequenceGroup })
         }
-        options={["A", "B"].map((value) => ({
+        options={["A", "B", "C"].map((value) => ({
           value,
           label: `Group ${value}`
         }))}
@@ -683,8 +658,7 @@ function Complete({
         Final interview answers: {state.interviewResponses.filter((response) => response.answer).length}
       </p>
       <p>Mode: {state.testMode ? "Test" : "Study"}</p>
-      <p>Study task: {mainComprehensionStimuli.length} comprehension trials and 4 preference trials</p>
-      <p>Session conditions: {state.selectedConditions.map((condition) => CONDITION_LABELS[condition]).join(" and ")}</p>
+      <p>Study task: {mainComprehensionStimuli.length} comprehension trials and {preferenceStimuli.length} preference trials</p>
       <p>Session ID: {state.sessionId}</p>
       <div className="button-row">
         <AccessibleButton onClick={save}>Save result</AccessibleButton>

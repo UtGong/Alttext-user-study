@@ -268,6 +268,10 @@ export function exportPreferenceCsv(state: StudyState) {
     "descriptionBText",
     "descriptionBSpatialExpressionCount",
     "descriptionBKendallTau",
+    "descriptionCCondition",
+    "descriptionCText",
+    "descriptionCSpatialExpressionCount",
+    "descriptionCKendallTau",
     "baselineSpatialExpressionCount",
     "spatialSpatialExpressionCount",
     "spatialKendallTau",
@@ -280,6 +284,7 @@ export function exportPreferenceCsv(state: StudyState) {
     "rankingQuestion",
     "rankingFirst",
     "rankingSecond",
+    "rankingThird",
     "startedAt",
     "responseTimeMs",
     "explanationQuestion",
@@ -289,6 +294,7 @@ export function exportPreferenceCsv(state: StudyState) {
   const rows = state.preferenceResponses.map((response) => {
     const descriptionA = response.randomizedOrder.find((item) => item.label === "A");
     const descriptionB = response.randomizedOrder.find((item) => item.label === "B");
+    const descriptionC = response.randomizedOrder.find((item) => item.label === "C");
 
     return {
       participantId: response.participantId,
@@ -317,6 +323,10 @@ export function exportPreferenceCsv(state: StudyState) {
       descriptionBText: descriptionB?.descriptionText,
       descriptionBSpatialExpressionCount: descriptionB?.spatialExpressionCount,
       descriptionBKendallTau: descriptionB?.kendallTau,
+      descriptionCCondition: descriptionC?.condition,
+      descriptionCText: descriptionC?.descriptionText,
+      descriptionCSpatialExpressionCount: descriptionC?.spatialExpressionCount,
+      descriptionCKendallTau: descriptionC?.kendallTau,
       baselineSpatialExpressionCount: response.baselineSpatialExpressionCount,
       spatialSpatialExpressionCount: response.spatialSpatialExpressionCount,
       spatialKendallTau: response.spatialKendallTau,
@@ -329,6 +339,7 @@ export function exportPreferenceCsv(state: StudyState) {
       rankingQuestion: response.rankingQuestion,
       rankingFirst: response.ranking.first,
       rankingSecond: response.ranking.second,
+      rankingThird: response.ranking.third,
       startedAt: response.startedAt,
       responseTimeMs: response.responseTimeMs,
       explanationQuestion: response.explanationQuestion,

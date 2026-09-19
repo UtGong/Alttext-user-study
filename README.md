@@ -1,13 +1,12 @@
 # BLV User Study Interface
 
-This is a Next.js + TypeScript interface for a blind and low vision user study with four image-description ordering conditions:
+This is a Next.js + TypeScript interface for a blind and low vision user study with three active image-description conditions:
 
 1. No order: no explicit ordering constraint
 2. Spatial (Depth): front-to-background ordering
-3. Semantic order
-4. Spatial (2D)
+3. Spatial (2D)
 
-Researchers select exactly two conditions for each session on the setup page.
+Researchers assign sequence group A, B, or C. Every participant completes all three conditions in one session; condition identities remain hidden from participants.
 
 The interface is designed to be screen-reader accessible, keyboard-first, audio-first, and easy for researchers to run locally.
 
@@ -15,7 +14,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 
 - Participant setup
 - One combined comprehension and preference workflow
-- Six selectable condition pairs and A/B counterbalancing within each pair
+- A/B/C sequence-group counterbalancing across the three fixed conditions
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
 - 20 comprehension trials followed by 4 preference trials
@@ -28,7 +27,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - Spatial relation questions
 - Verbal Likert ratings with stable 1–5 analysis values
 - Mental demand and frustration ratings after each image
-- Optional preference trials
+- Three-description preference trials
 - Final interview notes
 - JSON export
 - Comprehension CSV export
@@ -98,7 +97,7 @@ Each stimulus includes:
 
 The file contains 20 active comprehension records and 4 disjoint preference records. Rejected
 images and unused alternatives are documented in `data/stimulusReview.json`. Every active record has
-all four descriptions so any pair selected at setup can be used. Records are addressed by a
+all four source descriptions, although Semantic is not active in the current study. Records are addressed by a
 composite trial ID built from role, image set, and UUID.
 
 The interface currently uses browser text-to-speech for the descriptions. When real audio files are available, add audio file paths to the `audio` object for each condition and update `AudioDescriptionPlayer` to use native audio playback instead of `speechSynthesis`.
@@ -109,13 +108,11 @@ local path. Images are hidden by default, and missing files produce a participan
 
 Open-ended answer fields also offer optional browser speech recognition. Starting speech input stops text-to-speech playback, requests microphone access, and inserts recognized text into the editable answer field. The website does not retain microphone audio. Browser speech-recognition support varies, so typing and operating-system dictation remain available fallbacks.
 
-## Per-session condition pairs
+## Per-session condition assignment
 
-The setup page offers every pair among No order, Spatial (Depth), Semantic order, and Spatial
-(2D). The 20 comprehension images are divided evenly between the selected pair. Sequence groups A
-and B reverse the condition assignment while preserving ten trials per condition. Four
-preference trials then compare the same selected pair; their A/B labels are randomized without
-revealing condition names.
+The setup page assigns sequence group A, B, or C. The groups rotate No Order, Spatial (Depth), and
+Spatial (2D) across image sets. All three conditions occur in every session. Four preference trials
+present all three descriptions with randomized A/B/C labels without revealing condition names.
 
 ## Audio behavior
 
@@ -143,14 +140,14 @@ During real trials:
 - Every spatial question includes Yes, No, and Not sure. Not sure is stored as uncertain and is excluded from accuracy scoring.
 - Experience ratings separately measure overall scene clarity, spatial-relationship confidence, and content comprehension.
 - Mental demand and frustration are collected after each image for condition-by-condition comparison.
-- In preference trials, descriptions A and B can be replayed without a limit. Both must be played before a preference is saved.
-- Preference responses are Description A, Description B, or No preference.
+- In preference trials, descriptions A, B, and C can be replayed without a limit. All three must be played before a preference is saved.
+- Preference responses rank the three descriptions, with No preference available for the primary choice.
 - The preference explanation is required and stored with playback events and replay counts.
 
 ## Data storage
 
 The full study state is autosaved in the browser and submitted to Firestore at completion.
-Version 12 records identify the combined workflow and include the session condition pair,
+Version 13 records identify the combined workflow and include the fixed three-condition assignment,
 session and composite trial IDs, exact presented text, description metrics, ordered playback
 events, overall and intrinsic/absolute accuracy, response timing, workload responses, and complete
 preference mappings. Each comprehension trial records `spatialExpressionCount` as the canonical count for

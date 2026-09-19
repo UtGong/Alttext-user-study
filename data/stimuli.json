@@ -23,7 +23,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r15_q_intrinsic_1",
+        "id": "r13_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was the building positioned above the bridge?",
         "options": [
@@ -33,7 +33,7 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r15_q_intrinsic_2",
+        "id": "r13_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Were the small boats positioned in front of the bridge?",
         "options": [
@@ -43,7 +43,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r15_q_absolute_3",
+        "id": "r13_q_absolute_3",
         "frameOfReference": "absolute",
         "question": "Was the building positioned near the center of the image?",
         "options": [
@@ -53,7 +53,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r15_q_absolute_4",
+        "id": "r13_q_absolute_4",
         "frameOfReference": "absolute",
         "question": "Was the green grass positioned on the lower right side of the image?",
         "options": [
@@ -521,7 +521,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r21_q_intrinsic_1",
+        "id": "r20_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was the town positioned to the left of the young woman?",
         "options": [
@@ -531,7 +531,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r21_q_intrinsic_2",
+        "id": "r20_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Was the umbrella held above the woman's head?",
         "options": [
@@ -541,9 +541,9 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r21_q_absolute_3",
+        "id": "r20_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the woman positioned on the left side of the scene?",
+        "question": "Was the young woman positioned on the right side of the scene?",
         "options": [
           "Yes",
           "No"
@@ -551,9 +551,9 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r21_q_absolute_4",
+        "id": "r20_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Were the sailboats positioned in the foreground of the scene?",
+        "question": "Were the sailboats positioned in the foreground of the image?",
         "options": [
           "Yes",
           "No"
@@ -693,7 +693,7 @@
           "Yes",
           "No"
         ],
-        "correctAnswer": "No"
+        "correctAnswer": "Yes"
       },
       {
         "id": "r25_q_intrinsic_2",
@@ -710,7 +710,7 @@
         "id": "r25_q_absolute_3",
         "frameOfReference": "absolute",
         "objectFocus": "main",
-        "question": "Were the man and woman centered in the image?",
+        "question": "Were the man and woman mainly in the lower half of the image?",
         "options": [
           "Yes",
           "No"
@@ -721,12 +721,12 @@
         "id": "r25_q_absolute_4",
         "frameOfReference": "absolute",
         "objectFocus": "secondary",
-        "question": "Was the man positioned on the left of the image?",
+        "question": "Was the man located in the upper-left corner?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       }
     ],
     "gistQuestion": {
@@ -839,7 +839,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r28_q_intrinsic_1",
+        "id": "r26_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was Abraham Lincoln positioned to the right of the woman in the chariot?",
         "options": [
@@ -849,7 +849,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r28_q_intrinsic_2",
+        "id": "r26_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Were the white horses positioned on the right side of Abraham Lincoln?",
         "options": [
@@ -859,9 +859,9 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r28_q_absolute_3",
+        "id": "r26_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the woman in the chariot located near the center of the image?",
+        "question": "Was the woman in the chariot located in the center-left area of the image?",
         "options": [
           "Yes",
           "No"
@@ -869,9 +869,9 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r28_q_absolute_4",
+        "id": "r26_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Was the U.S. Capitol building located in the foreground of the image?",
+        "question": "Was the U.S. Capitol building positioned in the foreground of the image?",
         "options": [
           "Yes",
           "No"
@@ -1172,12 +1172,12 @@
         "id": "r32_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "objectFocus": "main",
-        "question": "Was the red table positioned on the right the seated woman?",
+        "question": "Was the red table positioned below the seated woman?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "No"
+        "correctAnswer": "Yes"
       },
       {
         "id": "r32_q_intrinsic_2",
@@ -1194,7 +1194,7 @@
         "id": "r32_q_absolute_3",
         "frameOfReference": "absolute",
         "objectFocus": "main",
-        "question": "Was the woman positioned in the centerof the image?",
+        "question": "Was the woman mainly on the right half of the image?",
         "options": [
           "Yes",
           "No"
@@ -1323,7 +1323,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r33_q_intrinsic_1",
+        "id": "r35_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was the woman positioned above the stone coffin?",
         "options": [
@@ -1333,7 +1333,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r33_q_intrinsic_2",
+        "id": "r35_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Were the clouds surrounding the woman and putti?",
         "options": [
@@ -1343,7 +1343,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r33_q_absolute_3",
+        "id": "r35_q_absolute_3",
         "frameOfReference": "absolute",
         "question": "Was the stone coffin positioned in the upper portion of the image?",
         "options": [
@@ -1353,7 +1353,7 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r33_q_absolute_4",
+        "id": "r35_q_absolute_4",
         "frameOfReference": "absolute",
         "question": "Were the nude, babyish putti most densely concentrated in the center of the image?",
         "options": [
@@ -1491,7 +1491,7 @@
         "id": "r37_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "objectFocus": "main",
-        "question": "Were there trees positioned beyond the water?",
+        "question": "Were the trees positioned beyond the water?",
         "options": [
           "Yes",
           "No"
@@ -1513,7 +1513,7 @@
         "id": "r37_q_absolute_3",
         "frameOfReference": "absolute",
         "objectFocus": "main",
-        "question": "Was the sky in the upper half of the image?",
+        "question": "Was the sky in the upper part of the image?",
         "options": [
           "Yes",
           "No"
@@ -1524,12 +1524,12 @@
         "id": "r37_q_absolute_4",
         "frameOfReference": "absolute",
         "objectFocus": "secondary",
-        "question": "Was the water located only in the middle portion of the image?",
+        "question": "Was the water located only in the upper-right corner?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       }
     ],
     "gistQuestion": {
@@ -1650,7 +1650,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r38_q_intrinsic_1",
+        "id": "r40_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was the bearded man standing below the arched doorway",
         "options": [
@@ -1660,7 +1660,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r38_q_intrinsic_2",
+        "id": "r40_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Was the young girl positioned in front of the older bearded man?",
         "options": [
@@ -1670,7 +1670,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r38_q_absolute_3",
+        "id": "r40_q_absolute_3",
         "frameOfReference": "absolute",
         "question": "Was the older bearded man positioned near the center of the image?",
         "options": [
@@ -1680,7 +1680,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r38_q_absolute_4",
+        "id": "r40_q_absolute_4",
         "frameOfReference": "absolute",
         "question": "Were the two cloaked, older men positioned on the left side of the image?",
         "options": [
@@ -1839,18 +1839,18 @@
         "id": "r44_q_absolute_3",
         "frameOfReference": "absolute",
         "objectFocus": "main",
-        "question": "Was the young woman positioned on the right side of the image?",
+        "question": "Was the young woman mainly on the left half of the image?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "No"
+        "correctAnswer": "Yes"
       },
       {
         "id": "r44_q_absolute_4",
         "frameOfReference": "absolute",
         "objectFocus": "secondary",
-        "question": "Was the baby located at the bottom-left corner of the image?",
+        "question": "Was the baby located at the bottom-left corner?",
         "options": [
           "Yes",
           "No"
@@ -1970,8 +1970,7 @@
       {
         "id": "r47_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the standing wall in front of the ruined stone building?",
+        "question": "Were the dark green trees positioned to the left of the ruined building?",
         "options": [
           "Yes",
           "No"
@@ -1981,8 +1980,7 @@
       {
         "id": "r47_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Were the blocks positioned below the standing wall?",
+        "question": "Was the pile of stone rubble positioned in front of the standing wall?",
         "options": [
           "Yes",
           "No"
@@ -1992,8 +1990,7 @@
       {
         "id": "r47_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the yellow sky in the upper half of the image?",
+        "question": "Was the standing wall positioned in the foreground of the image?",
         "options": [
           "Yes",
           "No"
@@ -2004,7 +2001,7 @@
         "id": "r47_q_absolute_4",
         "frameOfReference": "absolute",
         "objectFocus": "secondary",
-        "question": "Were all the trees located along the bottom edge of the image?",
+        "question": "Were all the trees located along the bottom edge?",
         "options": [
           "Yes",
           "No"
@@ -2140,8 +2137,7 @@
       {
         "id": "r49_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the placid body of water behind the two closest people?",
+        "question": "Was the grassy hill positioned in front of the people?",
         "options": [
           "Yes",
           "No"
@@ -2151,8 +2147,7 @@
       {
         "id": "r49_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Was the grassy hill positioned to the left of most of the water?",
+        "question": "Was the stone wall positioned at the bottom of the grassy hill?",
         "options": [
           "Yes",
           "No"
@@ -2162,24 +2157,22 @@
       {
         "id": "r49_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Were the white-gray clouds in the upper half of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r49_q_absolute_4",
-        "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Were the two closest people in the upper half of the image?",
+        "question": "Was the grassy hill positioned on the right side of the image?",
         "options": [
           "Yes",
           "No"
         ],
         "correctAnswer": "No"
+      },
+      {
+        "id": "r49_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Were the two people positioned on the bottom left side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
       }
     ],
     "gistQuestion": {
@@ -2340,7 +2333,7 @@
       {
         "id": "r52_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Was the plaza positioned on your left?",
+        "question": "Was the plaza positioned on the left side of the image?",
         "options": [
           "Yes",
           "No"
@@ -2474,7 +2467,7 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r55_q_intrinsic_1",
+        "id": "r56_q_intrinsic_1",
         "frameOfReference": "intrinsic",
         "question": "Was the yellowed pine tree positioned to the left of the house?",
         "options": [
@@ -2484,7 +2477,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r55_q_intrinsic_2",
+        "id": "r56_q_intrinsic_2",
         "frameOfReference": "intrinsic",
         "question": "Was the garden positioned behind the house?",
         "options": [
@@ -2494,7 +2487,7 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r55_q_absolute_3",
+        "id": "r56_q_absolute_3",
         "frameOfReference": "absolute",
         "question": "Was the house positioned in the background of the image?",
         "options": [
@@ -2504,7 +2497,7 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r55_q_absolute_4",
+        "id": "r56_q_absolute_4",
         "frameOfReference": "absolute",
         "question": "Was the pine tree positioned in the foreground of the image?",
         "options": [
@@ -2642,8 +2635,7 @@
       {
         "id": "r59_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the clean-shaven man positioned to the left of the woman in the hammock?",
+        "question": "Was the nude woman positioned to the right of the standing man? ",
         "options": [
           "Yes",
           "No"
@@ -2653,8 +2645,7 @@
       {
         "id": "r59_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Was the possible monkey positioned above and to the right of the woman?",
+        "question": "Was the standing man positioned to the left of the hammock?",
         "options": [
           "Yes",
           "No"
@@ -2664,24 +2655,22 @@
       {
         "id": "r59_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the long decorated banner mainly on the left side of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r59_q_absolute_4",
-        "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the hammock confined to the upper-left corner?",
+        "question": "Were the nude woman and standing man positioned on the left of the image?",
         "options": [
           "Yes",
           "No"
         ],
         "correctAnswer": "No"
+      },
+      {
+        "id": "r59_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the hammock positioned near the center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
       }
     ],
     "gistQuestion": {
@@ -2812,30 +2801,27 @@
       {
         "id": "r75_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the winged angel positioned to the left of the young man?",
+        "question": "Was the young man positioned to the left of the angel?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       },
       {
         "id": "r75_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Was the small white dog below the angel?",
+        "question": "Was the young man holding a fish in his right hand?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       },
       {
         "id": "r75_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the fish on the right side of the image?",
+        "question": "Was the small white dog positioned in the lower-left area of the image?",
         "options": [
           "Yes",
           "No"
@@ -2845,8 +2831,7 @@
       {
         "id": "r75_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the gold vessel at the bottom-right corner?",
+        "question": "Was the gold vessel positioned in the center of the image?",
         "options": [
           "Yes",
           "No"
@@ -3003,7 +2988,7 @@
         "id": "r78_q_absolute_3",
         "frameOfReference": "absolute",
         "objectFocus": "main",
-        "question": "Was the gold chalice positioned near the center of the image?",
+        "question": "Was the gold chalice near the center of the image?",
         "options": [
           "Yes",
           "No"
@@ -3132,9 +3117,9 @@
     ],
     "spatialQuestions": [
       {
-        "id": "r90_q_intrinsic_1",
+        "id": "r89_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Was the seated man positioned to the right of the younger boy?",
+        "question": "Was the seated man positioned to the right of the younger boy? ",
         "options": [
           "Yes",
           "No"
@@ -3142,9 +3127,9 @@
         "correctAnswer": "Yes"
       },
       {
-        "id": "r90_q_intrinsic_2",
+        "id": "r89_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the seated man positioned in front of the woman holding the baby?",
+        "question": "Was the seated man positioned in front of the woman holding the baby? ",
         "options": [
           "Yes",
           "No"
@@ -3152,9 +3137,9 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r90_q_absolute_3",
+        "id": "r89_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the seated man positioned on the right side of the image?",
+        "question": "Were the women in white dresses with red sashes located in the left portion of the image?",
         "options": [
           "Yes",
           "No"
@@ -3162,9 +3147,9 @@
         "correctAnswer": "No"
       },
       {
-        "id": "r90_q_absolute_4",
+        "id": "r89_q_absolute_4",
         "frameOfReference": "absolute",
-        "question": "Was the younger boy positioned in the left portion of the image?",
+        "question": "Was the younger boy positioned on the left side of the image?",
         "options": [
           "Yes",
           "No"
@@ -3613,48 +3598,7 @@
       "older woman",
       "wooden cross"
     ],
-    "spatialQuestions": [
-      {
-        "id": "r41_q_intrinsic_1",
-        "frameOfReference": "intrinsic",
-        "question": "Was the figure in dark robes positioned to the right of the cross?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "No"
-      },
-      {
-        "id": "r41_q_intrinsic_2",
-        "frameOfReference": "intrinsic",
-        "question": "Was the crucified figure positioned above the two figures in robes?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r41_q_absolute_3",
-        "frameOfReference": "absolute",
-        "question": "Was the skull positioned in the lower portion of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r41_q_absolute_4",
-        "frameOfReference": "absolute",
-        "question": "Was the inscription \"INRI\" positioned at the bottom center of the image?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "No"
-      }
-    ],
+    "spatialQuestions": [],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."

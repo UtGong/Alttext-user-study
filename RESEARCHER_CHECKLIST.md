@@ -5,7 +5,7 @@
 - Open the study interface in a supported browser.
 - Confirm the participant ID format.
 - Confirm the combined 20-trial comprehension and 4-trial preference workflow is active.
-- Select the two conditions for the session and record sequence group A or B for counterbalancing.
+- Record researcher-assigned sequence group A, B, or C. The three active conditions are fixed internally.
 - Confirm audio output device and volume.
 - Confirm every selected image loads from its Show image button.
 - Confirm microphone input and speech-to-text support if the participant wants to speak answers.

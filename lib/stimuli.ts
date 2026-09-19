@@ -1,5 +1,5 @@
 import rawStimuli from "@/data/stimuli.json";
-import { LATIN_SQUARE } from "@/lib/config";
+import { LATIN_SQUARE, STUDY_CONDITIONS } from "@/lib/config";
 import { Condition, ImageSet, SequenceGroup, Stimulus } from "@/types/study";
 
 export const stimuli = rawStimuli as Stimulus[];
@@ -43,34 +43,26 @@ export function getComprehensionStimulus(
   );
 }
 
-export function getPreferenceConditions(stimulus: Stimulus, selectedConditions: Condition[]): Condition[] {
-  const conditions = selectedConditions;
-
+export function getPreferenceConditions(stimulus: Stimulus): Condition[] {
   if (
     stimulus.role !== "preference" ||
-    stimulus.imageSet !== "preference" ||
-    conditions.length !== 2 ||
-    new Set(conditions).size !== 2 ||
-    conditions.some((condition) => !(["baseline", "spatial", "semantic", "spatial2d"] as Condition[]).includes(condition))
+    stimulus.imageSet !== "preference"
   ) {
     throw new Error(`Preference stimulus ${createStimulusTrialId(stimulus)} has invalid preferenceConditions.`);
   }
 
-  return [...conditions];
+  return [...STUDY_CONDITIONS];
 }
 
-export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus, selectedConditions: Condition[]): Condition {
+export function getConditionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): Condition {
   if (stimulus.imageSet === "preference") {
     throw new Error("Preference stimuli do not have an assigned comprehension condition.");
   }
 
-  if (selectedConditions.length !== 2 || new Set(selectedConditions).size !== 2) {
-    throw new Error("Exactly two distinct study conditions must be selected.");
-  }
-  return selectedConditions[LATIN_SQUARE[sequenceGroup][stimulus.imageSet as Exclude<ImageSet, "preference" | "pilot">]];
+  return STUDY_CONDITIONS[LATIN_SQUARE[sequenceGroup][stimulus.imageSet as Exclude<ImageSet, "preference" | "pilot">]];
 }
 
-export function getDescriptionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus, selectedConditions: Condition[]): string {
-  const condition = getConditionForStimulus(sequenceGroup, stimulus, selectedConditions);
+export function getDescriptionForStimulus(sequenceGroup: SequenceGroup, stimulus: Stimulus): string {
+  const condition = getConditionForStimulus(sequenceGroup, stimulus);
   return stimulus.descriptions[condition];
 }
