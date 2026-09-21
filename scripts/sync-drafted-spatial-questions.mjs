@@ -4,6 +4,11 @@ const path = new URL("../data/stimuli.json", import.meta.url);
 const stimuli = JSON.parse(await readFile(path, "utf8"));
 
 const drafted = {
+  "bfd3764c-8711-4b04-9f02-ed6b07995d40": [["intrinsic", "Was the woman to the right of the man?", "Yes"], ["intrinsic", "Were the trees behind both people?", "Yes"], ["absolute", "Were both people near the center of the image?", "Yes"], ["absolute", "Was the man in the upper-right corner?", "No"]],
+  "c5f5cfa6-6150-435a-bf5d-a0a7a55c52f7": [["intrinsic", "Was the open book below the woman?", "Yes"], ["intrinsic", "Were the keys to the right of the woman?", "Yes"], ["absolute", "Was the woman in the upper half of the image?", "Yes"], ["absolute", "Were the keys on the left side of the image?", "No"]],
+  "c986c2b3-cb9f-4c57-a888-217eedc8330a": [["intrinsic", "Were the trees behind the water?", "Yes"], ["intrinsic", "Were the tall grasses in front of the water?", "Yes"], ["absolute", "Was the sky in the upper part of the image?", "Yes"], ["absolute", "Was the water only in the upper-right corner?", "No"]],
+  "ce4d7f93-8bcf-4f88-a9c1-bea5c5a9b425": [["intrinsic", "Was the baby to the right of the woman?", "Yes"], ["intrinsic", "Was the gold background behind both figures?", "Yes"], ["absolute", "Was the woman mainly on the left half of the image?", "Yes"], ["absolute", "Was the baby in the bottom-left corner?", "No"]],
+  "1a761edd-c52e-47c0-b422-df074e14c803": [["intrinsic", "Was the serpent wrapped around the chalice?", "Yes"], ["intrinsic", "Was the shadow behind the chalice?", "Yes"], ["absolute", "Was the chalice near the center of the image?", "Yes"], ["absolute", "Was the serpent in the lower-left corner?", "No"]],
   "823405e0-599f-4fd8-ae71-4d901edc36b0": [["intrinsic", "Was the building positioned above the bridge?", "No"], ["intrinsic", "Were the sailboats positioned in front of the bridge?", "Yes"], ["absolute", "Was the building positioned in the lower portion of the image?", "Yes"], ["absolute", "Was the green grass positioned on the lower right side of the image?", "No"]],
   "b9c9e75c-e81b-4dab-aafe-12045660422f": [["intrinsic", "Was the sunset positioned to the right of the tree?", "Yes"], ["intrinsic", "Was the canopy most densely concentrated to the left of the water?", "Yes"], ["absolute", "Was the closest tree positioned on the right side of the image?", "No"], ["absolute", "Was the water positioned on the lower-right side of the image?", "Yes"]],
   "bb029ac1-a5eb-4d1e-99b8-887a63dc14c0": [["intrinsic", "Was the building positioned to the left side of the narrow alleyway?", "Yes"], ["intrinsic", "Were the carriages positioned in front of the narrow alleyway?", "Yes"], ["absolute", "Were the three carriages positioned on the bottom left of the image?", "No"], ["absolute", "Was the narrow alleyway positioned on the right side of the image?", "Yes"]],
@@ -18,12 +23,23 @@ const drafted = {
   "00209fb1-64a2-4961-9ccc-8c6c06117df2": [["intrinsic", "Was the yellowed pine tree positioned to the left of the house?", "Yes"], ["intrinsic", "Was the garden positioned behind the house?", "No"], ["absolute", "Was the house positioned in the background of the image?", "Yes"], ["absolute", "Was the pine tree positioned in the foreground of the image?", "Yes"]],
   "03da43fa-743f-49d5-92ad-d521accc5759": [["intrinsic", "Was the nude woman positioned to the right of the standing man? ", "Yes"], ["intrinsic", "Was the standing man positioned to the left of the hammock?", "Yes"], ["absolute", "Were the nude woman and standing man positioned on the left of the image?", "No"], ["absolute", "Was the hammock positioned near the center of the image?", "Yes"]],
   "17b4aa42-79e9-4356-8231-9299f1c3a279": [["intrinsic", "Was the young man positioned to the left of the angel?", "No"], ["intrinsic", "Was the young man holding a fish in his right hand?", "No"], ["absolute", "Was the small white dog positioned in the lower-left area of the image?", "Yes"], ["absolute", "Was the gold vessel positioned in the center of the image?", "No"]],
-  "26352a3f-c669-4371-ac6e-8d6899f17836": [["intrinsic", "Was the seated man positioned to the right of the younger boy? ", "Yes"], ["intrinsic", "Was the seated man positioned in front of the woman holding the baby? ", "No"], ["absolute", "Were the women in white dresses positioned on the left side of the image? ", "No"], ["absolute", "Was the younger boy positioned on the left side of the image?", "Yes"]]
+  "26352a3f-c669-4371-ac6e-8d6899f17836": [["intrinsic", "Was the seated man positioned to the right of the younger boy? ", "Yes"], ["intrinsic", "Was the seated man positioned in front of the woman holding the baby? ", "No"], ["absolute", "Were the women in white dresses positioned on the left side of the image? ", "No"], ["absolute", "Was the younger boy positioned on the left side of the image?", "Yes"]],
+  "cd382af4-5334-485a-8121-c52ce7abf13a": [["intrinsic", "Was the figure in dark robes positioned to the right of the cross?", "No"], ["intrinsic", "Was the crucified figure positioned above the two figures in robes?", "Yes"], ["absolute", "Was the skull positioned in the lower portion of the image?", "Yes"], ["absolute", "Was the inscription \"INRI\" positioned at the bottom center of the image?", "No"]]
 };
 
+const comprehensionGroups = {
+  set1: ["bfd3764c-8711-4b04-9f02-ed6b07995d40", "c5f5cfa6-6150-435a-bf5d-a0a7a55c52f7", "823405e0-599f-4fd8-ae71-4d901edc36b0", "c1059816-1dc7-4af1-a5b3-26772de84b08", "b9c9e75c-e81b-4dab-aafe-12045660422f", "bb029ac1-a5eb-4d1e-99b8-887a63dc14c0", "bf6c7c73-82e8-4ef7-8ac8-71920c8eb2b9"],
+  set2: ["c986c2b3-cb9f-4c57-a888-217eedc8330a", "ce4d7f93-8bcf-4f88-a9c1-bea5c5a9b425", "c50ee8c2-db92-4e58-a6b8-0243dfe829d8", "c77f8b64-98a2-4b3c-b270-1863ece147c5", "c9c0f26e-a559-43ab-b517-0384e347ade8", "d37bc3dc-c3e0-4019-9725-f33404d7d5bc", "00209fb1-64a2-4961-9ccc-8c6c06117df2"],
+  set3: ["d24bdec0-5069-4768-96bd-583ca9629c0f", "1a761edd-c52e-47c0-b422-df074e14c803", "d25ae4f0-6e09-4ae3-9229-5d45ca3dec56", "26352a3f-c669-4371-ac6e-8d6899f17836", "cd382af4-5334-485a-8121-c52ce7abf13a", "03da43fa-743f-49d5-92ad-d521accc5759", "17b4aa42-79e9-4356-8231-9299f1c3a279"]
+};
+const groupByUuid = new Map(Object.entries(comprehensionGroups).flatMap(([group, uuids]) => uuids.map((uuid) => [uuid, group])));
+
 for (const stimulus of stimuli) {
+  const group = groupByUuid.get(stimulus.uuid);
+  stimulus.role = group ? "comprehension" : "preference";
+  stimulus.imageSet = group ?? "preference";
   const questions = drafted[stimulus.uuid];
-  stimulus.spatialQuestions = questions
+  stimulus.spatialQuestions = group && questions
     ? questions.map(([frameOfReference, question, correctAnswer], index) => ({
         id: `r${stimulus.rowIndex}_q_${frameOfReference}_${index + 1}`,
         frameOfReference,

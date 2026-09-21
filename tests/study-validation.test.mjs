@@ -22,10 +22,10 @@ const excludedUuids = new Set([
   "25c98bc8-af28-4194-a056-daeae1f0a001"
 ]);
 
-test("the study inventory contains 20 comprehension and 4 preference records", () => {
+test("the study inventory contains 21 comprehension and 3 preference records", () => {
   assert.equal(stimuli.length, 24);
-  assert.equal(comprehension.length, 20);
-  assert.equal(preference.length, 4);
+  assert.equal(comprehension.length, 21);
+  assert.equal(preference.length, 3);
   assert.equal(new Set(stimuli.map((item) => item.uuid)).size, 24);
   assert.ok(stimuli.every((item) => !excludedUuids.has(item.uuid)));
   assert.ok(stimulusReview.rejected.every((item) => !stimuli.some((stimulus) => stimulus.uuid === item.uuid)));
@@ -50,7 +50,7 @@ test("all selected stimuli satisfy the description metrics and item-set rules", 
   }
 });
 
-test("preference records expose all four conditions for session-level pairing", () => {
+test("preference records retain all source descriptions", () => {
   for (const item of preference) {
     assert.equal(item.imageSet, "preference");
     assert.deepEqual(item.preferenceConditions, activeConditions);
@@ -72,20 +72,9 @@ test("the researcher catalog shows every stimulus and spreadsheet-backed complex
   assert.match(app, /href="\/stimuli"/);
 });
 
-test("drafted spatial questions remain verbatim and new stimuli keep questions blank", () => {
-  const newlySelected = new Set([
-    "bfd3764c-8711-4b04-9f02-ed6b07995d40",
-    "c5f5cfa6-6150-435a-bf5d-a0a7a55c52f7",
-    "c986c2b3-cb9f-4c57-a888-217eedc8330a",
-    "ce4d7f93-8bcf-4f88-a9c1-bea5c5a9b425",
-    "1a761edd-c52e-47c0-b422-df074e14c803"
-  ]);
+test("all comprehension stimuli have complete spatial question sets", () => {
   for (const item of comprehension) {
     const questions = item.spatialQuestions ?? [];
-    if (newlySelected.has(item.uuid)) {
-      assert.deepEqual(questions, [], item.uuid);
-      continue;
-    }
     assert.equal(questions.length, 4, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "intrinsic").length, 2, item.uuid);
     assert.equal(questions.filter((q) => q.frameOfReference === "absolute").length, 2, item.uuid);
@@ -96,6 +85,14 @@ test("drafted spatial questions remain verbatim and new stimuli keep questions b
   assert.equal(byUuid["03da43fa-743f-49d5-92ad-d521accc5759"].spatialQuestions[0].question, "Was the nude woman positioned to the right of the standing man? ");
   assert.equal(byUuid["d24bdec0-5069-4768-96bd-583ca9629c0f"].spatialQuestions[0].question, "Were the dark green trees positioned to the left of the ruined building?");
   assert.equal(byUuid["17b4aa42-79e9-4356-8231-9299f1c3a279"].spatialQuestions[1].question, "Was the young man holding a fish in his right hand?");
+  assert.equal(byUuid["bfd3764c-8711-4b04-9f02-ed6b07995d40"].spatialQuestions[0].question, "Was the woman to the right of the man?");
+});
+
+test("comprehension questions share one page and image controls follow them", async () => {
+  const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
+  assert.match(flow, /type Step = "audio" \| "questions"/);
+  assert.match(flow, /step === "questions" && <>[\s\S]*Scene recall[\s\S]*Spatial relations[\s\S]*Experience[\s\S]*Workload[\s\S]*<StimulusImageToggle[\s\S]*Save and continue/);
+  assert.doesNotMatch(flow, /advance\("spatial"\)|advance\("ratings"\)|advance\("workload"\)/);
 });
 
 test("comprehension and preference images are disjoint", async () => {
@@ -277,8 +274,8 @@ test("speech-input consent and schema include final interview transcripts", asyn
 
   assert.match(app, /optional live speech recognition/);
   assert.match(app, /speech[\s\S]*service may process the audio/);
-  assert.match(config, /STUDY_SCHEMA_VERSION = 13/);
-  assert.match(types, /schemaVersion: 13/);
+  assert.match(config, /STUDY_SCHEMA_VERSION = 14/);
+  assert.match(types, /schemaVersion: 14/);
   assert.match(types, /interviewResponses: InterviewResponse\[\]/);
   assert.match(route, /interviewAnswerCount/);
   assert.match(exportSource, /exportInterviewCsv/);
@@ -289,12 +286,16 @@ test("three fixed conditions are counterbalanced across sequence groups", async 
   const config = await readFile(new URL("../lib/config.ts", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
 
-  assert.match(config, /A: \{ set1: 0, set2: 1, set3: 2, set4: 0 \}/);
-  assert.match(config, /B: \{ set1: 1, set2: 2, set3: 0, set4: 1 \}/);
-  assert.match(config, /C: \{ set1: 2, set2: 0, set3: 1, set4: 2 \}/);
+  assert.match(config, /A: \{ set1: 0, set2: 1, set3: 2 \}/);
+  assert.match(config, /B: \{ set1: 1, set2: 2, set3: 0 \}/);
+  assert.match(config, /C: \{ set1: 2, set2: 0, set3: 1 \}/);
   assert.match(config, /STUDY_CONDITIONS(?:: Condition\[\])? = \["baseline", "spatial", "spatial2d"\]/);
   assert.match(source, /STUDY_CONDITIONS\[LATIN_SQUARE/);
-  assert.deepEqual(Object.fromEntries(["set1", "set2", "set3", "set4"].map((set) => [set, comprehension.filter((item) => item.imageSet === set).length])), { set1: 5, set2: 5, set3: 5, set4: 5 });
+  assert.deepEqual(Object.fromEntries(["set1", "set2", "set3"].map((set) => [set, comprehension.filter((item) => item.imageSet === set).length])), { set1: 7, set2: 7, set3: 7 });
+  assert.deepEqual(
+    Object.fromEntries(["set1", "set2", "set3"].map((set) => [set, Object.fromEntries(["low", "medium", "high"].map((level) => [level, comprehension.filter((item) => item.imageSet === set && item.complexityLevel === level).length]))])),
+    { set1: { low: 2, medium: 2, high: 3 }, set2: { low: 2, medium: 2, high: 3 }, set3: { low: 2, medium: 3, high: 2 } }
+  );
 });
 
 test("preference flow uses all fixed conditions and logs randomized mappings", async () => {
@@ -324,7 +325,7 @@ test("preference descriptions use one heading and a flat audio layout", async ()
   assert.equal((css.match(/\.audio-card\s*\{/g) ?? []).length, 1);
 });
 
-test("the study runs every active comprehension trial followed by 4 preference trials", async () => {
+test("the study runs every active comprehension trial followed by 3 preference trials", async () => {
   const app = await readFile(new URL("../components/study/StudyApp.tsx", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   const source = await readFile(new URL("../lib/stimuli.ts", import.meta.url), "utf8");
@@ -371,7 +372,7 @@ test("analysis surfaces description metrics at aggregate and participant levels"
   assert.match(analysis, /spatialKendallTau: NumericSummary/);
   assert.match(analysis, /presentedKendallTau: NumericSummary/);
   assert.match(analysis, /trialMetrics: TrialMetricSummary\[\]/);
-  assert.match(analysis, /current-schema-v13-three-condition-within-session/);
+  assert.match(analysis, /current-schema-v14-balanced-three-condition-within-session/);
   assert.match(dashboard, /Description metrics by condition/);
   assert.match(dashboard, /Baseline spatial expressions/);
   assert.match(dashboard, /Spatial-order Kendall’s τ/);

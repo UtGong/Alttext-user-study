@@ -524,7 +524,7 @@ export function analyzeStudyRecords(records: StudyRecord[]): StudyAnalysis {
 
   return {
     generatedAt: new Date().toISOString(),
-    planVersion: "current-schema-v13-three-condition-within-session-2026-09",
+    planVersion: "current-schema-v14-balanced-three-condition-within-session-2026-09",
     includedRecordCount: included.length,
     excludedTestRecordCount: records.length - included.length,
     participantCount: new Set(included.map(participantIdFor)).size,

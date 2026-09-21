@@ -14,7 +14,7 @@ import { createStimulusTrialId, getComprehensionStimuli, getComprehensionStimulu
 import { LikertResponse, OrderedAudioPlayEvent, SpatialAnswer, StudyState } from "@/types/study";
 
 type Props = { state: StudyState; updateState: (patch: Partial<StudyState>) => void };
-type Step = "audio" | "recall" | "spatial" | "ratings" | "workload";
+type Step = "audio" | "questions";
 
 const agreementLabels = ["Not at all", "Slightly", "Moderately", "Very", "Extremely well"];
 const workloadLabels = ["Very low", "Low", "Moderate", "High", "Very high"];
@@ -67,7 +67,7 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   function submit(event: FormEvent) {
     event.preventDefault();
     const submittedAt = new Date().toISOString();
-    const finalSteps = { ...stepTimestamps, workload: { startedAt: stepStartedAt, completedAt: submittedAt, responseTimeMs: Date.parse(submittedAt) - Date.parse(stepStartedAt) } };
+    const finalSteps = { ...stepTimestamps, questions: { startedAt: stepStartedAt, completedAt: submittedAt, responseTimeMs: Date.parse(submittedAt) - Date.parse(stepStartedAt) } };
     const answers: SpatialAnswer[] = questions.map((q) => {
       const answer = spatialAnswers[q.id] ?? "";
       const isUncertain = answer === "Not sure";
@@ -110,25 +110,26 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
 
     {step === "audio" && <>
-      <StimulusImageToggle
-        imageFilename={stimulus.imageFilename}
-        imageUrl={stimulus.imageUrl}
-      />
       <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
         onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
-      <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("recall")}>Continue</AccessibleButton>
+      <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("questions")}>Continue to questions</AccessibleButton>
     </>}
 
-    {step === "recall" && <section className="question-card"><h3>Scene recall</h3><div className="field-label"><label htmlFor="free-recall">{recallPrompt}</label><QuestionAudioButton text={recallPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="free-recall" required={required} rows={6} value={freeRecall} onChange={setFreeRecall} /></div><AccessibleButton type="button" disabled={required && !freeRecall.trim()} onClick={() => advance(questions.length ? "spatial" : "ratings")}>Continue</AccessibleButton></section>}
+    {step === "questions" && <>
+      <section className="question-card"><h3>Scene recall</h3><div className="field-label"><label htmlFor="free-recall">{recallPrompt}</label><QuestionAudioButton text={recallPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="free-recall" required={required} rows={6} value={freeRecall} onChange={setFreeRecall} /></div></section>
 
-    {step === "spatial" && questions.length > 0 && <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={[...q.options, ...(q.options.includes("Not sure") ? [] : ["Not sure"])].map((x) => ({ value: x, label: x }))} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}<AccessibleButton type="button" disabled={required && questions.some((q) => !spatialAnswers[q.id])} onClick={() => advance("ratings")}>Continue</AccessibleButton></section>}
+      <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={[...q.options, ...(q.options.includes("Not sure") ? [] : ["Not sure"])].map((x) => ({ value: x, label: x }))} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}</section>
 
-    {step === "ratings" && <section className="question-card"><h3>Experience ratings</h3>
+      <section className="question-card"><h3>Experience</h3>
       <LikertScale legend={ratingQuestions.overallSceneClarity} name="overallSceneClarity" value={ratings.overallSceneClarity} onChange={(value) => setRatings((v) => ({ ...v, overallSceneClarity: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
       <LikertScale legend={ratingQuestions.spatialRelationsConfidence} name="spatialRelationsConfidence" value={ratings.spatialRelationsConfidence} onChange={(value) => setRatings((v) => ({ ...v, spatialRelationsConfidence: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
       <LikertScale legend={ratingQuestions.contentComprehension} name="contentComprehension" value={ratings.contentComprehension} onChange={(value) => setRatings((v) => ({ ...v, contentComprehension: value }))} required={required} labels={agreementLabels} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />
-      <AccessibleButton type="button" disabled={required && Object.values(ratings).some((value) => value === null)} onClick={() => advance("workload")}>Continue</AccessibleButton></section>}
+      </section>
 
-    {step === "workload" && <section className="question-card"><h3>Workload</h3>{(Object.entries(workloadQuestions) as [keyof typeof workloadQuestions, string][]).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}<AccessibleButton type="submit" disabled={required && Object.values(workload).some((value) => value === null)}>Save and continue</AccessibleButton></section>}
+      <section className="question-card"><h3>Workload</h3>{(Object.entries(workloadQuestions) as [keyof typeof workloadQuestions, string][]).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}</section>
+
+      <StimulusImageToggle imageFilename={stimulus.imageFilename} imageUrl={stimulus.imageUrl} />
+      <AccessibleButton type="submit" disabled={required && (!freeRecall.trim() || questions.some((q) => !spatialAnswers[q.id]) || Object.values(ratings).some((value) => value === null) || Object.values(workload).some((value) => value === null))}>Save and continue</AccessibleButton>
+    </>}
   </form>;
 }

@@ -6,7 +6,7 @@
     "complexityLevel": "medium",
     "complexityScore": 0.698,
     "role": "comprehension",
-    "imageSet": "set3",
+    "imageSet": "set1",
     "descriptions": {
       "baseline": "In the foreground, glimmering sunlight reflects off the river's surface. A distinctive brown, long rectangular flat-topped building stands prominently along the riverbank. Further back, a sturdy bridge spans the water, connecting land on both sides. To the right, a patch of lush green grass adds a touch of natural beauty to the scene. Scattered throughout the river are several small boats, adding life and movement to this riverside setting.",
       "spatial": "In the foreground, several small boats are moored along the riverbank, their masts rising vertically and their hulls resting gently on the water’s surface. Just beyond them, a long, brown, boxy building with a flat roof and rectangular windows stands near the water’s edge, positioned slightly to the right of the boats. Spanning the river behind this structure is a bridge, its dark, arched supports visible beneath the roadway, which stretches horizontally across the middle ground. Below the bridge, the river’s surface glimmers with light, reflecting the sky and structures above, creating a shimmering effect on the water. In the lower right corner, a patch of green grass borders the riverbank, extending toward the edge of the scene and providing a natural contrast to the man-made elements.",
@@ -35,7 +35,7 @@
       {
         "id": "r13_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Were the small boats positioned in front of the bridge?",
+        "question": "Were the sailboats positioned in front of the bridge?",
         "options": [
           "Yes",
           "No"
@@ -45,7 +45,7 @@
       {
         "id": "r13_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the building positioned near the center of the image?",
+        "question": "Was the building positioned in the lower portion of the image?",
         "options": [
           "Yes",
           "No"
@@ -60,7 +60,7 @@
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       }
     ],
     "gistQuestion": {
@@ -172,7 +172,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.7334,
     "role": "comprehension",
-    "imageSet": "set4",
+    "imageSet": "set1",
     "descriptions": {
       "baseline": "A low sunset glows near the horizon across the upper background. On the left, the closest tree rises in dark, dense canopies, while still water lies below and slightly to the right, reflecting the dim light.",
       "spatial": "The painting captures the tranquil beauty of a sunset sky, where the warm glow of the low sun paints the horizon in soft, fading light. As the eye moves downward, it encounters the closest tree in the foreground, its branches and leaves visible against the backdrop. Further along the composition, the scene reveals lush canopies of trees stretching across the landscape. In the lower portion of the painting, a still water body is visible.",
@@ -191,7 +191,7 @@
       {
         "id": "r16_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Was the closest tree positioned to the left of the water??",
+        "question": "Was the sunset positioned to the right of the tree?",
         "options": [
           "Yes",
           "No"
@@ -377,7 +377,7 @@
       {
         "id": "r17_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Were the carriages positioned on the bottom left of the image?",
+        "question": "Were the three carriages positioned on the bottom left of the image?",
         "options": [
           "Yes",
           "No"
@@ -504,7 +504,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.858,
     "role": "comprehension",
-    "imageSet": "set2",
+    "imageSet": "set1",
     "descriptions": {
       "baseline": "A young woman sits in the foreground, twisted slightly, with a pale pink umbrella near her. Behind her, a town stretches across the middle of the scene beside a wide, shimmering blue waterway, with a pale blue sky filling the upper background.",
       "spatial": "Under a pale blue sky, a town stretches along the horizon, its rooftops and chimneys softly rendered in muted tones. Below, a wide, shimmering blue waterway reflects the sky and holds moored boats. To the right, a young woman sits on the edge of the quay, her body twisting slightly as she holds a pale pink umbrella above her head.",
@@ -533,22 +533,22 @@
       {
         "id": "r20_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the umbrella held above the woman's head?",
-        "options": [
-          "Yes",
-          "No"
-        ],
-        "correctAnswer": "Yes"
-      },
-      {
-        "id": "r20_q_absolute_3",
-        "frameOfReference": "absolute",
-        "question": "Was the young woman positioned on the right side of the scene?",
+        "question": "Was the umbrella held by the woman’s right hand?",
         "options": [
           "Yes",
           "No"
         ],
         "correctAnswer": "No"
+      },
+      {
+        "id": "r20_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the young woman positioned on the right side of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
       },
       {
         "id": "r20_q_absolute_4",
@@ -670,7 +670,7 @@
     "complexityLevel": "low",
     "complexityScore": 0.1839,
     "role": "comprehension",
-    "imageSet": "set4",
+    "imageSet": "set1",
     "descriptions": {
       "baseline": "A man stands near the center-left beside a woman on the center-right, both surrounded by trees and leafy branches above and around them.",
       "spatial": "The scene opens with a dense, textured canopy of trees filling the upper portion of the composition, their green and brown foliage interwoven with dabs of light that suggest sunlight filtering through. Below this leafy expanse, a woman stands in profile, her back to the viewer, wearing a light-colored, flowing dress with a wide-brimmed hat adorned with a dark ribbon. Her figure is positioned slightly to the right, and her long skirt drapes over a small bush at her feet, blending into the earthy ground. To her left and slightly behind, a man stands beside her, dressed in a dark suit with a white shirt and a light-colored hat, holding a cane in his right hand. He faces forward, his gaze directed slightly to the side, creating a sense of quiet companionship between the two figures. The couple is framed by the natural surroundings, with the trees forming a soft, dappled backdrop that enhances the intimate, serene atmosphere of the moment.",
@@ -687,8 +687,7 @@
       {
         "id": "r25_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the woman positioned to the left of the man?",
+        "question": "Was the woman to the right of the man?",
         "options": [
           "Yes",
           "No"
@@ -698,8 +697,7 @@
       {
         "id": "r25_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Were the trees positioned behind the two people?",
+        "question": "Were the trees behind both people?",
         "options": [
           "Yes",
           "No"
@@ -709,8 +707,7 @@
       {
         "id": "r25_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Were the man and woman mainly in the lower half of the image?",
+        "question": "Were both people near the center of the image?",
         "options": [
           "Yes",
           "No"
@@ -720,8 +717,7 @@
       {
         "id": "r25_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the man located in the upper-left corner?",
+        "question": "Was the man in the upper-right corner?",
         "options": [
           "Yes",
           "No"
@@ -822,7 +818,7 @@
     "complexityLevel": "medium",
     "complexityScore": 0.6613,
     "role": "comprehension",
-    "imageSet": "set4",
+    "imageSet": "set1",
     "descriptions": {
       "baseline": "A columned, domed white marble U.S. building fills the background, with Abraham Lincoln near the lower center in front of it. Two white horses dominate the foreground, pulling across the scene, while a woman rides at the right beside another horse.",
       "spatial": "In the foreground of a historical painting, a grand columned domed white marble U.S. building dominates the background. Beside the building, a powerful black stallion stands prominently in the mid-ground, positioning the animal as a central element of the scene. To the left of the horse, a striking white woman appears next in the composition. In the far background at the end of the sequence of visual elements, Abraham Lincoln is faintly visible. This carefully arranged layout highlights these significant figures and structures, creating a cohesive and meaningful narrative within the artwork.",
@@ -851,7 +847,7 @@
       {
         "id": "r26_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Were the white horses positioned on the right side of Abraham Lincoln?",
+        "question": "Were the horses positioned on the right side of Abraham Lincoln?",
         "options": [
           "Yes",
           "No"
@@ -861,12 +857,12 @@
       {
         "id": "r26_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the woman in the chariot located in the center-left area of the image?",
+        "question": "Was the woman in the chariot positioned in the center-left part of the image?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       },
       {
         "id": "r26_q_absolute_4",
@@ -988,7 +984,7 @@
     "complexityLevel": "medium",
     "complexityScore": 0.6948,
     "role": "comprehension",
-    "imageSet": "set1",
+    "imageSet": "set2",
     "descriptions": {
       "baseline": "A pale-skinned balding man sits in the lower center, facing right toward a large open book in front of him. To the right of the book is a skull, and farther right stands an hourglass. Above them, a covered gnarled tree stretches across the upper portion of the scene.",
       "spatial": "A gnarled tree, its branches thick with leaves, arches overhead, casting deep shadows over the scene. Beneath it, an hourglass rests on a woven basket, its sand flowing slowly as a silent reminder of time. Beside it, a skull lies on a cloth, its hollow eyes staring into the void. A large book, its pages open and worn, rests nearby, as if abandoned mid-reading. And at the center of this contemplative tableau, a pale-skinned, balding man in a brown robe sits in quiet reflection, his hands clasped as he gazes toward the tree, lost in thought.",
@@ -1027,7 +1023,7 @@
       {
         "id": "r31_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Was the man positioned near the lower-center of the image?",
+        "question": "Was the man positioned in the center of the image?",
         "options": [
           "Yes",
           "No"
@@ -1171,8 +1167,7 @@
       {
         "id": "r32_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the red table positioned below the seated woman?",
+        "question": "Was the open book below the woman?",
         "options": [
           "Yes",
           "No"
@@ -1182,8 +1177,7 @@
       {
         "id": "r32_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Was the wall behind the woman?",
+        "question": "Were the keys to the right of the woman?",
         "options": [
           "Yes",
           "No"
@@ -1193,8 +1187,7 @@
       {
         "id": "r32_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the woman mainly on the right half of the image?",
+        "question": "Was the woman in the upper half of the image?",
         "options": [
           "Yes",
           "No"
@@ -1204,8 +1197,7 @@
       {
         "id": "r32_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the red table in the upper half of the image?",
+        "question": "Were the keys on the left side of the image?",
         "options": [
           "Yes",
           "No"
@@ -1335,7 +1327,7 @@
       {
         "id": "r35_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Were the clouds surrounding the woman and putti?",
+        "question": "Was the white cloth positioned on the left side of the stone coffin?",
         "options": [
           "Yes",
           "No"
@@ -1472,7 +1464,7 @@
     "complexityLevel": "low",
     "complexityScore": 0.3296,
     "role": "comprehension",
-    "imageSet": "set3",
+    "imageSet": "set2",
     "descriptions": {
       "baseline": "Pale sky spans the upper half of the image. Below it, trees cluster along the left, center, and right edges, framing a band of water across the middle. Tall grasses fill the lower foreground and rise around the water’s edge.",
       "spatial": "Above the sky, a soft, textured expanse of muted clouds and pale blue stretches across the upper portion of the scene. Below it, a cluster of dense, dark trees rises with thick, swirling foliage, their forms anchored in the middle ground. Moving downward from the trees, a band of tall grasses sways in the foreground, rendered in rich greens and earthy browns with visible brushstrokes that suggest movement. Nestled between the grasses and the trees, a calm body of water reflects the sky and surrounding landscape, its surface rippling gently in shades of blue and gray.",
@@ -1490,8 +1482,7 @@
       {
         "id": "r37_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Were the trees positioned beyond the water?",
+        "question": "Were the trees behind the water?",
         "options": [
           "Yes",
           "No"
@@ -1501,7 +1492,6 @@
       {
         "id": "r37_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
         "question": "Were the tall grasses in front of the water?",
         "options": [
           "Yes",
@@ -1512,7 +1502,6 @@
       {
         "id": "r37_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
         "question": "Was the sky in the upper part of the image?",
         "options": [
           "Yes",
@@ -1523,8 +1512,7 @@
       {
         "id": "r37_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the water located only in the upper-right corner?",
+        "question": "Was the water only in the upper-right corner?",
         "options": [
           "Yes",
           "No"
@@ -1633,7 +1621,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.7837,
     "role": "comprehension",
-    "imageSet": "set3",
+    "imageSet": "set2",
     "descriptions": {
       "baseline": "A young girl in a red and gold patterned robe stands on a set of pinkish steps, holding a small red book. To her left, an older bearded man in a blue and red robe extends his hand toward her, while a woman in a blue and white garment stands beside him. Behind them, the background is a shimmering gold with visible cracks and age marks. To the right of the steps, an older bearded man in a white robe with a red cloak and a golden crown stands within an arched structure adorned with blue vaults and gold stars. Further to the right, two additional bearded men stand near the archway—one in a red and light blue robe, the other in a dark green and gray robe with a white head covering. The entire scene is framed by the golden background, with the architectural elements and figures arranged across the central and right portions of the image.",
       "spatial": "The image presents a religious scene set against a shimmering gold background that fills the upper portion of the composition, lending a sacred and luminous atmosphere. In the lower left, an older man with a beard and a halo stands beside a woman in a blue robe, his hand gently placed on the shoulder of a young girl in front of him. The young girl, also haloed, wears a richly decorated red gown with golden floral patterns and holds a small red book, standing on a set of reddish-brown steps. To her right, a bearded man in elaborate ecclesiastical robes—white with a red mantle and a golden crown—stands within an ornate architectural niche adorned with blue vaults and golden stars. He extends his right hand toward the young girl, suggesting a moment of blessing or recognition. Further to the right, near the base of the niche, two bearded men are positioned side by side; one wears a red tunic with a pale blue cloak, while the other is dressed in a dark green robe with a white head covering, both appearing to observe the central interaction.",
@@ -1652,7 +1640,7 @@
       {
         "id": "r40_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Was the bearded man standing below the arched doorway",
+        "question": "Was the older woman positioned to the right of the bearded man?",
         "options": [
           "Yes",
           "No"
@@ -1799,7 +1787,7 @@
     "complexityLevel": "low",
     "complexityScore": 0.1822,
     "role": "comprehension",
-    "imageSet": "set1",
+    "imageSet": "set2",
     "descriptions": {
       "baseline": "A young woman sits centrally in the image, draped in a rich, dark red robe with ornate gold trim and a golden veil covering her head. She is positioned against a gleaming gold background that fills the upper portion of the frame, forming an arched shape above her. To her right, she holds a baby who sits on her lap, wearing a blue tunic with gold embellishments. The baby is slightly turned toward the viewer, with its right hand resting on the woman’s chest. The woman’s left hand gently supports the baby’s back, while her right hand rests on the baby’s chest. Both figures are framed by golden halos, and the gold background extends behind them, creating a luminous, unified backdrop. The lower part of the image shows a dark, patterned surface with floral motifs, upon which the woman’s robe rests.",
       "spatial": "The gleaming gold background dominates the composition. In the foreground, a baby in a deep blue outfit is positioned to the young woman's right. The young woman, seated to the left and in front of the viewer, is dressed in a red gown with gold embellishments, including gold cuffs and a gold shawl draped over her head.",
@@ -1816,8 +1804,7 @@
       {
         "id": "r44_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the baby positioned to the right of the young woman?",
+        "question": "Was the baby to the right of the woman?",
         "options": [
           "Yes",
           "No"
@@ -1827,7 +1814,6 @@
       {
         "id": "r44_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
         "question": "Was the gold background behind both figures?",
         "options": [
           "Yes",
@@ -1838,8 +1824,7 @@
       {
         "id": "r44_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the young woman mainly on the left half of the image?",
+        "question": "Was the woman mainly on the left half of the image?",
         "options": [
           "Yes",
           "No"
@@ -1849,8 +1834,7 @@
       {
         "id": "r44_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the baby located at the bottom-left corner?",
+        "question": "Was the baby in the bottom-left corner?",
         "options": [
           "Yes",
           "No"
@@ -2000,8 +1984,7 @@
       {
         "id": "r47_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Were all the trees located along the bottom edge?",
+        "question": "Was the ruined building positioned in the foreground of the image?",
         "options": [
           "Yes",
           "No"
@@ -2118,7 +2101,7 @@
     "complexityLevel": "medium",
     "complexityScore": 0.6795,
     "role": "comprehension",
-    "imageSet": "set1",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "White-gray drift clouds fill the upper frame. Below them, a grassy hill slopes down from the left toward the center. A placid body of water stretches across the lower frame, with the closest two painted people standing near the water at the bottom center.",
       "spatial": "Above, a vast sky of white and gray drift clouds stretches across the upper frame, their soft, billowing forms drifting lazily. Below, a grassy hill rises gently from the left, its green slopes sloping down toward the water’s edge. The hill’s base meets a calm body of water that stretches horizontally across the middle ground, its surface reflecting the muted tones of the sky. Within this water, near the foreground, stand the closest two painted people, positioned on a rocky shoreline, their forms small against the expansive scene. Further back, the placid body of water continues, its gentle ripples mirroring the quiet atmosphere of the entire composition.",
@@ -2303,7 +2286,7 @@
       {
         "id": "r52_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "question": "Was there a building positioned on the right side of the plaza?",
+        "question": "Was the ornate building positioned on the right side of the plaza?",
         "options": [
           "Yes",
           "No"
@@ -2313,12 +2296,12 @@
       {
         "id": "r52_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "question": "Was the bridge positioned above the canal?",
+        "question": "Was the bridge to the right of the plaza?",
         "options": [
           "Yes",
           "No"
         ],
-        "correctAnswer": "Yes"
+        "correctAnswer": "No"
       },
       {
         "id": "r52_q_absolute_3",
@@ -2450,7 +2433,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.743,
     "role": "comprehension",
-    "imageSet": "set3",
+    "imageSet": "set2",
     "descriptions": {
       "baseline": "A tall pine tree stands near the center foreground, with a garden spread across the lower area. Three people are gathered toward the lower right, and a manor-like house appears behind them on the right. Above the scene, a vivid blue sky fills the upper background.",
       "spatial": "A vivid blue sky fills the upper part of the painting, broken by large gray and white clouds. Below it near the center stands a tall pine tree in the foreground, its dark branches rising against the sky. At the base of the tree, slightly left of center, three small people appear on the path. Farther to the right, partly framed by surrounding trees, a pale manor house comes into view. In the lower right foreground, the scene opens into a garden with paths, shrubs, and several figures moving through the grounds.",
@@ -2616,7 +2599,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.7346,
     "role": "comprehension",
-    "imageSet": "set4",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "A clean-shaven man stands near the center, facing right, while a long decorated banner rises beside him. On the right, a nude woman sits up in a hammock. Farther back on the right, a small animal, perhaps a monkey, appears near the seated area.",
       "spatial": "A long, elaborate banner serves as the starting point, guiding the viewer's eye to a clean-shaven man positioned slightly to its right. The scene unfolds from there, with a hammock stretched out in front of the man. Seated comfortably in the hammock is a nude woman who is now sitting up, her bare form visible. To the side of this scene, there appears to be a small monkey or similar animal, its head poking into view from behind an object. The various elements create a cohesive tableau against what seems to be a wooded background, with the intricately designed banner acting as a decorative border framing the narrative.",
@@ -2782,7 +2765,7 @@
     "complexityLevel": "high",
     "complexityScore": 0.763,
     "role": "comprehension",
-    "imageSet": "set2",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "A winged angel with curly hair and a golden halo stands on the left, wearing a flowing blue robe with gold trim, holding a small gold vessel in their right hand. To the right, a clean-shaven young man leans forward slightly, dressed in a blue tunic with a red draped cloak and golden boots; a small fish is tucked into the front of his garment. At the lower left, near the angel’s feet, a small shaggy white dog walks on the ground. The figures are positioned on a sunlit path, with trees and a distant landscape forming the background.",
       "spatial": "A winged angel with curly hair and large, feathered wings stands on the left, dressed in a flowing blue robe with gold trim and a white sash. In their right hand, they hold a small, ornate gold vessel. To the right of the angel, a clean-shaven young man with curly hair leans forward, wearing a blue tunic under a draped red cloak, with golden boots and a radiant halo around his head. Tucked into the folds of his cloak near his waist is a small fish. At the lower left, near the angel’s feet, a small shaggy white dog walks on the earthy ground, its body low and fluffy. The figures are set against a landscape of trees and distant hills under a pale sky.",
@@ -2948,7 +2931,7 @@
     "complexityLevel": "low",
     "complexityScore": 0.0522,
     "role": "comprehension",
-    "imageSet": "set2",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "A golden chalice with a fluted base and ornate stem stands centered within a shallow, arched niche. A thin, greenish-blue serpent emerges from the chalice’s rim, its head and upper body rising to the right while its tail curves downward and to the left, draping over the chalice’s exterior. The serpent’s mouth is slightly open, and its red eye is visible. A dark shadow falls behind the chalice and to its left within the niche, contrasting with the lighter, textured stone surface of the niche’s walls and floor.",
       "spatial": "A thin, green, slender serpent emerges from the right rim of a golden chalice, its body curving downward and extending to the left, where its tail hangs just above the chalice’s base. The chalice, with its ornate stem and fluted foot, sits centered within a stone niche, its polished surface catching light. To the right of the chalice and slightly behind it, a dark, soft-edged shadow falls against the niche wall, extending downward and blending into the shadowed floor of the alcove.",
@@ -2965,8 +2948,7 @@
       {
         "id": "r78_q_intrinsic_1",
         "frameOfReference": "intrinsic",
-        "objectFocus": "main",
-        "question": "Was the serpent wrapped around and above the chalice?",
+        "question": "Was the serpent wrapped around the chalice?",
         "options": [
           "Yes",
           "No"
@@ -2976,8 +2958,7 @@
       {
         "id": "r78_q_intrinsic_2",
         "frameOfReference": "intrinsic",
-        "objectFocus": "secondary",
-        "question": "Was the shadow positioned behind the chalice?",
+        "question": "Was the shadow behind the chalice?",
         "options": [
           "Yes",
           "No"
@@ -2987,8 +2968,7 @@
       {
         "id": "r78_q_absolute_3",
         "frameOfReference": "absolute",
-        "objectFocus": "main",
-        "question": "Was the gold chalice near the center of the image?",
+        "question": "Was the chalice near the center of the image?",
         "options": [
           "Yes",
           "No"
@@ -2998,8 +2978,7 @@
       {
         "id": "r78_q_absolute_4",
         "frameOfReference": "absolute",
-        "objectFocus": "secondary",
-        "question": "Was the serpent confined to the lower-left corner?",
+        "question": "Was the serpent in the lower-left corner?",
         "options": [
           "Yes",
           "No"
@@ -3100,7 +3079,7 @@
     "complexityLevel": "medium",
     "complexityScore": 0.689,
     "role": "comprehension",
-    "imageSet": "set4",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "The scene opens with three people seated in a blue couch: a man, a woman, and a young girl. They're positioned to the left side of the frame. To their right stands a man, his orientation turned towards the seated group, facing left. The wall forms the background behind this arrangement. The floor in front of the seated individuals has a blue couch-patterned design.",
       "spatial": "A dark, textured wall forms the backdrop behind the group. In front of it, a blue couch holds a seated man turned slightly to his right, beside a woman in white holding a baby. Behind the couch, a young man stands turned toward the viewer, and to his right, a line of women in white dresses with red sashes stand in a row, their hands clasped.",
@@ -3139,7 +3118,7 @@
       {
         "id": "r89_q_absolute_3",
         "frameOfReference": "absolute",
-        "question": "Were the women in white dresses with red sashes located in the left portion of the image?",
+        "question": "Were the women in white dresses positioned on the left side of the image? ",
         "options": [
           "Yes",
           "No"
@@ -3279,48 +3258,7 @@
       "gray background",
       "one dark gray boulder"
     ],
-    "spatialQuestions": [
-      {
-      "id": "r18_q_intrinsic_1",
-      "frameOfReference": "intrinsic",
-      "question": "Was the man positioned on top of the dark gray boulder?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r18_q_intrinsic_2",
-      "frameOfReference": "intrinsic",
-      "question": "Was another boulder positioned above the man's head?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r18_q_absolute_3",
-      "frameOfReference": "absolute",
-      "question": "Was the large dark gray boulder positioned in the lower-left portion of the image?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r18_q_absolute_4",
-      "frameOfReference": "absolute",
-      "question": "Was the man's raised left arm reaching toward the upper-right corner of the frame?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    }
-  ],
+    "spatialQuestions": [],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -3434,48 +3372,7 @@
       "blue cloth",
       "framed painting"
     ],
-    "spatialQuestions": [
-      {
-      "id": "r36_q_intrinsic_1",
-      "frameOfReference": "intrinsic",
-      "question": "Was the framed painting hanging behind the woman?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r36_q_intrinsic_2",
-      "frameOfReference": "intrinsic",
-      "question": "Was the woman standing in front of the painting?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r36_q_absolute_3",
-      "frameOfReference": "absolute",
-      "question": "Was the blue cloth positioned in the lower-left portion of the image?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r36_q_absolute_4",
-      "frameOfReference": "absolute",
-      "question": "Was the framed painting located on the left side of the frame?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "No"
-    }
-  ],
+    "spatialQuestions": [],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -3582,8 +3479,8 @@
     "imageFilename": "sample_cd382af4-5334-485a-8121-c52ce7abf13a.png",
     "complexityLevel": "medium",
     "complexityScore": 0.7035,
-    "role": "preference",
-    "imageSet": "preference",
+    "role": "comprehension",
+    "imageSet": "set3",
     "descriptions": {
       "baseline": "In the center of the circular image, a thin nude man is crucified on a wooden cross. His arms are outstretched to the sides, with blood dripping from the nails in his hands. Above him, a sign reads \"Inri.\"\n\nTo the left of the crucified man stands an older woman, dressed in brown robes and wearing a head covering. She gazes downward, her expression somber.\n\nOn the right side of the crucifix, a man wearing a black shirt and a red and black overskirt appears to be looking at the woman on the left side.",
       "spatial": "At the center of the composition stands a dark wooden cross, its vertical beam extending from the top edge of the circular frame down to a stone base at the bottom. Affixed to the cross is a thin, nude man with a crown of thorns, his body elongated and pale, arms outstretched along the horizontal beam. Blood flows from his hands and torso, with a distinct stream dripping from his feet down the front of the cross’s vertical beam. Above his head, inscribed on a small rectangular plaque, are the letters “INRI.” To the left of the cross, an older woman stands in a dark, draped robe, her head covered and face marked with sorrow, her hands clasped in grief. She is positioned slightly below the central figure, her gaze directed downward.",
@@ -3598,7 +3495,48 @@
       "older woman",
       "wooden cross"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+      {
+        "id": "r43_q_intrinsic_1",
+        "frameOfReference": "intrinsic",
+        "question": "Was the figure in dark robes positioned to the right of the cross?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      },
+      {
+        "id": "r43_q_intrinsic_2",
+        "frameOfReference": "intrinsic",
+        "question": "Was the crucified figure positioned above the two figures in robes?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r43_q_absolute_3",
+        "frameOfReference": "absolute",
+        "question": "Was the skull positioned in the lower portion of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "id": "r43_q_absolute_4",
+        "frameOfReference": "absolute",
+        "question": "Was the inscription \"INRI\" positioned at the bottom center of the image?",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "correctAnswer": "No"
+      }
+    ],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
@@ -3728,48 +3666,7 @@
       " woman",
       "nude child"
     ],
-    "spatialQuestions": [
-    {
-      "id": "r60_q_intrinsic_1",
-      "frameOfReference": "intrinsic",
-      "question": "Was the bathtub positioned to the left of the woman?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r60_q_intrinsic_2",
-      "frameOfReference": "intrinsic",
-      "question": "Was the nude child positioned to the right of the woman?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r60_q_absolute_3",
-      "frameOfReference": "absolute",
-      "question": "Was the bathtub positioned in the left portion of the image?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "Yes"
-    },
-    {
-      "id": "r60_q_absolute_4",
-      "frameOfReference": "absolute",
-      "question": "Was the woman positioned on the left side of the image?",
-      "options": [
-        "Yes",
-        "No"
-      ],
-      "correctAnswer": "No"
-    }
-  ],
+    "spatialQuestions": [],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
