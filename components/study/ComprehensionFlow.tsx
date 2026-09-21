@@ -14,7 +14,6 @@ import { createStimulusTrialId, getComprehensionStimuli, getComprehensionStimulu
 import { LikertResponse, OrderedAudioPlayEvent, SpatialAnswer, StudyState } from "@/types/study";
 
 type Props = { state: StudyState; updateState: (patch: Partial<StudyState>) => void };
-type Step = "audio" | "questions";
 
 const agreementLabels = ["Not at all", "Slightly", "Moderately", "Very", "Extremely well"];
 const workloadLabels = ["Very low", "Low", "Moderate", "High", "Very high"];
@@ -43,7 +42,6 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   const spatialExpressionCount = stimulus.descriptionMetrics?.[condition]?.spatialExpressionCount ?? null;
   const presentedKendallTau = stimulus.descriptionMetrics?.[condition]?.kendallTau ?? null;
   const questions = stimulus.spatialQuestions ?? [];
-  const [step, setStep] = useState<Step>("audio");
   const [played, setPlayed] = useState(state.testMode);
   const [audioCompleted, setAudioCompleted] = useState(state.testMode);
   const [playEvents, setPlayEvents] = useState<OrderedAudioPlayEvent[]>([]);
@@ -52,22 +50,13 @@ export function ComprehensionFlow({ state, updateState }: Props) {
   const [ratings, setRatings] = useState({ overallSceneClarity: null as number | null, spatialRelationsConfidence: null as number | null, contentComprehension: null as number | null });
   const [workload, setWorkload] = useState({ mentalDemand: null as number | null, frustration: null as number | null });
   const [startedAt] = useState(new Date().toISOString());
-  const [stepStartedAt, setStepStartedAt] = useState(startedAt);
-  const [stepTimestamps, setStepTimestamps] = useState<Record<string, { startedAt: string; completedAt: string; responseTimeMs: number }>>({});
   const [audioStartedAt, setAudioStartedAt] = useState<string>();
   const [audioEndedAt, setAudioEndedAt] = useState<string>();
-
-  function advance(next: Step) {
-    const completedAt = new Date().toISOString();
-    setStepTimestamps((current) => ({ ...current, [step]: { startedAt: stepStartedAt, completedAt, responseTimeMs: Date.parse(completedAt) - Date.parse(stepStartedAt) } }));
-    setStepStartedAt(completedAt);
-    setStep(next);
-  }
 
   function submit(event: FormEvent) {
     event.preventDefault();
     const submittedAt = new Date().toISOString();
-    const finalSteps = { ...stepTimestamps, questions: { startedAt: stepStartedAt, completedAt: submittedAt, responseTimeMs: Date.parse(submittedAt) - Date.parse(stepStartedAt) } };
+    const finalSteps = { singlePage: { startedAt, completedAt: submittedAt, responseTimeMs: Date.parse(submittedAt) - Date.parse(startedAt) } };
     const answers: SpatialAnswer[] = questions.map((q) => {
       const answer = spatialAnswers[q.id] ?? "";
       const isUncertain = answer === "Not sure";
@@ -109,13 +98,9 @@ export function ComprehensionFlow({ state, updateState }: Props) {
     <h2>Comprehension Trial {state.comprehensionIndex + 1}</h2>
     {state.testMode && <p className="warning">TEST MODE: required responses and audio playback can be skipped.</p>}
 
-    {step === "audio" && <>
-      <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
-        onPlayed={() => { setPlayed(true); setAudioCompleted(false); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }])} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
-      <AccessibleButton type="button" disabled={required && (!played || !audioCompleted)} onClick={() => advance("questions")}>Continue to questions</AccessibleButton>
-    </>}
+    <AudioDescriptionPlayer description={descriptionText} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} mode="trial" label="description" maxReplays={1}
+      onPlayed={() => { setPlayed(true); setAudioStartedAt(new Date().toISOString()); }} onPlaybackEvent={(event) => { setAudioCompleted(false); setPlayEvents((current) => [...current, { ...event, eventSequence: current.length + 1 }]); }} onEnded={() => { setAudioCompleted(true); setAudioEndedAt(new Date().toISOString()); }} />
 
-    {step === "questions" && <>
       <section className="question-card"><h3>Scene recall</h3><div className="field-label"><label htmlFor="free-recall">{recallPrompt}</label><QuestionAudioButton text={recallPrompt} speed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} /><SpeechAnswerInput id="free-recall" required={required} rows={6} value={freeRecall} onChange={setFreeRecall} /></div></section>
 
       <section className="question-card"><h3>Spatial relations</h3>{questions.map((q, i) => <RadioGroup key={q.id} legend={`${i + 1}. ${q.question}`} name={q.id} value={spatialAnswers[q.id] ?? ""} onChange={(value) => setSpatialAnswers((v) => ({ ...v, [q.id]: value }))} options={[...q.options, ...(q.options.includes("Not sure") ? [] : ["Not sure"])].map((x) => ({ value: x, label: x }))} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}</section>
@@ -129,7 +114,6 @@ export function ComprehensionFlow({ state, updateState }: Props) {
       <section className="question-card"><h3>Workload</h3>{(Object.entries(workloadQuestions) as [keyof typeof workloadQuestions, string][]).map(([name, legend]) => <LikertScale key={name} legend={legend} name={name} value={workload[name]} onChange={(value) => setWorkload((v) => ({ ...v, [name]: value }))} labels={workloadLabels} required={required} audioSpeed={state.selectedAudioSpeed} voiceURI={state.selectedVoiceURI} />)}</section>
 
       <StimulusImageToggle imageFilename={stimulus.imageFilename} imageUrl={stimulus.imageUrl} />
-      <AccessibleButton type="submit" disabled={required && (!freeRecall.trim() || questions.some((q) => !spatialAnswers[q.id]) || Object.values(ratings).some((value) => value === null) || Object.values(workload).some((value) => value === null))}>Save and continue</AccessibleButton>
-    </>}
+      <AccessibleButton type="submit" disabled={required && (!played || !audioCompleted || !freeRecall.trim() || questions.some((q) => !spatialAnswers[q.id]) || Object.values(ratings).some((value) => value === null) || Object.values(workload).some((value) => value === null))}>Save and continue</AccessibleButton>
   </form>;
 }

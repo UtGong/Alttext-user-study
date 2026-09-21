@@ -88,11 +88,10 @@ test("all comprehension stimuli have complete spatial question sets", () => {
   assert.equal(byUuid["bfd3764c-8711-4b04-9f02-ed6b07995d40"].spatialQuestions[0].question, "Was the woman to the right of the man?");
 });
 
-test("comprehension questions share one page and image controls follow them", async () => {
+test("comprehension playback and questions share one page with image controls last", async () => {
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
-  assert.match(flow, /type Step = "audio" \| "questions"/);
-  assert.match(flow, /step === "questions" && <>[\s\S]*Scene recall[\s\S]*Spatial relations[\s\S]*Experience[\s\S]*Workload[\s\S]*<StimulusImageToggle[\s\S]*Save and continue/);
-  assert.doesNotMatch(flow, /advance\("spatial"\)|advance\("ratings"\)|advance\("workload"\)/);
+  assert.match(flow, /<AudioDescriptionPlayer[\s\S]*Scene recall[\s\S]*Spatial relations[\s\S]*Experience[\s\S]*Workload[\s\S]*<StimulusImageToggle[\s\S]*Save and continue/);
+  assert.doesNotMatch(flow, /type Step|setStep|Continue to questions/);
 });
 
 test("comprehension and preference images are disjoint", async () => {
@@ -398,7 +397,8 @@ test("comprehension audio remains available with only one replay", async () => {
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   assert.match(player, /onClick=\{\(\) => play\(false\)\} disabled=\{playedOnce\}/);
   assert.match(flow, /maxReplays=\{1\}/);
-  assert.match(flow, /step === "audio" && <>[\s\S]*<AudioDescriptionPlayer/);
+  assert.match(flow, /<AudioDescriptionPlayer[\s\S]*<section className="question-card"><h3>Scene recall/);
+  assert.match(flow, /setAudioCompleted\(false\)[\s\S]*setPlayEvents/);
 });
 
 test("test mode can generate mock records and jump to the save page", async () => {
