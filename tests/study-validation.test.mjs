@@ -396,6 +396,7 @@ test("comprehension audio remains available with only one replay", async () => {
   const player = await readFile(new URL("../components/AudioDescriptionPlayer.tsx", import.meta.url), "utf8");
   const flow = await readFile(new URL("../components/study/ComprehensionFlow.tsx", import.meta.url), "utf8");
   assert.match(player, /onClick=\{\(\) => play\(false\)\} disabled=\{playedOnce\}/);
+  assert.doesNotMatch(player, /\{description\}<\/p>|description-transcript/);
   assert.match(flow, /maxReplays=\{1\}/);
   assert.match(flow, /<AudioDescriptionPlayer[\s\S]*<section className="question-card"><h3>Scene recall/);
   assert.match(flow, /setAudioCompleted\(false\)[\s\S]*setPlayEvents/);
