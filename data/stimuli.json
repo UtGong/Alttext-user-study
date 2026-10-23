@@ -3598,7 +3598,48 @@
       "older woman",
       "wooden cross"
     ],
-    "spatialQuestions": [],
+    "spatialQuestions": [
+  {
+    "id": "r43_q_intrinsic_1",
+    "frameOfReference": "intrinsic",
+    "question": "Was the figure in dark robes positioned to the right of the cross?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "correctAnswer": "No"
+  },
+  {
+    "id": "r43_q_intrinsic_2",
+    "frameOfReference": "intrinsic",
+    "question": "Was the crucified figure positioned above the two figures in robes?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "correctAnswer": "Yes"
+  },
+  {
+    "id": "r43_q_absolute_3",
+    "frameOfReference": "absolute",
+    "question": "Was the skull positioned in the lower portion of the image?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "correctAnswer": "Yes"
+  },
+  {
+    "id": "r43_q_absolute_4",
+    "frameOfReference": "absolute",
+    "question": "Was the inscription \"INRI\" positioned at the bottom center of the image?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "correctAnswer": "No"
+  }
+],
     "gistQuestion": {
       "question": "What kind of scene or main subject was described?",
       "expectedAnswer": "Open-ended response, code after study."
