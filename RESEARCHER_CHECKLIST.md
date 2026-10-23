@@ -4,7 +4,7 @@
 
 - Open the study interface in a supported browser.
 - Confirm the participant ID format.
-- Confirm the combined 20-trial comprehension and 4-trial preference workflow is active.
+- Confirm the combined 21-trial comprehension and 3-trial preference workflow is active.
 - Record researcher-assigned sequence group A, B, or C. The three active conditions are fixed internally.
 - Confirm audio output device and volume.
 - Confirm every selected image loads from its Show image button.
@@ -19,8 +19,8 @@
 - Do not reveal condition names to participants.
 - Comprehension images appear in a randomized order for each participant.
 - After each image, collect mental demand and frustration ratings.
-- During preference trials, let the participant play and replay descriptions A and B freely.
-- Confirm that both descriptions were played before the participant submits a preference.
+- During preference trials, let the participant play and replay descriptions A, B, and C freely.
+- Confirm that all three descriptions were played before the participant submits a preference.
 - After each preference, ask the participant to explain the reason for their choice.
 - Do not help answer comprehension questions.
 - Record any accessibility issues or confusion.
@@ -34,7 +34,7 @@
 - Export CSV.
 - Verify the workload CSV contains one row per image with mental demand, frustration, condition, and display position.
 - Verify comprehension exports contain session/trial IDs, selected conditions, canonical `spatialExpressionCount`, description metrics, total accuracy, and intrinsic/absolute accuracy.
-- Verify preference exports contain A/B condition mappings, exact description text, metrics, selected condition or no preference, replay counts, and playback events.
+- Verify preference exports contain A/B/C condition mappings, exact description text, metrics, selected condition or no preference, replay counts, and playback events.
 - Verify exported files are saved.
 - Clear session before the next participant.
 

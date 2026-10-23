@@ -198,18 +198,6 @@ h2 {
   font-weight: 700;
 }
 
-.description-transcript {
-  margin: 1rem 0;
-  padding: 1rem;
-  border-left: 5px solid var(--focus);
-  border-radius: 8px;
-  background: var(--secondary);
-}
-
-.description-transcript p {
-  margin: 0;
-}
-
 .stimulus-image-controls {
   margin: 1rem 0;
 }
@@ -679,12 +667,6 @@ code {
 
 .preference-description-card h3 {
   margin: 0 0 0.75rem;
-}
-
-.preference-description-card .description-transcript {
-  margin: 0.75rem 0;
-  border-left: 0;
-  border-radius: 10px;
 }
 
 .audio-player-embedded {

@@ -23,7 +23,7 @@ export default function StimulusCatalogPage() {
           “All Stimuli Scores” tab in the study complexity spreadsheet.
         </p>
         <p>
-          The participant study contains 20 comprehension trials and 4 preference trials. Every active
+          The participant study contains 21 comprehension trials and 3 preference trials. Every active
           description uses 3–7 spatial expressions; non-baseline descriptions have Kendall&apos;s τ above 0.3.
         </p>
         <dl className="catalog-summary">

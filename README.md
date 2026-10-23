@@ -17,7 +17,7 @@ The interface is designed to be screen-reader accessible, keyboard-first, audio-
 - A/B/C sequence-group counterbalancing across the three fixed conditions
 - Audio speed selection before the real study
 - Practice trial with speed confirmation
-- 20 comprehension trials followed by 4 preference trials
+- 21 comprehension trials followed by 3 preference trials
 - A Show image/Hide image control on every comprehension and preference trial
 - Play/replay only during real trials
 - No pause or speed adjustment during real trials
@@ -95,7 +95,7 @@ Each stimulus includes:
 - optional description metrics
 - generation provenance, ordered items, ordered IDs, and condition-specific metrics
 
-The file contains 20 active comprehension records and 4 disjoint preference records. Rejected
+The file contains 21 active comprehension records and 3 disjoint preference records. Rejected
 images and unused alternatives are documented in `data/stimulusReview.json`. Every active record has
 all four source descriptions, although Semantic is not active in the current study. Records are addressed by a
 composite trial ID built from role, image set, and UUID.
@@ -147,7 +147,7 @@ During real trials:
 ## Data storage
 
 The full study state is autosaved in the browser and submitted to Firestore at completion.
-Version 13 records identify the combined workflow and include the fixed three-condition assignment,
+Version 14 records identify the combined workflow and include the balanced three-condition assignment,
 session and composite trial IDs, exact presented text, description metrics, ordered playback
 events, overall and intrinsic/absolute accuracy, response timing, workload responses, and complete
 preference mappings. Each comprehension trial records `spatialExpressionCount` as the canonical count for
@@ -183,8 +183,8 @@ The UI avoids drag-and-drop, hover-only interaction, hidden custom widgets, and 
 Before running a real study, manually verify:
 
 1. Spatial questions are correct for each image.
-2. The 20 comprehension stimuli are final and have four validated descriptions each.
-3. The 4 preference stimuli and their four available conditions are final.
+2. The 21 comprehension stimuli are final and have four validated descriptions each.
+3. The 3 preference stimuli and their four available source conditions are final.
 4. The text-to-speech voice is acceptable, or replace TTS with recorded audio files.
 5. Exported JSON/CSV contains the fields needed for analysis.
 6. The interface has been tested with keyboard only and at least one screen reader.

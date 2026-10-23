@@ -14,7 +14,7 @@ export type SequenceGroup = "A" | "B" | "C";
 export type Condition = "baseline" | "spatial" | "semantic" | "spatial2d";
 export type StudyMode = "full-study";
 export type ComplexityLevel = "low" | "medium" | "high";
-export type ImageSet = "set1" | "set2" | "set3" | "set4" | "preference" | "pilot";
+export type ImageSet = "set1" | "set2" | "set3" | "preference" | "pilot";
 export type StimulusRole = "comprehension" | "preference" | "reserve" | "pilot";
 export type DescriptionLabel = "A" | "B" | "C";
 export type PreferenceChoice = DescriptionLabel | "none";
@@ -268,7 +268,7 @@ export type InterviewResponse = {
 };
 
 export type StudyState = {
-  schemaVersion: 13;
+  schemaVersion: 14;
   phase: StudyPhase;
   testMode: boolean;
   studyMode: StudyMode;
